@@ -219,7 +219,7 @@ function populateElementVars() {
 let jtfr = {
     tFind: [
         "Svalinn",
-        "https://github.com/turtlecoin/turtle-wallet-electron",
+        "https://github.com/ICONation/svalinn",
         "TurtleCoin",
         "TRTL",
         "turtle-service"

@@ -3,8 +3,8 @@
   "productName": "Svalinn",
   "description": "TurtleCoin GUI Wallet",
   "version": "v0.3.11",
-  "homepage": "https://github.com/turtlecoin/turtle-wallet-electron",
-  "repository": "https://github.com/turtlecoin/turtle-wallet-electron",
+  "homepage": "https://github.com/ICONation/svalinn",
+  "repository": "https://github.com/ICONation/svalinn",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -31,13 +31,14 @@
     "electron-log": "^2.2.17",
     "electron-store": "^2.0.0",
     "fnv-plus": "^1.2.12",
+    "icon-sdk-js": "0.0.10",
     "node-crypto-gcm": "^1.0.3",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
   },
   "build": {
-    "appId": "lol.turtlecoin.svalinn",
+    "appId": "lol.iconation.svalinn",
     "copyright": "Copyright (c) 2018 Rixombea, Macroshock, TurtleCoin Developers",
     "directories": {
       "output": "dist",

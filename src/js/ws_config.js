@@ -2,16 +2,16 @@ var config = {};
 
 // self explanatory, your application name, descriptions, etc
 config.appName = 'Svalinn';
-config.appDescription = 'TurtleCoin Wallet';
-config.appSlogan = 'Slow and steady wins the race!';
-config.appId = 'lol.turtlecoin.svalinn';
-config.appGitRepo = 'https://github.com/turtlecoin/turtle-wallet-electron';
+config.appDescription = 'ICONation Wallet';
+config.appSlogan = 'By ICONists, For ICONists';
+config.appId = 'org.iconation.svalinn';
+config.appGitRepo = 'https://github.com/ICONation/svalinn';
 
 // default port number for your daemon (e.g. TurtleCoind)
 config.daemonDefaultRpcPort = 11898;
 
 // wallet file created by this app will have this extension
-config.walletFileDefaultExt = 'twl';
+config.walletFileDefaultExt = 'icx';
 
 // change this to match your wallet service executable filename
 config.walletServiceBinaryFilename = 'turtle-service';

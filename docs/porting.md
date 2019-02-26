@@ -22,7 +22,7 @@ If you want your version of Svalinn looks different than what provided by defaul
 - Replace `src/assets/image/*` with your own images.
 
 ### 4. Rebuild/package your wallet for distribution
-Please refer to the build guide on the repository [main page](https://github.com/turtlecoin/turtle-wallet-electron).
+Please refer to the build guide on the repository [main page](https://github.com/ICONation/svalinn).
 
 ### Final Note
-_You are free to use, modify, redistribute, or do whatever you want to the Svalinn's code, as long as you comply with the [license](https://github.com/turtlecoin/turtle-wallet-electron/blob/master/LICENSE.md) coming with Svalinn_.
+_You are free to use, modify, redistribute, or do whatever you want to the Svalinn's code, as long as you comply with the [license](https://github.com/ICONation/svalinn/blob/master/LICENSE.md) coming with Svalinn_.

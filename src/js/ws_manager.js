@@ -9,6 +9,7 @@ const SvalinnApi = require('./ws_api');
 const uiupdater = require('./wsui_updater');
 const wsutil = require('./ws_utils');
 const config = require('./ws_config');
+const IconService = require('icon-sdk-js');
 const { remote } = require('electron');
 const settings = new Store({ name: 'Settings' });
 const sessConfig = { debug: remote.app.debug, walletConfig: remote.app.walletConfig };
@@ -23,6 +24,7 @@ const ERROR_WALLET_EXEC = `Failed to start ${config.walletServiceBinaryFilename}
 const ERROR_WALLET_PASSWORD = 'Failed to load your wallet, please check your password';
 const ERROR_WALLET_IMPORT = 'Import failed, please check that you have entered all information correctly';
 const ERROR_WALLET_CREATE = 'Wallet can not be created, please check your input and try again';
+const ERROR_PASSWORD_FORMAT = 'Password must be at least 8 characters long and contain a combination of letters, numbers, and special characters. (?!:.,%+-/*<>{}()[]`"\'~_^\\|@#$&)';
 const ERROR_RPC_TIMEOUT = 'Unable to communicate with selected node, please try again in a few seconds or switch to another node address';
 const INFO_FUSION_DONE = 'Wallet optimization completed, your balance may appear incorrect for a while.';
 const INFO_FUSION_SKIPPED = 'Wallet already optimized. No further optimization is needed.';
@@ -90,6 +92,7 @@ SvalinnManager.prototype.serviceStatus = function () {
 };
 
 SvalinnManager.prototype.isRunning = function () {
+    /*
     this.init();
     let proc = path.basename(this.serviceBin);
     let platform = process.platform;
@@ -109,6 +112,7 @@ SvalinnManager.prototype.isRunning = function () {
         log.debug(`Process found: ${found}`);
         return found;
     });
+    */
 };
 
 SvalinnManager.prototype._writeIniConfig = function (cfg) {
@@ -147,6 +151,7 @@ SvalinnManager.prototype._wipeConfig = function () {
 };
 
 SvalinnManager.prototype.startService = function (walletFile, password, onError, onSuccess, onDelay) {
+    /*
     this.init();
 
     if (null !== this.serviceLastPid) {
@@ -188,6 +193,7 @@ SvalinnManager.prototype.startService = function (walletFile, password, onError,
             }
         }
     });
+    */
 };
 
 SvalinnManager.prototype._argsToIni = function (args) {
@@ -201,6 +207,7 @@ SvalinnManager.prototype._argsToIni = function (args) {
 };
 
 SvalinnManager.prototype._spawnService = function (walletFile, password, onError, onSuccess, onDelay) {
+    /*
     this.init();
     let file = path.basename(walletFile);
     let logFile = path.join(
@@ -341,9 +348,11 @@ SvalinnManager.prototype._spawnService = function (walletFile, password, onError
         log.debug('performing connection test');
         testConnection(0);
     }, 4200);
+    */
 };
 
 SvalinnManager.prototype.stopService = function () {
+    /*
     log.debug('stopping service');
     this.init();
     let wsm = this;
@@ -379,9 +388,11 @@ SvalinnManager.prototype.stopService = function () {
             resolve(false);
         }
     });
+    */
 };
 
 SvalinnManager.prototype.terminateService = function (force) {
+    /*
     if (!this.serviceStatus()) return;
     force = force || false;
     let signal = force ? 'SIGKILL' : 'SIGTERM';
@@ -402,9 +413,11 @@ SvalinnManager.prototype.terminateService = function (force) {
 
     this.serviceProcess = null;
     this.servicePid = null;
+    */
 };
 
 SvalinnManager.prototype.startSyncWorker = function () {
+    /*
     this.init();
     let wsm = this;
     if (this.syncWorker !== null) {
@@ -456,9 +469,11 @@ SvalinnManager.prototype.startSyncWorker = function () {
         debug: SERVICE_LOG_DEBUG
     };
     this.syncWorker.send(cfgData);
+    */
 };
 
 SvalinnManager.prototype.stopSyncWorker = function () {
+    /*
     log.debug('stopping syncworker');
 
     try {
@@ -468,9 +483,11 @@ SvalinnManager.prototype.stopSyncWorker = function () {
     } catch (e) {
         log.debug(`syncworker already stopped`);
     }
+    */
 };
 
 SvalinnManager.prototype.getNodeFee = function () {
+    /*
     let wsm = this;
 
     this.serviceApi.getFeeInfo().then((res) => {
@@ -491,9 +508,11 @@ SvalinnManager.prototype.getNodeFee = function () {
     }).catch((err) => {
         log.debug(`failed to get node fee: ${err.message}`);
     });
+    */
 };
 
 SvalinnManager.prototype.genIntegratedAddress = function (paymentId, address) {
+    /*
     let wsm = this;
     return new Promise((resolve, reject) => {
         address = address || wsession.get('loadedWalletAddress');
@@ -504,34 +523,33 @@ SvalinnManager.prototype.genIntegratedAddress = function (paymentId, address) {
             return reject(err);
         });
     });
+    */
 };
 
-SvalinnManager.prototype.createWallet = function (walletFile, password) {
-    this.init();
-    let wsm = this;
-    return new Promise((resolve, reject) => {
-        let serviceArgs = wsm.serviceArgsDefault.concat(
-            [
-                '-g', '-w', walletFile, '-p', password,
-                '--log-level', 0, '--log-file', path.join(remote.app.getPath('temp'), 'ts.log')
-            ]
-        );
-        childProcess.execFile(
-            wsm.serviceBin, serviceArgs, (error, stdout, stderr) => {
-                if (stdout) log.debug(stdout);
-                if (stderr) log.debug(stderr);
-                if (error) {
-                    log.error(`Failed to create wallet: ${error.message}`);
-                    return reject(new Error(ERROR_WALLET_CREATE));
-                } else {
-                    if (!wsutil.isRegularFileAndWritable(walletFile)) {
-                        log.error(`${walletFile} is invalid or unreadable`);
-                        return reject(new Error(ERROR_WALLET_CREATE));
-                    }
-                    return resolve(walletFile);
-                }
+function check_password (password) {
+    return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[?!:\.,%+-/*<>{}\(\)\[\]`"'~_^\\|@#$&]).{8,}$/.test(password)
+}
+
+SvalinnManager.prototype.createWallet = function (walletFile, password)
+{
+    return new Promise ((resolve, reject) => {
+
+        if (!check_password (password)) {
+            return reject (new Error (ERROR_PASSWORD_FORMAT));
+        }
+
+        // Generate a wallet
+        const wallet = new IconService.IconWallet.create();
+        const keystore = wallet.store (password);
+
+        // Write keystore to disk
+        fs.writeFile (walletFile, JSON.stringify (keystore), function(err) {
+            if (err) {
+                return reject (new Error (ERROR_WALLET_CREATE));
             }
-        );
+        }); 
+
+        return resolve(walletFile);
     });
 };
 

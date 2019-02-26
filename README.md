@@ -36,17 +36,17 @@ This wallet contains the basic functions required to mvanage your TurtleCoin ass
 ### Download &amp; Run Svalinn
 
 #### Windows:
-1. Download the latest installer here: https://github.com/turtlecoin/turtle-wallet-electron/releases/latest
+1. Download the latest installer here: https://github.com/ICONation/svalinn/releases/latest
 2. Run the installer (`svalinn-<version>-win-setup.exe`) and follow the installation wizard.
 3. Launch Svalinn via start menu or desktop shortcut.
 
 #### GNU/Linux (AppImage):
-1. Download latest AppImage bundle here: https://github.com/turtlecoin/turtle-wallet-electron/releases/latest
+1. Download latest AppImage bundle here: https://github.com/ICONation/svalinn/releases/latest
 2. Make it executable, either via GUI file manager or command line, e.g. `chmod +x svalinn-<version>-linux.AppImage`
 3. Run/execute the file, double click in file manager, or run via shell/command line (See: https://docs.appimage.org/user-guide/run-appimages.html)
 
 #### macOS
-1. Download latest archive here: https://github.com/turtlecoin/turtle-wallet-electron/releases/latest
+1. Download latest archive here: https://github.com/ICONation/svalinn/releases/latest
 2. Extract downloaded zip archived
 3. Run the executable binary (`Svalinn.app/Contents/MacOs/Svalinn`)
 
@@ -64,7 +64,7 @@ Once you have Node+npm installed:
 # extract the turtle-service executable somewhere
 
 # clone the repo
-$ git clone https://github.com/turtlecoin/turtle-wallet-electron
+$ git clone https://github.com/ICONation/svalinn
 $ cd turtle-wallet-electron
 
 # install dependencies

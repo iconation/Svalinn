@@ -101,6 +101,8 @@ function createWindow() {
         },
     });
 
+    win.maximize (true);
+
     //load the index.html of the app.
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'src/html/index.html'),
@@ -247,65 +249,6 @@ function createWindow() {
     });
 }
 
-function storeNodeList(pnodes) {
-    pnodes = pnodes || settings.get('pubnodes_data');
-    let validNodes = [];
-    if (pnodes.hasOwnProperty('nodes')) {
-        pnodes.nodes.forEach(addr => {
-            let item = `${addr.url}:${addr.port}`;
-            validNodes.push(item);
-        });
-    }
-    if (validNodes.length) settings.set('pubnodes_data', validNodes);
-}
-
-function doNodeListUpdate() {
-    try {
-        https.get(config.remoteNodeListUpdateUrl, (res) => {
-            var result = '';
-            res.setEncoding('utf8');
-
-            res.on('data', (chunk) => {
-                result += chunk;
-            });
-
-            res.on('end', () => {
-                try {
-                    var pnodes = JSON.parse(result);
-                    storeNodeList(pnodes);
-                    settings.set('pubnodes_last_updated', new Date().getTime());
-                    settings.delete('pubnodes_tested');
-                    log.debug('Public node list has been updated');
-                } catch (e) {
-                    log.debug(`Failed to update public node list: ${e.message}`);
-                    storeNodeList();
-                }
-            });
-        }).on('error', (e) => {
-            log.debug(`Failed to update public-node list: ${e.message}`);
-            storeNodeList(false);
-        });
-    } catch (e) {
-        log.error(`Failed to update public-node list: ${e.code} - ${e.message}`);
-        storeNodeList(false);
-    }
-}
-
-function updatePublicNodes() {
-    if (config.remoteNodeListUpdateUrl) {
-        let last_updated = settings.get('pubnodes_last_updated', 946697799000);
-        let now = new Date().getTime();
-        if(Math.abs(now-last_updated) / 36e5 >= 24) {
-            //do update
-            log.info('Performing daily public-node list update.');
-            doNodeListUpdate();
-        }else{
-            log.info('Public node list up to date, skipping update');
-            storeNodeList(false); // from local cache
-        }
-    }
-}
-
 function serviceBinCheck() {
     if (DEFAULT_SERVICE_BIN.startsWith('/tmp')) {
         log.warn(`AppImage env, copying service bin file`);
@@ -405,7 +348,6 @@ if (!silock) app.quit();
 
 app.on('ready', () => {
     initSettings();
-    updatePublicNodes();
     createWindow();
     // try to target center pos of primary display
     let eScreen = require('electron').screen;
