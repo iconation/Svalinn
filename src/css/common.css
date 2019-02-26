@@ -15,12 +15,12 @@
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: #5ebf28;
+    background: #52a09c;
     box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
-	background: #45ad57; 
+	background: #256d69; 
 }
 
 ::placeholder { 
@@ -29,11 +29,11 @@
 
 html{
     font-family: 'Noto Sans', sans-serif;
-    
+    background: #52a09c;
 }
 
 html::before{
-    background: #08150e;
+    background: #52a09c;
     content: '';
     display: block;
     height: 100%;
@@ -47,7 +47,7 @@ html::before{
 }
 
 html::after{
-    background: linear-gradient(90deg, #00803b, #3ca74e 50%, #008e47);
+    background: linear-gradient(90deg, #52a09c, #256d69 50%, #52a09c);
     content: '';
     display: block;
     height: 100%;
@@ -375,12 +375,12 @@ select option:nth-child(odd) {
 }
 
 .fake-node-options ul li:nth-child(odd){
-    background: #004720;
+    background: #32806c;
     color: #eee;
 }
 
 .fake-node-options ul li:hover{
-    background: #00843d;
+    background: #42907c;
     text-shadow: 0px 1px 1px #1c1f20;
 }
 .fake-node-options ul li span.node-address{
@@ -558,7 +558,7 @@ span.form-msg.important{
 }
 
 .button-green{
-    background: -webkit-linear-gradient(top,  #00632e 0%,#00843d 100%);
+    background: -webkit-linear-gradient(top,  #52a09c 0%,#256d69 100%);
 }
 
 .button-gray {

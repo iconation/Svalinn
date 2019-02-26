@@ -101,8 +101,6 @@ function createWindow() {
         },
     });
 
-    win.maximize (true);
-
     //load the index.html of the app.
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'src/html/index.html'),
@@ -113,7 +111,7 @@ function createWindow() {
     // open devtools
     if (IS_DEV) win.webContents.openDevTools();
 
-    // show windosw
+    // show window
     win.once('ready-to-show', () => {
         //win.show();
         win.setTitle(WIN_TITLE);
