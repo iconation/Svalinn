@@ -5,3 +5,4 @@ tbin/*
 build/*
 dist/*
 bin/*
+*.code-workspace

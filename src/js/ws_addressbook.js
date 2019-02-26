@@ -3,21 +3,21 @@ const GCM = require('node-crypto-gcm').GCM;
 const config = require('./ws_config');
 const wsutil = require('./ws_utils');
 
-var WalletShellAddressBook = function (path, name, pass) {
-    if (!(this instanceof WalletShellAddressBook)) return new WalletShellAddressBook(pass, name, path);
+var SvalinnAddressBook = function (path, name, pass) {
+    if (!(this instanceof SvalinnAddressBook)) return new SvalinnAddressBook(pass, name, path);
     this.path = path;
     this.name = name || 'Default/Builtin';
     this.pass = pass || config.addressBookObfuscationKey;
     this.cipherConfig = config.addressBookCipherConfig;
 };
 
-WalletShellAddressBook.prototype.setParams = function (path, pass) {
+SvalinnAddressBook.prototype.setParams = function (path, pass) {
     if (path) this.path = path;
     if (pass) this.pass = pass;
     return true;
 };
 
-WalletShellAddressBook.prototype.create = function (ignoreExists) {
+SvalinnAddressBook.prototype.create = function (ignoreExists) {
     ignoreExists = ignoreExists || false;
     return new Promise((resolve, reject) => {
         if (this.exists) {
@@ -44,7 +44,7 @@ WalletShellAddressBook.prototype.create = function (ignoreExists) {
     });
 };
 
-WalletShellAddressBook.prototype.initFile = function () {
+SvalinnAddressBook.prototype.initFile = function () {
     return new Promise((resolve, reject) => {
         try {
             if (fs.existsSync(this.path)) {
@@ -62,7 +62,7 @@ WalletShellAddressBook.prototype.initFile = function () {
     });
 };
 
-WalletShellAddressBook.prototype.load = function () {
+SvalinnAddressBook.prototype.load = function () {
     return new Promise((resolve, reject) => {
         this.initFile().then((ret) => {
             let rawcontents = '';
@@ -102,7 +102,7 @@ WalletShellAddressBook.prototype.load = function () {
     });
 };
 
-WalletShellAddressBook.prototype.save = function (addressBookData) {
+SvalinnAddressBook.prototype.save = function (addressBookData) {
     return new Promise((resolve, reject) => {
         let gcm = new GCM(this.pass, this.cipherConfig);
 
@@ -119,4 +119,4 @@ WalletShellAddressBook.prototype.save = function (addressBookData) {
     });
 };
 
-module.exports = WalletShellAddressBook;
+module.exports = SvalinnAddressBook;

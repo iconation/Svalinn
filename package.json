@@ -1,6 +1,6 @@
 {
-  "name": "walletshell",
-  "productName": "WalletShell",
+  "name": "svalinn",
+  "productName": "Svalinn",
   "description": "TurtleCoin GUI Wallet",
   "version": "v0.3.11",
   "homepage": "https://github.com/turtlecoin/turtle-wallet-electron",
@@ -37,7 +37,7 @@
     "request-promise-native": "^1.0.7"
   },
   "build": {
-    "appId": "lol.turtlecoin.walletshell",
+    "appId": "lol.turtlecoin.svalinn",
     "copyright": "Copyright (c) 2018 Rixombea, Macroshock, TurtleCoin Developers",
     "directories": {
       "output": "dist",

@@ -1,6 +1,6 @@
 ## Available keyboard shortcut
 
-![WalletShell Logo](walletshell.png)
+![Svalinn Logo](svalinn.png)
 
 | Shortcut                                       | Target                               | Conditions |
 | ---------                                      | -------                              | ---------- |

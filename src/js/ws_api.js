@@ -1,10 +1,10 @@
 const request = require('request-promise-native');
 const config = require('./ws_config.js');
 
-class WalletShellApi {
+class SvalinnApi {
     constructor(args) {
         args = args || {};
-        if (!(this instanceof WalletShellApi)) return new WalletShellApi(args);
+        if (!(this instanceof SvalinnApi)) return new SvalinnApi(args);
         this.service_host = args.service_host || '127.0.0.1';
         this.service_port = args.service_port || config.walletServiceRpcPort;
         this.service_password = args.service_password || "WHATEVER1234567891";
@@ -266,4 +266,4 @@ class WalletShellApi {
     }
 }
 
-module.exports = WalletShellApi;
+module.exports = SvalinnApi;

@@ -1,5 +1,5 @@
 const log = require('electron-log');
-const WalletShellApi = require('./ws_api');
+const SvalinnApi = require('./ws_api');
 
 let DEBUG = false;
 log.transports.file.maxSize = 5 * 1024 * 1024;
@@ -33,10 +33,10 @@ function logDebug(msg) {
 }
 
 function initApi(cfg) {
-    if (wsapi instanceof WalletShellApi) return;
-    logDebug('Initializing WalletShellApi');
+    if (wsapi instanceof SvalinnApi) return;
+    logDebug('Initializing SvalinnApi');
     serviceConfig = cfg;
-    wsapi = new WalletShellApi(serviceConfig);
+    wsapi = new SvalinnApi(serviceConfig);
 }
 
 function checkBlockUpdate() {

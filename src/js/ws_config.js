@@ -1,10 +1,10 @@
 var config = {};
 
 // self explanatory, your application name, descriptions, etc
-config.appName = 'WalletShell';
+config.appName = 'Svalinn';
 config.appDescription = 'TurtleCoin Wallet';
 config.appSlogan = 'Slow and steady wins the race!';
-config.appId = 'lol.turtlecoin.walletshell';
+config.appId = 'lol.turtlecoin.svalinn';
 config.appGitRepo = 'https://github.com/turtlecoin/turtle-wallet-electron';
 
 // default port number for your daemon (e.g. TurtleCoind)
@@ -73,7 +73,7 @@ config.addressBookObfuscationKey = '79009fb00ca1b7130832a42de45142cf6c4b7f333fe6
 // initial/sample entries to fill new address book
 config.addressBookSampleEntries = [
   {
-    name: 'WalletShell Donation',
+    name: 'Svalinn Donation',
     address: 'TRTLv1A26ngXApin33p1JsSE9Yf6REj97Xruz15D4JtSg1wuqYTmsPj5Geu2kHtBzD8TCsfd5dbdYRsrhNXMGyvtJ61AoYqLXVS',
     paymentId: '',
   }

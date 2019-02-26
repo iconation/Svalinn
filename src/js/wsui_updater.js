@@ -1,13 +1,13 @@
 const { webFrame, remote } = require('electron');
 const Store = require('electron-store');
 const wsutil = require('./ws_utils');
-const WalletShellSession = require('./ws_session');
+const SvalinnSession = require('./ws_session');
 const config = require('./ws_config');
 
 const brwin = remote.getCurrentWindow();
 const settings = new Store({ name: 'Settings' });
 const sessConfig = { debug: remote.app.debug, walletConfig: remote.app.walletConfig };
-const wsession = new WalletShellSession(sessConfig);
+const wsession = new SvalinnSession(sessConfig);
 
 /* sync progress ui */
 const syncDiv = document.getElementById('navbar-div-sync');
@@ -338,7 +338,7 @@ function updateTransactions(result) {
         settings.set('last_notification', newLastHash);
         let notiOptions = {
             'body': `Amount: ${(newTxAmount)} ${config.assetTicker}\nHash: ${newLastHash.substring(24, -0)}...`,
-            'icon': '../assets/walletshell_icon.png'
+            'icon': '../assets/svalinn_icon.png'
         };
         let itNotification = new Notification('Incoming Transfer', notiOptions);
         itNotification.onclick = (event) => {

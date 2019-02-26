@@ -56,7 +56,7 @@ app.setAppUserModelId(config.appId);
 log.transports.console.level = LOG_LEVEL;
 log.transports.file.level = LOG_LEVEL;
 log.transports.file.maxSize = 5 * 1024 * 1024;
-log.info(`Starting WalletShell ${WALLETSHELL_VERSION}`);
+log.info(`Starting Svalinn ${WALLETSHELL_VERSION}`);
 if (IS_DEV || IS_DEBUG) log.warn(`Running in ${IS_DEV ? 'dev' : 'debug'} mode`);
 
 let trayIcon = path.join(__dirname, 'src/assets/tray.png');
@@ -72,7 +72,7 @@ function createWindow() {
 
     const winOpts = {
         title: WIN_TITLE,
-        icon: path.join(__dirname, 'src/assets/walletshell_icon.png'),
+        icon: path.join(__dirname, 'src/assets/svalinn_icon.png'),
         frame: true,
         width: DEFAULT_SIZE.width,
         height: DEFAULT_SIZE.height,

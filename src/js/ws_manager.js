@@ -4,15 +4,15 @@ const os = require('os');
 const childProcess = require('child_process');
 const log = require('electron-log');
 const Store = require('electron-store');
-const WalletShellSession = require('./ws_session');
-const WalletShellApi = require('./ws_api');
+const SvalinnSession = require('./ws_session');
+const SvalinnApi = require('./ws_api');
 const uiupdater = require('./wsui_updater');
 const wsutil = require('./ws_utils');
 const config = require('./ws_config');
 const { remote } = require('electron');
 const settings = new Store({ name: 'Settings' });
 const sessConfig = { debug: remote.app.debug, walletConfig: remote.app.walletConfig };
-const wsession = new WalletShellSession(sessConfig);
+const wsession = new SvalinnSession(sessConfig);
 
 const SERVICE_LOG_DEBUG = wsession.get('debug');
 const SERVICE_LOG_LEVEL_DEFAULT = 0;
@@ -28,9 +28,9 @@ const INFO_FUSION_DONE = 'Wallet optimization completed, your balance may appear
 const INFO_FUSION_SKIPPED = 'Wallet already optimized. No further optimization is needed.';
 const ERROR_FUSION_FAILED = 'Unable to optimize your wallet, please try again in a few seconds';
 
-var WalletShellManager = function () {
-    if (!(this instanceof WalletShellManager)) {
-        return new WalletShellManager();
+var SvalinnManager = function () {
+    if (!(this instanceof SvalinnManager)) {
+        return new SvalinnManager();
     }
 
     let nodeAddress = settings.get('node_address').split(':');
@@ -52,7 +52,7 @@ var WalletShellManager = function () {
     this.fusionTxHash = [];
 };
 
-WalletShellManager.prototype.init = function () {
+SvalinnManager.prototype.init = function () {
     this._getSettings();
     if (this.serviceApi !== null) return;
 
@@ -61,17 +61,17 @@ WalletShellManager.prototype.init = function () {
         service_port: this.servicePort,
         service_password: this.servicePassword
     };
-    this.serviceApi = new WalletShellApi(cfg);
+    this.serviceApi = new SvalinnApi(cfg);
 };
 
-WalletShellManager.prototype._getSettings = function () {
+SvalinnManager.prototype._getSettings = function () {
     let nodeAddress = settings.get('node_address').split(':');
     this.daemonHost = nodeAddress[0] || null;
     this.daemonPort = nodeAddress[1] || null;
     this.serviceBin = settings.get('service_bin');
 };
 
-WalletShellManager.prototype._reinitSession = function () {
+SvalinnManager.prototype._reinitSession = function () {
     this._wipeConfig();
     wsession.reset();
     this.notifyUpdate({
@@ -80,16 +80,16 @@ WalletShellManager.prototype._reinitSession = function () {
     });
 };
 
-WalletShellManager.prototype._serviceBinExists = function () {
+SvalinnManager.prototype._serviceBinExists = function () {
     wsutil.isFileExist(this.serviceBin);
 };
 
 // check 
-WalletShellManager.prototype.serviceStatus = function () {
+SvalinnManager.prototype.serviceStatus = function () {
     return (undefined !== this.serviceProcess && null !== this.serviceProcess);
 };
 
-WalletShellManager.prototype.isRunning = function () {
+SvalinnManager.prototype.isRunning = function () {
     this.init();
     let proc = path.basename(this.serviceBin);
     let platform = process.platform;
@@ -111,7 +111,7 @@ WalletShellManager.prototype.isRunning = function () {
     });
 };
 
-WalletShellManager.prototype._writeIniConfig = function (cfg) {
+SvalinnManager.prototype._writeIniConfig = function (cfg) {
     let configFile = wsession.get('walletConfig');
     if (!configFile) return '';
 
@@ -124,7 +124,7 @@ WalletShellManager.prototype._writeIniConfig = function (cfg) {
     }
 };
 
-WalletShellManager.prototype._writeConfig = function (cfg) {
+SvalinnManager.prototype._writeConfig = function (cfg) {
     let configFile = wsession.get('walletConfig');
     if (!configFile) return '';
 
@@ -142,11 +142,11 @@ WalletShellManager.prototype._writeConfig = function (cfg) {
     }
 };
 
-WalletShellManager.prototype._wipeConfig = function () {
+SvalinnManager.prototype._wipeConfig = function () {
     try { fs.unlinkSync(wsession.get('walletConfig')); } catch (e) { }
 };
 
-WalletShellManager.prototype.startService = function (walletFile, password, onError, onSuccess, onDelay) {
+SvalinnManager.prototype.startService = function (walletFile, password, onError, onSuccess, onDelay) {
     this.init();
 
     if (null !== this.serviceLastPid) {
@@ -190,7 +190,7 @@ WalletShellManager.prototype.startService = function (walletFile, password, onEr
     });
 };
 
-WalletShellManager.prototype._argsToIni = function (args) {
+SvalinnManager.prototype._argsToIni = function (args) {
     let configData = "";
     if ("object" !== typeof args || !args.length) return configData;
     args.forEach((k, v) => {
@@ -200,7 +200,7 @@ WalletShellManager.prototype._argsToIni = function (args) {
     return configData.trim();
 };
 
-WalletShellManager.prototype._spawnService = function (walletFile, password, onError, onSuccess, onDelay) {
+SvalinnManager.prototype._spawnService = function (walletFile, password, onError, onSuccess, onDelay) {
     this.init();
     let file = path.basename(walletFile);
     let logFile = path.join(
@@ -343,7 +343,7 @@ WalletShellManager.prototype._spawnService = function (walletFile, password, onE
     }, 4200);
 };
 
-WalletShellManager.prototype.stopService = function () {
+SvalinnManager.prototype.stopService = function () {
     log.debug('stopping service');
     this.init();
     let wsm = this;
@@ -381,7 +381,7 @@ WalletShellManager.prototype.stopService = function () {
     });
 };
 
-WalletShellManager.prototype.terminateService = function (force) {
+SvalinnManager.prototype.terminateService = function (force) {
     if (!this.serviceStatus()) return;
     force = force || false;
     let signal = force ? 'SIGKILL' : 'SIGTERM';
@@ -404,7 +404,7 @@ WalletShellManager.prototype.terminateService = function (force) {
     this.servicePid = null;
 };
 
-WalletShellManager.prototype.startSyncWorker = function () {
+SvalinnManager.prototype.startSyncWorker = function () {
     this.init();
     let wsm = this;
     if (this.syncWorker !== null) {
@@ -458,7 +458,7 @@ WalletShellManager.prototype.startSyncWorker = function () {
     this.syncWorker.send(cfgData);
 };
 
-WalletShellManager.prototype.stopSyncWorker = function () {
+SvalinnManager.prototype.stopSyncWorker = function () {
     log.debug('stopping syncworker');
 
     try {
@@ -470,7 +470,7 @@ WalletShellManager.prototype.stopSyncWorker = function () {
     }
 };
 
-WalletShellManager.prototype.getNodeFee = function () {
+SvalinnManager.prototype.getNodeFee = function () {
     let wsm = this;
 
     this.serviceApi.getFeeInfo().then((res) => {
@@ -493,7 +493,7 @@ WalletShellManager.prototype.getNodeFee = function () {
     });
 };
 
-WalletShellManager.prototype.genIntegratedAddress = function (paymentId, address) {
+SvalinnManager.prototype.genIntegratedAddress = function (paymentId, address) {
     let wsm = this;
     return new Promise((resolve, reject) => {
         address = address || wsession.get('loadedWalletAddress');
@@ -506,7 +506,7 @@ WalletShellManager.prototype.genIntegratedAddress = function (paymentId, address
     });
 };
 
-WalletShellManager.prototype.createWallet = function (walletFile, password) {
+SvalinnManager.prototype.createWallet = function (walletFile, password) {
     this.init();
     let wsm = this;
     return new Promise((resolve, reject) => {
@@ -535,7 +535,7 @@ WalletShellManager.prototype.createWallet = function (walletFile, password) {
     });
 };
 
-WalletShellManager.prototype.importFromKeys = function (walletFile, password, viewKey, spendKey, scanHeight) {
+SvalinnManager.prototype.importFromKeys = function (walletFile, password, viewKey, spendKey, scanHeight) {
     this.init();
     let wsm = this;
     return new Promise((resolve, reject) => {
@@ -567,7 +567,7 @@ WalletShellManager.prototype.importFromKeys = function (walletFile, password, vi
     });
 };
 
-WalletShellManager.prototype.importFromSeed = function (walletFile, password, mnemonicSeed, scanHeight) {
+SvalinnManager.prototype.importFromSeed = function (walletFile, password, mnemonicSeed, scanHeight) {
     this.init();
     let wsm = this;
     return new Promise((resolve, reject) => {
@@ -600,7 +600,7 @@ WalletShellManager.prototype.importFromSeed = function (walletFile, password, mn
     });
 };
 
-WalletShellManager.prototype.getSecretKeys = function (address) {
+SvalinnManager.prototype.getSecretKeys = function (address) {
     let wsm = this;
     return new Promise((resolve, reject) => {
         wsm.serviceApi.getBackupKeys({ address: address }).then((result) => {
@@ -612,7 +612,7 @@ WalletShellManager.prototype.getSecretKeys = function (address) {
     });
 };
 
-WalletShellManager.prototype.sendTransaction = function (params) {
+SvalinnManager.prototype.sendTransaction = function (params) {
     let wsm = this;
     return new Promise((resolve, reject) => {
         wsm.serviceApi.sendTransaction(params).then((result) => {
@@ -623,7 +623,7 @@ WalletShellManager.prototype.sendTransaction = function (params) {
     });
 };
 
-WalletShellManager.prototype.rescanWallet = function (scanHeight) {
+SvalinnManager.prototype.rescanWallet = function (scanHeight) {
     let wsm = this;
 
     function resetSession() {
@@ -660,7 +660,7 @@ WalletShellManager.prototype.rescanWallet = function (scanHeight) {
     });
 };
 
-WalletShellManager.prototype._fusionGetMinThreshold = function (threshold, minThreshold, maxFusionReadyCount, counter) {
+SvalinnManager.prototype._fusionGetMinThreshold = function (threshold, minThreshold, maxFusionReadyCount, counter) {
     let wsm = this;
     return new Promise((resolve, reject) => {
         counter = counter || 0;
@@ -694,7 +694,7 @@ WalletShellManager.prototype._fusionGetMinThreshold = function (threshold, minTh
     });
 };
 
-WalletShellManager.prototype._fusionSendTx = function (threshold, counter) {
+SvalinnManager.prototype._fusionSendTx = function (threshold, counter) {
     let wsm = this;
     const wtime = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -735,7 +735,7 @@ WalletShellManager.prototype._fusionSendTx = function (threshold, counter) {
     });
 };
 
-WalletShellManager.prototype.optimizeWallet = function () {
+SvalinnManager.prototype.optimizeWallet = function () {
     let wsm = this;
     log.debug('running optimizeWallet');
     return new Promise((resolve, reject) => {
@@ -792,7 +792,7 @@ WalletShellManager.prototype.optimizeWallet = function () {
     });
 };
 
-WalletShellManager.prototype.networkStateUpdate = function (state) {
+SvalinnManager.prototype.networkStateUpdate = function (state) {
     if (!this.syncWorker) return;
     log.debug('ServiceProcess PID: ' + this.servicePid);
     if (state === 0) {
@@ -829,12 +829,12 @@ WalletShellManager.prototype.networkStateUpdate = function (state) {
     }
 };
 
-WalletShellManager.prototype.notifyUpdate = function (msg) {
+SvalinnManager.prototype.notifyUpdate = function (msg) {
     uiupdater.updateUiState(msg);
 };
 
-WalletShellManager.prototype.resetState = function () {
+SvalinnManager.prototype.resetState = function () {
     return this._reinitSession();
 };
 
-module.exports = WalletShellManager;
+module.exports = SvalinnManager;

@@ -9,20 +9,20 @@ const Store = require('electron-store');
 const Mousetrap = require('./extras/mousetrap.min.js');
 const autoComplete = require('./extras/auto-complete');
 const wsutil = require('./ws_utils');
-const WalletShellSession = require('./ws_session');
-const WalletShellManager = require('./ws_manager');
+const SvalinnSession = require('./ws_session');
+const SvalinnManager = require('./ws_manager');
 const config = require('./ws_config');
 const async = require('async');
 const AgGrid = require('ag-grid-community');
-const wsmanager = new WalletShellManager();
+const wsmanager = new SvalinnManager();
 const sessConfig = { debug: remote.app.debug, walletConfig: remote.app.walletConfig };
-const wsession = new WalletShellSession(sessConfig);
+const wsession = new SvalinnSession(sessConfig);
 const settings = new Store({ name: 'Settings' });
-const WalletShellAddressbook = require('./ws_addressbook');
+const SvalinnAddressbook = require('./ws_addressbook');
 
 const ADDRESS_BOOK_DIR = remote.app.getPath('userData');
 const ADDRESS_BOOK_DEFAULT_PATH = path.join(ADDRESS_BOOK_DIR, '/SharedAddressBook.json');
-let addressBook = new WalletShellAddressbook(ADDRESS_BOOK_DEFAULT_PATH);
+let addressBook = new SvalinnAddressbook(ADDRESS_BOOK_DEFAULT_PATH);
 
 const win = remote.getCurrentWindow();
 const Menu = remote.Menu;
@@ -218,7 +218,7 @@ function populateElementVars() {
 // crude/junk template :)
 let jtfr = {
     tFind: [
-        "WalletShell",
+        "Svalinn",
         "https://github.com/turtlecoin/turtle-wallet-electron",
         "TurtleCoin",
         "TRTL",
@@ -658,7 +658,7 @@ function showInitialPage() {
     initSettingVal(); // initial settings value
     changeSection('section-welcome');
     settings.set('firstRun', 0);
-    let versionInfo = document.getElementById('walletShellVersion');
+    let versionInfo = document.getElementById('svalinnVersion');
     if (versionInfo) versionInfo.innerHTML = WS_VERSION;
     let tsVersionInfo = document.getElementById('turtleServiceVersion');
     if (tsVersionInfo) tsVersionInfo.innerHTML = config.walletServiceBinaryVersion;
@@ -1291,9 +1291,9 @@ function handleAddressBook() {
             // new address book, reset ab object + session
             wsession.set('addressBook', null);
             if (params.name === 'default') {
-                addressBook = new WalletShellAddressbook(ADDRESS_BOOK_DEFAULT_PATH);
+                addressBook = new SvalinnAddressbook(ADDRESS_BOOK_DEFAULT_PATH);
             } else {
-                addressBook = new WalletShellAddressbook(params.path, params.name, params.pass);
+                addressBook = new SvalinnAddressbook(params.path, params.name, params.pass);
             }
         }
 
@@ -2956,7 +2956,7 @@ ipcRenderer.on('cleanup', () => {
     win.focus();
 
     var dialog = document.getElementById('main-dialog');
-    let htmlText = 'Terminating WalletShell...';
+    let htmlText = 'Terminating Svalinn...';
     if (wsession.get('loadedWalletAddress') !== '') {
         htmlText = 'Saving &amp; closing your wallet...';
     }

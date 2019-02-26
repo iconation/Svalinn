@@ -1,6 +1,6 @@
-## WalletShell - GUI wallet for TurtleCoin.
+## Svalinn - GUI wallet for TurtleCoin.
 
-![WalletShell Screens](https://i.imgur.com/41Ujq0S.gif "WalletShell Screens")
+![Svalinn Screens](https://i.imgur.com/41Ujq0S.gif "Svalinn Screens")
 
 ### Features:
 
@@ -33,27 +33,27 @@ This wallet contains the basic functions required to mvanage your TurtleCoin ass
   * Theme: Dark & Light Mode
   * [Keyboard shortcuts](docs/shortcut.md)
 
-### Download &amp; Run WalletShell
+### Download &amp; Run Svalinn
 
 #### Windows:
 1. Download the latest installer here: https://github.com/turtlecoin/turtle-wallet-electron/releases/latest
-2. Run the installer (`walletshell-<version>-win-setup.exe`) and follow the installation wizard.
-3. Launch WalletShell via start menu or desktop shortcut.
+2. Run the installer (`svalinn-<version>-win-setup.exe`) and follow the installation wizard.
+3. Launch Svalinn via start menu or desktop shortcut.
 
 #### GNU/Linux (AppImage):
 1. Download latest AppImage bundle here: https://github.com/turtlecoin/turtle-wallet-electron/releases/latest
-2. Make it executable, either via GUI file manager or command line, e.g. `chmod +x walletshell-<version>-linux.AppImage`
+2. Make it executable, either via GUI file manager or command line, e.g. `chmod +x svalinn-<version>-linux.AppImage`
 3. Run/execute the file, double click in file manager, or run via shell/command line (See: https://docs.appimage.org/user-guide/run-appimages.html)
 
 #### macOS
 1. Download latest archive here: https://github.com/turtlecoin/turtle-wallet-electron/releases/latest
 2. Extract downloaded zip archived
-3. Run the executable binary (`WalletShell.app/Contents/MacOs/WalletShell`)
+3. Run the executable binary (`Svalinn.app/Contents/MacOs/Svalinn`)
 
-### Using WalletShell
-Please visit our wiki page: [WalletShell User Guide](../../wiki).
+### Using Svalinn
+Please visit our wiki page: [Svalinn User Guide](../../wiki).
 
-### Building/Packaging WalletShell
+### Building/Packaging Svalinn
 You need to have `Node.js` and `npm` installed, go to https://nodejs.org and find out how to get it installed on your platform.
 
 Once you have Node+npm installed:
@@ -95,6 +95,6 @@ $ npm run dist-mac
 Resulting packages or installer can be found inside `dist/` directory.
 
 ### Porting for another coin
-Please see [this guide](docs/porting.md) if you want to adapt WalletShell to be use for your own TurtleCoin fork.
+Please see [this guide](docs/porting.md) if you want to adapt Svalinn to be use for your own TurtleCoin fork.
 
-![WalletShell](docs/walletshell.png)
+![Svalinn](docs/svalinn.png)

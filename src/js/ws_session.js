@@ -11,8 +11,8 @@ const SESSION_KEY = 'wlshell';
 //const IS_DEBUG = remote.getGlobal('wsession').debug;
 //const WALLET_CFG = path.join(remote.app.getPath('userData'), 'wconfig.txt');
 
-var WalletShellSession = function (opts) {
-    if (!(this instanceof WalletShellSession)) return new WalletShellSession(opts);
+var SvalinnSession = function (opts) {
+    if (!(this instanceof SvalinnSession)) return new SvalinnSession(opts);
     opts = opts || {};
 
     this.sessKey = SESSION_KEY;
@@ -58,7 +58,7 @@ var WalletShellSession = function (opts) {
     /* jshint ignore:end */
 };
 
-WalletShellSession.prototype.get = function (key) {
+SvalinnSession.prototype.get = function (key) {
     key = key || false;
     if (!key) {
         return JSON.parse(sessionStorage.getItem(this.sessKey)) || this.sessDefault;
@@ -71,14 +71,14 @@ WalletShellSession.prototype.get = function (key) {
     return JSON.parse(sessionStorage.getItem(this.sessKey))[key];
 };
 
-WalletShellSession.prototype.getDefault = function (key) {
+SvalinnSession.prototype.getDefault = function (key) {
     if (!key) {
         return this.sessDefault;
     }
     return this.sessDefault[key];
 };
 
-WalletShellSession.prototype.set = function (key, val) {
+SvalinnSession.prototype.set = function (key, val) {
     if (!this.keys.includes(key)) {
         throw new Error(`Invalid session key: ${key}`);
     }
@@ -88,7 +88,7 @@ WalletShellSession.prototype.set = function (key, val) {
     return sessionStorage.setItem(this.sessKey, JSON.stringify(sessData));
 };
 
-WalletShellSession.prototype.reset = function (key) {
+SvalinnSession.prototype.reset = function (key) {
     if (key) {
         if (!this.sessDefault.hasOwnProperty(key)) {
             throw new Error('Invalid session key');
@@ -108,8 +108,8 @@ WalletShellSession.prototype.reset = function (key) {
     /* jshint ignore: end */
 };
 
-WalletShellSession.prototype.destroy = function () {
+SvalinnSession.prototype.destroy = function () {
     return sessionStorage.removeItem(this.sessKey);
 };
 
-module.exports = WalletShellSession;
+module.exports = SvalinnSession;
