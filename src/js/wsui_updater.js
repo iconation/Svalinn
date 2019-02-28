@@ -442,10 +442,10 @@ function resetFormState() {
 
     const settingsBackBtn = document.getElementById('button-settings-back');
     if (wsession.get('serviceReady')) {
-        connInfoDiv.classList.remove('empty');
+        // connInfoDiv.classList.remove('empty');
         settingsBackBtn.dataset.section = 'section-welcome';
     } else {
-        connInfoDiv.classList.add('empty');
+        // connInfoDiv.classList.add('empty');
         settingsBackBtn.dataset.section = 'section-overview';
     }
 }

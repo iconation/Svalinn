@@ -44,15 +44,13 @@ config.remoteNodeListFallback = [
 ];
 
 // your currency name
-config.assetName = 'TurtleCoin';
+config.assetName = 'ICX';
 // your currency ticker
-config.assetTicker = 'TRTL';
+config.assetTicker = 'ICX';
 // your currency address prefix, for address validation
-config.addressPrefix = 'TRTL';
+config.addressPrefix = 'hx';
 // standard wallet address length, for address validation
-config.addressLength = 99;
-// intergrated wallet address length, for address validation
-config.integratedAddressLength = 187;
+config.addressLength = 42;
 
 // minimum fee for sending transaction
 config.minimumFee = 0.1;

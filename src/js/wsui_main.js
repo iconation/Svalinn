@@ -447,9 +447,11 @@ function changeSection(sectionId, targetRedir) {
     }
 
     // re-init node selection
+    /*
     if (finalTarget === 'section-overview-load' && walletOpenSelectBox.dataset.loading === "0") {
         initNodeSelection(settings.get('node_address'));
     }
+    */
 
     // toggle section
     formMessageReset();
@@ -471,9 +473,9 @@ function changeSection(sectionId, targetRedir) {
 }
 
 function initNodeSelection(nodeAddr) {
+    /*
     let forceNew = nodeAddr ? true : false;
     if (forceNew) settings.set('node_address', nodeAddr);
-    walletOpenInputNode.dataset.updating = 0;
     // selected node
     let selected = settings.get('node_address');
     // custom node list
@@ -481,9 +483,7 @@ function initNodeSelection(nodeAddr) {
     // nodes completed fee info check
     let testedNodes = settings.get('pubnodes_tested', []);
     // remove node update progress, replace current list
-    walletOpenInputNode.removeAttribute('disabled');
-    walletOpenSelectBox.dataset.loading = "0";
-    walletOpenInputNode.options.length = 0;
+    // walletOpenSelectBox.dataset.loading = "0";
     let fallback = false;
     let timeoutStr = 'timeout';
     let onlines = testedNodes.filter((v) => v.label.indexOf(timeoutStr) < 0);
@@ -533,7 +533,7 @@ function initNodeSelection(nodeAddr) {
                 fakeOpt.classList.add('selected');
                 selectedLabel = fakeOpt.innerHTML;
             }
-            walletOpenInputNode.add(opt, null);
+            // walletOpenInputNode.add(opt, null);
             fakeSelect.appendChild(fakeOpt);
         });
     }
@@ -559,7 +559,7 @@ function initNodeSelection(nodeAddr) {
                     selectedLabel = fakeOpt.innerHTML;
                 }
 
-                walletOpenInputNode.add(opt, null);
+                // walletOpenInputNode.add(opt, null);
                 fakeSelect.appendChild(fakeOpt);
             }
         });
@@ -575,6 +575,7 @@ function initNodeSelection(nodeAddr) {
             selectedLabel = `<span class="node-address">${all_labels[0].trim()}</span> <span class="node-info">(${all_labels[1].trim()})</span>`;
         }
     }
+   
     walletOpenNodeLabel.innerHTML = selectedLabel;
 
     var event = new Event('change');
@@ -582,6 +583,7 @@ function initNodeSelection(nodeAddr) {
 
     customNodes = null;
     testedNodes = null;
+    */
 }
 
 // initial settings value or updater
@@ -1458,6 +1460,7 @@ function handleWalletOpen() {
         wsutil.showToast('New custom node have been added');
     });
 
+    /*
     walletOpenAddCustomNode.addEventListener('click', (e) => {
         e.preventDefault();
         addCustomNodeForm();
@@ -1471,10 +1474,12 @@ function handleWalletOpen() {
         if (!confirm("Refreshing node list may take a while to complete, are you sure?")) return;
         fetchNodeInfo(true);
     });
+    */
 
     walletOpenButtonOpen.addEventListener('click', () => {
         formMessageReset();
 
+        /*
         if (parseInt(walletOpenInputNode.dataset.updating, 10) === 1) {
             wsutil.showToast('Node list update in progress, please wait...');
             return;
@@ -1513,6 +1518,7 @@ function handleWalletOpen() {
             pubnodes_exclude_offline: settingsInputExcludeOfflineNodes.checked
         };
         initSettingVal(settingVals);
+        */
 
         // actually open wallet
         if (!walletOpenInputPath.value) {
@@ -1565,24 +1571,10 @@ function handleWalletOpen() {
             formMessageSet ('load', 'warning', "Accessing wallet...<br><progress></progress>");
             
             wsmanager.startService (walletFile, walletPass, onError, onSuccess, onDelay);
-
-            // wsmanager.stopService().then(() => {
-            //     formMessageSet('load', 'warning', "Starting wallet service...<br><progress></progress>");
-            //     setTimeout(() => {
-            //         formMessageSet('load', 'warning', "Opening wallet, please be patient...<br><progress></progress>");
-            //         wsmanager.startService(walletFile, walletPass, onError, onSuccess, onDelay);
-            //     }, 800);
-            // }).catch((err) => {
-            //     console.log(err);
-            //     formMessageSet('load', 'error', "Unable to start service");
-            //     WALLET_OPEN_IN_PROGRESS = false;
-            //     setOpenButtonsState(0);
-            //     return false;
-            // });
-
         });
     });
 
+    /*
     // node selector
     walletOpenSelectBox.addEventListener('click', () => {
         if (walletOpenSelectBox.dataset.loading === "1") {
@@ -1595,6 +1587,7 @@ function handleWalletOpen() {
             walletOpenSelectOpts.classList.add("hidden");
         }
     });
+    */
 
     wsutil.liveEvent('.fake-options', 'click', (e) => {
         let sel = e.target.classList.contains('fake-options') ? e.target : e.target.closest('.fake-options');
@@ -1619,7 +1612,7 @@ function handleWalletOpen() {
         let eid = e.target.getAttribute('id');
         if (eid === 'fake-selected-node' || eid === 'fake-select') return;
         if (isChild(e.target, walletOpenSelectBox)) return;
-        walletOpenSelectOpts.classList.add('hidden');
+        // walletOpenSelectOpts.classList.add('hidden');
     });
 }
 
@@ -2863,6 +2856,7 @@ function fetchNodeInfo(force) {
         ]);
     }
 
+    /*
     // disable node selection during update
     walletOpenInputNode.options.length = 0;
     let opt = document.createElement('option');
@@ -2874,6 +2868,7 @@ function fetchNodeInfo(force) {
     walletOpenInputNode.dataset.updating = 1;
     walletOpenNodeLabel.innerHTML = '<i class="fas fa-sync fa-spin"></i> Updating node list, please wait...';
     walletOpenSelectBox.dataset.loading = "1";
+    */
 
     window.ELECTRON_ENABLE_SECURITY_WARNINGS = false;
     let aliveNodes = settings.get('pubnodes_tested', []);
