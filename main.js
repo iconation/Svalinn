@@ -126,24 +126,8 @@ function createWindow() {
             win.hide();
         } else if (app.prompExit) {
             e.preventDefault();
-            if (app.prompShown) return;
-            let msg = 'Are you sure want to exit?';
-            app.prompShown = true;
-            dialog.showMessageBox({
-                type: 'question',
-                buttons: ['Yes', 'No'],
-                title: 'Exit Confirmation',
-                message: msg
-            }, function (response) {
-                app.prompShown = false;
-                if (response === 0) {
-                    app.prompExit = false;
-                    win.webContents.send('cleanup', 'Clean it up, Dad!');
-                } else {
-                    app.prompExit = true;
-                    app.needToExit = false;
-                }
-            });
+            app.prompExit = false;
+            win.webContents.send('cleanup', 'Clean it up, Dad!');
         }
     });
 

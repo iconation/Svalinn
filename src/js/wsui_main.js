@@ -1562,21 +1562,24 @@ function handleWalletOpen() {
             WALLET_OPEN_IN_PROGRESS = true;
             settings.set('recentWallet', walletFile);
             settings.set('recentWalletDir', path.dirname(walletFile));
-            formMessageSet('load', 'warning', "Accessing wallet...<br><progress></progress>");
-            wsmanager.stopService().then(() => {
+            formMessageSet ('load', 'warning', "Accessing wallet...<br><progress></progress>");
+            
+            wsmanager.startService (walletFile, walletPass, onError, onSuccess, onDelay);
 
-                formMessageSet('load', 'warning', "Starting wallet service...<br><progress></progress>");
-                setTimeout(() => {
-                    formMessageSet('load', 'warning', "Opening wallet, please be patient...<br><progress></progress>");
-                    wsmanager.startService(walletFile, walletPass, onError, onSuccess, onDelay);
-                }, 800);
-            }).catch((err) => {
-                console.log(err);
-                formMessageSet('load', 'error', "Unable to start service");
-                WALLET_OPEN_IN_PROGRESS = false;
-                setOpenButtonsState(0);
-                return false;
-            });
+            // wsmanager.stopService().then(() => {
+            //     formMessageSet('load', 'warning', "Starting wallet service...<br><progress></progress>");
+            //     setTimeout(() => {
+            //         formMessageSet('load', 'warning', "Opening wallet, please be patient...<br><progress></progress>");
+            //         wsmanager.startService(walletFile, walletPass, onError, onSuccess, onDelay);
+            //     }, 800);
+            // }).catch((err) => {
+            //     console.log(err);
+            //     formMessageSet('load', 'error', "Unable to start service");
+            //     WALLET_OPEN_IN_PROGRESS = false;
+            //     setOpenButtonsState(0);
+            //     return false;
+            // });
+
         });
     });
 
