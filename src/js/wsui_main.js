@@ -834,8 +834,7 @@ function handleAddressBook() {
                     headerCheckboxSelectionFilteredOnly: true,
                     sortingOrder: ['asc', 'desc']
                 },
-                { headerName: "Wallet Address", field: "value.address", sortingOrder: ['asc', 'desc'] },
-                { headerName: "Payment ID", field: "value.paymentId", sortingOrder: ['asc', 'desc'] }
+                { headerName: "Wallet Address", field: "value.address", sortingOrder: ['asc', 'desc'] }
             ];
 
             let gridOptions = {
@@ -926,8 +925,6 @@ function handleAddressBook() {
                              <dd data-cplabel="Wallet Name" class="tctcl" title="click to copy">${data.value.name}</dd>
                              <dt>Wallet Address:</dt>
                              <dd data-cplabel="Wallet address" class="tctcl" title="click to copy">${data.value.address}</dd>
-                             <dt>Payment Id:</dt>
-                             <dd  data-cplabel="Payment ID" class="${data.value.paymentId ? 'tctcl' : 'noclass'}" title="${data.value.paymentId ? 'click to copy' : 'n/a'}">${data.value.paymentId ? data.value.paymentId : '-'}</dd>
                          </dl>
                      </div>
                  </div>
@@ -946,12 +943,14 @@ function handleAddressBook() {
 
     // disable payment id input for non standard adress
     function setAbPaymentIdState(addr) {
+        /*
         if (addr.length > 99) {
             addressBookInputPaymentId.value = '';
             addressBookInputPaymentId.setAttribute('disabled', true);
         } else {
             addressBookInputPaymentId.removeAttribute('disabled');
         }
+        */
     }
 
     addressBookInputWallet.addEventListener('change', (event) => {
@@ -1131,7 +1130,7 @@ function handleAddressBook() {
         formMessageReset();
         let nameValue = addressBookInputName.value ? addressBookInputName.value.trim() : '';
         let addressValue = addressBookInputWallet.value ? addressBookInputWallet.value.trim() : '';
-        let paymentIdValue = addressBookInputPaymentId.value ? addressBookInputPaymentId.value.trim() : '';
+        // let paymentIdValue = addressBookInputPaymentId.value ? addressBookInputPaymentId.value.trim() : '';
         let isUpdate = addressBookInputUpdate.value ? addressBookInputUpdate.value : 0;
 
         if (!nameValue || !addressValue) {
@@ -1144,19 +1143,21 @@ function handleAddressBook() {
             return;
         }
 
+        /*
         if (paymentIdValue.length) {
             if (!wsutil.validatePaymentId(paymentIdValue)) {
                 formMessageSet('addressbook', 'error', "Invalid Payment ID");
                 return;
             }
         }
+        */
 
-        if (addressValue.length > 99) paymentIdValue.value = '';
+        // if (addressValue.length > 99) paymentIdValue.value = '';
 
         let entryName = nameValue.trim();
         let entryAddr = addressValue.trim();
-        let entryPaymentId = paymentIdValue.trim();
-        let entryHash = wsutil.fnvhash(entryAddr + entryPaymentId);
+        // let entryPaymentId = paymentIdValue.trim();
+        let entryHash = wsutil.fnvhash (entryAddr);
 
         let abook = wsession.get('addressBook');
         let addressBookData = abook.data;
@@ -1168,7 +1169,7 @@ function handleAddressBook() {
         let newAddress = {
             name: entryName,
             address: entryAddr,
-            paymentId: entryPaymentId,
+            // paymentId: entryPaymentId,
             qrCode: wsutil.genQrDataUrl(entryAddr)
         };
         abook.data[entryHash] = newAddress;
@@ -1193,7 +1194,7 @@ function handleAddressBook() {
         addressBookInputName.value = '';
         addressBookInputName.dataset.oldhash = '';
         addressBookInputWallet.value = '';
-        addressBookInputPaymentId.value = '';
+        // addressBookInputPaymentId.value = '';
         addressBookInputUpdate.value = 0;
         formMessageReset();
 
@@ -1617,6 +1618,7 @@ function handleWalletOpen() {
 }
 
 function handleWalletRescan() {
+    /*
     overviewWalletRescanButton.addEventListener('click', (event) => {
         event.preventDefault();
         let walletOpened = wsession.get('serviceReady') || false;
@@ -1672,6 +1674,7 @@ function handleWalletRescan() {
         let d = document.querySelector('dialog[open]');
         if (d) d.close();
     });
+    */
 }
 
 function handleWalletClose() {
@@ -1688,35 +1691,28 @@ function handleWalletClose() {
         // save + SIGTERMed wallet daemon
         // reset tx
         resetTransactions();
-        wsmanager.stopService().then(() => {
-            setTimeout(function () {
-                // clear form err msg
-                formMessageReset();
-                changeSection('section-overview');
-                // update/clear tx
-                txInputUpdated.value = 1;
-                txInputUpdated.dispatchEvent(new Event('change'));
-                // send fake blockUpdated event
-                let resetdata = {
-                    type: 'blockUpdated',
-                    data: {
-                        blockCount: -100,
-                        displayBlockCount: -100,
-                        knownBlockCount: -100,
-                        displayKnownBlockCount: -100,
-                        syncPercent: -100
-                    }
-                };
-                wsmanager.notifyUpdate(resetdata);
-                dialog = document.getElementById('main-dialog');
-                if (dialog.hasAttribute('open')) dialog.close();
-                wsmanager.resetState();
-                wsutil.clearChild(dialog);
-            }, 1200);
-        }).catch((err) => {
-            wsmanager.terminateService(true);
-            console.log(err);
-        });
+        // clear form err msg
+        formMessageReset();
+        changeSection('section-overview');
+        // update/clear tx
+        txInputUpdated.value = 1;
+        txInputUpdated.dispatchEvent(new Event('change'));
+        // send fake blockUpdated event
+        let resetdata = {
+            type: 'blockUpdated',
+            data: {
+                blockCount: -100,
+                displayBlockCount: -100,
+                knownBlockCount: -100,
+                displayKnownBlockCount: -100,
+                syncPercent: -100
+            }
+        };
+        wsmanager.notifyUpdate(resetdata);
+        dialog = document.getElementById('main-dialog');
+        if (dialog.hasAttribute('open')) dialog.close();
+        wsmanager.resetState();
+        wsutil.clearChild(dialog);
     });
 }
 
@@ -2156,6 +2152,7 @@ function handleSendTransfer() {
         });
     });
 
+    /*
     sendOptimize.addEventListener('click', () => {
         if (!wsession.get('synchronized', false)) {
             wsutil.showToast('Synchronization is in progress, please wait.');
@@ -2181,6 +2178,7 @@ function handleSendTransfer() {
         });
         return; // just return, it will notify when its done.
     });
+    */
 }
 
 function resetTransactions() {
@@ -2670,6 +2668,7 @@ function initHandlers() {
             });
         });
         //genpaymentid+integAddress
+        /*
         overviewPaymentIdGen.addEventListener('click', () => {
             genPaymentId(false);
         });
@@ -2680,6 +2679,9 @@ function initHandlers() {
             iaf.value = '';
         });
         overviewIntegratedAddressGen.addEventListener('click', showIntegratedAddressForm);
+        */
+
+        /*
         wsutil.liveEvent('#doGenIntegratedAddr', 'click', () => {
             formMessageReset();
             let genInputAddress = document.getElementById('genInputAddress');
@@ -2715,6 +2717,8 @@ function initHandlers() {
                 formMessageSet('gia', 'error', err.message);
             });
         });
+        */
+       
         // inputs click to copy handlers
         wsutil.liveEvent('textarea.ctcl, input.ctcl', 'click', (event) => {
             let el = event.target;
@@ -2963,16 +2967,6 @@ ipcRenderer.on('cleanup', () => {
     dialog.innerHTML = htmlStr;
     dialog.showModal();
     wsmanager.stopSyncWorker();
-    wsmanager.stopService().then(() => {
-        setTimeout(function () {
-            wsmanager.terminateService(true);
-            try { fs.unlinkSync(wsession.get('walletConfig')); } catch (e) { }
-            win.close();
-        }, 1200);
-    }).catch((err) => {
-        console.log(err);
-        wsmanager.terminateService(true);
-        try { fs.unlinkSync(wsession.get('walletConfig')); } catch (e) { }
-        win.close();
-    });
+    try { fs.unlinkSync(wsession.get('walletConfig')); } catch (e) { }
+    win.close();
 });

@@ -1,7 +1,7 @@
 {
   "name": "svalinn",
   "productName": "Svalinn",
-  "description": "TurtleCoin GUI Wallet",
+  "description": "ICONation GUI Wallet",
   "version": "v0.3.11",
   "homepage": "https://github.com/ICONation/svalinn",
   "repository": "https://github.com/ICONation/svalinn",
@@ -15,8 +15,8 @@
     "dist-mac": "./node_modules/.bin/electron-builder --x64 --mac -c.extraResources=./bin/osx/turtle-service"
   },
   "keywords": [],
-  "author": "Rixombea, Macroshock, TurtleCoin Developers",
-  "license": "ISC",
+  "author": "ICONation",
+  "license": "Apache-2.0",
   "devDependencies": {
     "devtron": "^1.4.0",
     "electron": "^4.0.5",
@@ -39,7 +39,7 @@
   },
   "build": {
     "appId": "lol.iconation.svalinn",
-    "copyright": "Copyright (c) 2018 Rixombea, Macroshock, TurtleCoin Developers",
+    "copyright": "Copyright (c) 2019 ICONation",
     "directories": {
       "output": "dist",
       "buildResources": "build"
@@ -69,14 +69,14 @@
       "target": [
         "AppImage"
       ],
-      "maintainer": "rixombea (@labaylabay)",
+      "maintainer": "Spl3en (@Spl3en_ICON)",
       "category": "Office",
-      "vendor": "TurtleCoin",
-      "synopsis": "TurtleCoin GUI Wallet"
+      "vendor": "ICONation",
+      "synopsis": "ICONation Offline GUI Wallet"
     },
     "win": {
       "target": "nsis",
-      "publisherName": "TurtleCoin"
+      "publisherName": "ICONation"
     },
     "nsis": {
       "artifactName": "${productName}-v${version}-${os}-${arch}-setup.${ext}",

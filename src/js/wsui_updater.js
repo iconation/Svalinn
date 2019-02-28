@@ -95,12 +95,12 @@ function updateSyncProgress(data) {
             // sync info bar class
             syncDiv.className = '';
             // sync status icon
-            iconSync.setAttribute('data-icon', 'pause-circle');
-            iconSync.classList.remove('fa-spin');
+            // iconSync.setAttribute('data-icon', 'pause-circle');
+            // iconSync.classList.remove('fa-spin');
             // connection status
-            connInfoDiv.classList.remove('conn-warning');
-            connInfoDiv.classList.add('empty');
-            connInfoDiv.textContent = '';
+            // connInfoDiv.classList.remove('conn-warning');
+            // connInfoDiv.classList.add('empty');
+            // connInfoDiv.textContent = '';
 
             // sync sess flags
             wsession.set('syncStarted', false);

@@ -472,7 +472,7 @@ span.form-msg{
     max-width: 98.5%;
 }
 .text-spaced-info{
-    background:#004720;
+    background:#19473f;
 }
 
 span.form-msg.important{
@@ -1147,7 +1147,7 @@ dialog[open]{
 .default-dialog{
     width: 500px;
     max-width: 80%;
-    background: #004720;
+    background: #19473f;
     color: #fff;
     border: 2px solid #fff;
     padding: 0 1rem;
@@ -1180,7 +1180,7 @@ span.dialog-close:active{
 }
 
 .tx-dialog{
-    background-color: #004720;
+    background-color: #19473f;
     background-size: cover;
     width: 90%;
     max-width: 1000px;
@@ -1659,7 +1659,7 @@ div.about-links a{
     border:1px solid #fefefe;
     padding: 8px 8px;
     border-radius: 4px;
-    background: #004720;
+    background: #19473f;
     line-height:normal;
 }
 
