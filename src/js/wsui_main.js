@@ -457,13 +457,6 @@ function changeSection(sectionId, targetRedir) {
         if (newActiveNavbarButton) newActiveNavbarButton.classList.add('btn-active');
     }
 
-    // re-init node selection
-    /*
-    if (finalTarget === 'section-overview-load' && walletOpenSelectBox.dataset.loading === "0") {
-        initNodeSelection(settings.get('node_address'));
-    }
-    */
-
     // toggle section
     formMessageReset();
     const activeSection = document.querySelector('.is-shown');
@@ -483,118 +476,8 @@ function changeSection(sectionId, targetRedir) {
     }
 }
 
-function initNodeSelection(nodeAddr) {
-    /*
-    let forceNew = nodeAddr ? true : false;
-    if (forceNew) settings.set('node_address', nodeAddr);
-    // selected node
-    let selected = settings.get('node_address');
-    // custom node list
-    let customNodes = settings.get('pubnodes_custom', []);
-    // nodes completed fee info check
-    let testedNodes = settings.get('pubnodes_tested', []);
-    // remove node update progress, replace current list
-    // walletOpenSelectBox.dataset.loading = "0";
-    let fallback = false;
-    let timeoutStr = 'timeout';
-    let onlines = testedNodes.filter((v) => v.label.indexOf(timeoutStr) < 0);
-    let offlines = [];
-    if (!settings.get('pubnodes_exclude_offline', false)) {
-        offlines = testedNodes.filter((v) => v.label.indexOf(timeoutStr) >= 0);
-    }
-
-    // shuffle nodes
-    if (onlines.length) {
-        let rndMethod = wsutil.arrShuffle([0, 1]);
-        onlines = wsutil.arrShuffle(onlines, rndMethod);
-    } else {
-        if (pubnodes_fallbacks.length) {
-            customNodes = pubnodes_fallbacks;
-        } else {
-            customNodes = customNodes.concat(settings.get('pubnodes_data', []));
-        }
-        fallback = true;
-    }
-
-    // for visual selector
-    let fakeSelect = document.querySelector('#fakeNodeOptions > ul');
-    // reset list
-    fakeSelect.innerHTML = '';
-    // default value
-    let selectedLabel = '';
-
-    if (customNodes.length) {
-        customNodes.forEach(node => {
-            // actual list items
-            let opt = document.createElement('option');
-            opt.text = `${node} | Custom Node`;
-            opt.value = node;
-            // list items display
-            let fakeOpt = document.createElement('li');
-            fakeOpt.setAttribute('class', 'fake-options');
-            fakeOpt.dataset.value = node;
-            if (!fallback) {
-                fakeOpt.innerHTML = `<span class="node-address">${node}</span> <span class="node-info">(Custom Node)</span>`;
-            } else {
-                fakeOpt.innerHTML = `<span class="node-address">${node}</span> <span class="node-info">(Fee: N/A)</span>`;
-            }
-
-            if (node === selected) {
-                opt.setAttribute('selected', true);
-                fakeOpt.classList.add('selected');
-                selectedLabel = fakeOpt.innerHTML;
-            }
-            // walletOpenInputNode.add(opt, null);
-            fakeSelect.appendChild(fakeOpt);
-        });
-    }
-
-    // merge back
-    let remoteNodes = onlines.concat(offlines);
-    if (remoteNodes.length) {
-        remoteNodes.forEach(node => {
-            let all_labels = node.label.split('|');
-            if (all_labels.length === 2) {
-                let opt = document.createElement('option');
-                opt.text = node.label;
-                opt.value = node.host;
-
-                let fakeOpt = document.createElement('li');
-                fakeOpt.setAttribute('class', 'fake-options');
-                fakeOpt.dataset.value = node.host;
-                fakeOpt.innerHTML = `<span class="node-address">${all_labels[0].trim()}</span> <span class="node-info">(${all_labels[1].trim()})</span>`;
-
-                if (node.host === selected) {
-                    opt.setAttribute('selected', true);
-                    fakeOpt.classList.add('selected');
-                    selectedLabel = fakeOpt.innerHTML;
-                }
-
-                // walletOpenInputNode.add(opt, null);
-                fakeSelect.appendChild(fakeOpt);
-            }
-        });
-    }
-
-    if (!selectedLabel.length) {
-        if (remoteNodes.length) {
-            selected = remoteNodes[0];
-            let opt = walletOpenInputNode.querySelector('option[value="' + selected.host + '"]');
-            opt.setAttribute('selected', true);
-            walletOpenInputNode.value = selected.host;
-            let all_labels = selected.label.split('|');
-            selectedLabel = `<span class="node-address">${all_labels[0].trim()}</span> <span class="node-info">(${all_labels[1].trim()})</span>`;
-        }
-    }
-   
-    walletOpenNodeLabel.innerHTML = selectedLabel;
-
-    var event = new Event('change');
-    walletOpenInputNode.dispatchEvent(event);
-
-    customNodes = null;
-    testedNodes = null;
-    */
+function initNodeSelection(nodeAddr)
+{
 }
 
 // initial settings value or updater
@@ -729,7 +612,7 @@ function initAddressCompletion(data) {
     try {
         if (window.COMPLETION_ADDRBOOK) window.COMPLETION_ADDRBOOK.destroy();
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 
     window.COMPLETION_ADDRBOOK = new autoComplete({
@@ -956,14 +839,6 @@ function handleAddressBook() {
 
     // disable payment id input for non standard adress
     function setAbPaymentIdState(addr) {
-        /*
-        if (addr.length > 99) {
-            addressBookInputPaymentId.value = '';
-            addressBookInputPaymentId.setAttribute('disabled', true);
-        } else {
-            addressBookInputPaymentId.removeAttribute('disabled');
-        }
-        */
     }
 
     addressBookInputWallet.addEventListener('change', (event) => {
@@ -1143,7 +1018,6 @@ function handleAddressBook() {
         formMessageReset();
         let nameValue = addressBookInputName.value ? addressBookInputName.value.trim() : '';
         let addressValue = addressBookInputWallet.value ? addressBookInputWallet.value.trim() : '';
-        // let paymentIdValue = addressBookInputPaymentId.value ? addressBookInputPaymentId.value.trim() : '';
         let isUpdate = addressBookInputUpdate.value ? addressBookInputUpdate.value : 0;
 
         if (!nameValue || !addressValue) {
@@ -1156,20 +1030,8 @@ function handleAddressBook() {
             return;
         }
 
-        /*
-        if (paymentIdValue.length) {
-            if (!wsutil.validatePaymentId(paymentIdValue)) {
-                formMessageSet('addressbook', 'error', "Invalid Payment ID");
-                return;
-            }
-        }
-        */
-
-        // if (addressValue.length > 99) paymentIdValue.value = '';
-
         let entryName = nameValue.trim();
         let entryAddr = addressValue.trim();
-        // let entryPaymentId = paymentIdValue.trim();
         let entryHash = wsutil.fnvhash (entryAddr);
 
         let abook = wsession.get('addressBook');
@@ -1182,7 +1044,6 @@ function handleAddressBook() {
         let newAddress = {
             name: entryName,
             address: entryAddr,
-            // paymentId: entryPaymentId,
             qrCode: wsutil.genQrDataUrl(entryAddr)
         };
         abook.data[entryHash] = newAddress;
@@ -1814,7 +1675,9 @@ function handleSendTransfer() {
                 <div class="transferDetail">
                     <p>Please confirm that you have everything entered correctly.</p>
                     <dl>
-                        <dt class="dt-ib">Recipient address:</dt>
+                        <dt class="dt-ib">Source address:</dt>
+                        <dd class="dd-ib">${tx.from}</dd>
+                        <dt class="dt-ib">Destination address:</dt>
                         <dd class="dd-ib">${tx.to}</dd>
                         <dt class="dt-ib">Amount:</dt>
                         <dd class="dd-ib">${tx.value / Math.pow (10, 18)} ${config.assetTicker}</dd>
@@ -2249,6 +2112,8 @@ function initHandlers() {
         if (tbtn.classList.contains('d-opened')) return;
         tbtn.classList.add('d-opened');
         let dialogType = args.dialogType;
+        let extension = args.dialogExtension;
+        let objectName = args.dialogObject;
         let targetName = (args.targetName ? args.targetName : 'file');
         let targetInput = args.targetInput;
         let recentDir = settings.get('recentWalletDir', remote.app.getPath('documents'));
@@ -2259,6 +2124,10 @@ function initHandlers() {
         if (dialogType === 'saveFile') {
             dialogOpts.title = `Select directory to store your ${targetName}, and give it a filename.`;
             dialogOpts.buttonLabel = 'OK';
+            dialogOpts.filters = [
+                { name : objectName, extensions : [extension]},
+                { name : 'All Files', extensions : ['*']}
+            ];
 
             remote.dialog.showSaveDialog(dialogOpts, (file) => {
                 if (file) targetInput.value = file;
@@ -2266,7 +2135,11 @@ function initHandlers() {
             });
         } else {
             dialogOpts.properties = [dialogType];
-
+            dialogOpts.filters = [
+                { name : objectName, extensions : [extension]},
+                { name : 'All Files', extensions : ['*']}
+            ];
+            
             remote.dialog.showOpenDialog(dialogOpts, (files) => {
                 if (files) targetInput.value = files[0];
                 tbtn.classList.remove('d-opened');
@@ -2350,6 +2223,8 @@ function initHandlers() {
             let targetInputId = genericBrowseButton[i].dataset.targetinput;
             let args = {
                 dialogType: genericBrowseButton[i].dataset.selection,
+                dialogExtension: genericBrowseButton[i].dataset.extension,
+                dialogObject: genericBrowseButton[i].dataset.object,
                 targetName: genericBrowseButton[i].dataset.fileobj ? genericBrowseButton[i].dataset.fileobj : '',
                 targetInput: document.getElementById(targetInputId),
                 targetButton: genericBrowseButton[i].id
@@ -2576,20 +2451,6 @@ function fetchNodeInfo(force) {
             )
         ]);
     }
-
-    /*
-    // disable node selection during update
-    walletOpenInputNode.options.length = 0;
-    let opt = document.createElement('option');
-    opt.text = "Updating node list, please wait...";
-    opt.value = "-";
-    opt.setAttribute('selected', true);
-    walletOpenInputNode.add(opt, null);
-    walletOpenInputNode.setAttribute('disabled', true);
-    walletOpenInputNode.dataset.updating = 1;
-    walletOpenNodeLabel.innerHTML = '<i class="fas fa-sync fa-spin"></i> Updating node list, please wait...';
-    walletOpenSelectBox.dataset.loading = "1";
-    */
 
     window.ELECTRON_ENABLE_SECURITY_WARNINGS = false;
     let aliveNodes = settings.get('pubnodes_tested', []);

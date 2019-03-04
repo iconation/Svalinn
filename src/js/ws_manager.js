@@ -225,7 +225,6 @@ SvalinnManager.prototype.createTransaction = function (tx, transactionFile, wall
 
         // Open the wallet
         try {
-            console.log ("tx, transactionFile, walletFile, walletPass = ", tx, transactionFile, walletFile, walletPass);
             const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
             const wallet = IconService.IconWallet.loadKeystore (keystore, walletPass);
 
@@ -240,9 +239,7 @@ SvalinnManager.prototype.createTransaction = function (tx, transactionFile, wall
                 .timestamp(tx.timestamp)
                 .build();
 
-            console.log ("Signing...");
             const signature = new IconService.SignedTransaction (icxTransaction, wallet).getProperties();
-            console.log (signature);
 
             // Write transaction to disk
             fs.writeFile (transactionFile, JSON.stringify(signature), function(err) {

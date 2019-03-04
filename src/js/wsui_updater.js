@@ -437,6 +437,9 @@ function resetFormState() {
             }
         } else {
             if (!el.dataset.noclear) el.value = '';
+            if (el.dataset.hidden) {
+                el.parentNode.style.display = "none";
+            }
         }
     }
 
@@ -488,7 +491,7 @@ function updateUiState(msg) {
 
             break;
         default:
-            console.log('invalid command', msg);
+            // console.log('invalid command', msg);
             break;
     }
 }

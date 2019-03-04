@@ -10,13 +10,13 @@
                     
                     <div class="input-wrap">
                         <h4 class="text-spaced input-required">Select the transaction file</h4>
-                        <input type="text" required="required" data-selection="openFile" 
+                        <input type="text" required="required" data-selection="openFile" data-extension="tx" data-object="Transactions" 
                             data-targetinput="input-load-tx"
                             readonly="readonly" class="text-block path-input-button"
                             id="input-load-tx" tabindex="0" 
                             placeholder="Full path to the transaction file to be opened..."
                             />
-                        <button data-selection="openFile" data-targetinput="input-load-tx" type="button" class="button-green path-input-button notabindex" id="button-load-browse" tabindex="2"><i class="fas fa-folder-open"></i></button>
+                        <button data-selection="openFile" data-extension="tx" data-object="Transactions" data-targetinput="input-load-tx" type="button" class="button-green path-input-button notabindex" id="button-load-browse" tabindex="2"><i class="fas fa-folder-open"></i></button>
                     </div>
 
                     <div class="input-wrap">
@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="input-wrap" id="hidden-transaction-hash">
-                        <h2 class="title">Transaction Hash:</h2>
-                        <textarea title="click to copy" data-cplabel="Transaction Hash" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" id="transaction-hash" readonly="readonly" rows="2"></textarea>
+                        <h4 class="text-spaced">Transaction Hash:</h2>
+                        <textarea title="click to copy" data-cplabel="Transaction Hash" data-hidden="1" class="ctcl overview-input default-textarea" id="transaction-hash" readonly="readonly" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="action-buttons">

@@ -16,7 +16,7 @@ const IS_DEBUG = IS_DEV || process.argv[1] === 'debug' || process.argv[2] === 'd
 const LOG_LEVEL = IS_DEBUG ? 'debug' : 'warn';
 const WALLET_CFGFILE = path.join(app.getPath('userData'), 'wconfig.txt');
 
-const WALLETSHELL_VERSION = app.getVersion() || '0.3.x';
+const SVALINN_VERSION = app.getVersion() || '0.3.x';
 const SERVICE_FILENAME = (platform === 'win32' ? `${config.walletServiceBinaryFilename}.exe` : config.walletServiceBinaryFilename);
 const SERVICE_OSDIR = (platform === 'win32' ? 'win' : (platform === 'darwin' ? 'osx' : 'lin'));
 const DEFAULT_SERVICE_BIN = path.join(process.resourcesPath, 'bin', SERVICE_OSDIR, SERVICE_FILENAME);
@@ -42,8 +42,8 @@ const DEFAULT_SETTINGS = {
     darkmode: true,
     service_config_format: config.walletServiceConfigFormat
 };
-const DEFAULT_SIZE = { width: 840, height: 680 };
-const WIN_TITLE = `${config.appName} ${WALLETSHELL_VERSION} - ${config.appDescription}`;
+const DEFAULT_SIZE = { width: 840, height: 700 };
+const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
 
 app.prompExit = true;
 app.prompShown = false;
@@ -56,7 +56,7 @@ app.setAppUserModelId(config.appId);
 log.transports.console.level = LOG_LEVEL;
 log.transports.file.level = LOG_LEVEL;
 log.transports.file.maxSize = 5 * 1024 * 1024;
-log.info(`Starting Svalinn ${WALLETSHELL_VERSION}`);
+log.info(`Starting Svalinn ${SVALINN_VERSION}`);
 if (IS_DEV || IS_DEBUG) log.warn(`Running in ${IS_DEV ? 'dev' : 'debug'} mode`);
 
 let trayIcon = path.join(__dirname, 'src/assets/tray.png');
@@ -275,7 +275,7 @@ function initSettings() {
         }
     });
     settings.set('service_password', crypto.randomBytes(32).toString('hex'));
-    settings.set('version', WALLETSHELL_VERSION);
+    settings.set('version', SVALINN_VERSION);
     serviceBinCheck();
     fs.unlink(WALLET_CFGFILE, (err) => {
         if (err) log.debug(err.code === 'ENOENT' ? 'No stalled wallet config' : err.message);

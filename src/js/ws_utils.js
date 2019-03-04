@@ -244,7 +244,7 @@ exports.isPathWriteable = (filePath) => {
         fs.accessSync(filePath, fs.constants.W_OK);
         return true;
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         return false;
     }
 };
@@ -287,7 +287,7 @@ exports.validateWalletPath = (fullpath, defaultDir, isExisting) => {
                 return reject(new Error('2' + ERROR_DEFAULT));
             }
         } catch (e) {
-            console.log(e.message);
+            // console.log(e.message);
         }
 
         if (isExisting) {
@@ -328,7 +328,7 @@ exports.validateTransactionPath = (fullpath, defaultDir, isExisting) => {
                 return reject(new Error('2' + ERROR_DEFAULT));
             }
         } catch (e) {
-            console.log(e.message);
+            // console.log(e.message);
         }
 
         if (isExisting) {
