@@ -24,6 +24,7 @@ const ERROR_WALLET_EXEC = `Failed to start ${config.walletServiceBinaryFilename}
 const ERROR_WALLET_PASSWORD = 'Failed to load your wallet, please check your password';
 const ERROR_WALLET_IMPORT = 'Import failed, please check that you have entered all information correctly';
 const ERROR_WALLET_CREATE = 'Wallet can not be created, please check your input and try again';
+const ERROR_TRANSACTION_CREATE = 'Transaction can not be created, please check your input and try again';
 const ERROR_PASSWORD_FORMAT = 'Password must be at least 8 characters long and contain a combination of letters, numbers, and special characters. (?!:.,%+-/*<>{}()[]`"\'~_^\\|@#$&)';
 const ERROR_RPC_TIMEOUT = 'Unable to communicate with selected node, please try again in a few seconds or switch to another node address';
 const INFO_FUSION_DONE = 'Wallet optimization completed, your balance may appear incorrect for a while.';
@@ -150,13 +151,17 @@ SvalinnManager.prototype._wipeConfig = function () {
     try { fs.unlinkSync(wsession.get('walletConfig')); } catch (e) { }
 };
 
-SvalinnManager.prototype.startService = function (walletFile, password, onError, onSuccess, onDelay) {
+SvalinnManager.prototype.startService = function (walletFile, onError, onSuccess, onDelay) {
     
-    const wallet = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
-    let walletAddress = wallet.address;
-    wsession.set ('loadedWalletAddress', walletAddress);
-    wsession.set ('serviceReady', true);
-    onSuccess (walletFile);
+    const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
+
+    try {
+        wsession.set ('loadedWalletAddress', keystore.address);
+        wsession.set ('serviceReady', true);
+        onSuccess (walletFile);
+    } catch (err) {
+        onError ("Error when opening the wallet : " + err);
+    }
 };
 
 SvalinnManager.prototype._argsToIni = function (args) {
@@ -170,178 +175,21 @@ SvalinnManager.prototype._argsToIni = function (args) {
 };
 
 SvalinnManager.prototype.stopService = function () {
-    /*
-    log.debug('stopping service');
-    this.init();
-    let wsm = this;
-    return new Promise(function (resolve) {
-        if (wsm.serviceStatus()) {
-            log.debug("Service is running");
-            wsm.serviceLastPid = wsm.serviceProcess.pid;
-            wsm.stopSyncWorker(true);
-            wsm.serviceApi.save().then(() => {
-                log.debug('saving wallet');
-                try {
-                    wsm.terminateService(true);
-                    wsm._reinitSession();
-                    resolve(true);
-                } catch (err) {
-                    log.debug(`SIGTERM failed: ${err.message}`);
-                    wsm.terminateService(true);
-                    wsm._reinitSession();
-                    resolve(false);
-                }
-            }).catch((err) => {
-                log.debug(`Failed to save wallet: ${err.message}`);
-                // try to wait for save to completed before force killing
-                setTimeout(() => {
-                    wsm.terminateService(true); // force kill
-                    wsm._reinitSession();
-                    resolve(true);
-                }, 8000);
-            });
-        } else {
-            log.debug("Service is not running");
-            wsm._reinitSession();
-            resolve(false);
-        }
-    });
-    */
 };
 
 SvalinnManager.prototype.terminateService = function (force) {
-    /*
-    if (!this.serviceStatus()) return;
-    force = force || false;
-    let signal = force ? 'SIGKILL' : 'SIGTERM';
-    // ugly!
-    this.serviceLastPid = this.servicePid;
-    try {
-        this.serviceProcess.kill(signal);
-        if (this.servicePid) process.kill(this.servicePid, signal);
-    } catch (e) {
-        if (!force && this.serviceProcess) {
-            log.debug(`SIGKILLing ${config.walletServiceBinaryFilename}`);
-            try { this.serviceProcess.kill('SIGKILL'); } catch (err) { }
-            if (this.servicePid) {
-                try { process.kill(this.servicePid, 'SIGKILL'); } catch (err) { }
-            }
-        }
-    }
-
-    this.serviceProcess = null;
-    this.servicePid = null;
-    */
 };
 
 SvalinnManager.prototype.startSyncWorker = function () {
-    /*
-    this.init();
-    let wsm = this;
-    if (this.syncWorker !== null) {
-        this.syncWorker = null;
-        try { wsm.syncWorker.kill('SIGKILL'); } catch (e) { }
-    }
-
-    this.syncWorker = childProcess.fork(
-        path.join(__dirname, './ws_syncworker.js')
-    );
-
-    this.syncWorker.on('message', (msg) => {
-        if (msg.type === 'serviceStatus') {
-            wsm.syncWorker.send({
-                type: 'start',
-                data: {}
-            });
-            wsession.set('serviceReady', true);
-            wsession.set('syncStarted', true);
-        } else {
-            wsm.notifyUpdate(msg);
-        }
-    });
-
-    this.syncWorker.on('close', function () {
-        wsm.syncWorker = null;
-        try { wsm.syncWorker.kill('SIGKILL'); } catch (e) { }
-        log.debug(`service worker terminated.`);
-    });
-
-    this.syncWorker.on('exit', function () {
-        wsm.syncWorker = null;
-        log.debug(`service worker exited.`);
-    });
-
-    this.syncWorker.on('error', function (err) {
-        try { wsm.syncWorker.kill('SIGKILL'); } catch (e) { }
-        wsm.syncWorker = null;
-        log.debug(`service worker error: ${err.message}`);
-    });
-
-    let cfgData = {
-        type: 'cfg',
-        data: {
-            service_host: this.serviceHost,
-            service_port: this.servicePort,
-            service_password: this.servicePassword
-        },
-        debug: SERVICE_LOG_DEBUG
-    };
-    this.syncWorker.send(cfgData);
-    */
 };
 
 SvalinnManager.prototype.stopSyncWorker = function () {
-    /*
-    log.debug('stopping syncworker');
-
-    try {
-        this.syncWorker.send({ type: 'stop', data: {} });
-        this.syncWorker.kill('SIGTERM');
-        this.syncWorker = null;
-    } catch (e) {
-        log.debug(`syncworker already stopped`);
-    }
-    */
 };
 
 SvalinnManager.prototype.getNodeFee = function () {
-    /*
-    let wsm = this;
-
-    this.serviceApi.getFeeInfo().then((res) => {
-        let theFee;
-        if (!res.amount || !res.address) {
-            theFee = 0;
-        } else {
-            theFee = (res.amount / config.decimalDivisor);
-        }
-        wsession.set('nodeFee', theFee);
-        if (theFee <= 0) return theFee;
-
-        wsm.notifyUpdate({
-            type: 'nodeFeeUpdated',
-            data: theFee
-        });
-        return theFee;
-    }).catch((err) => {
-        log.debug(`failed to get node fee: ${err.message}`);
-    });
-    */
 };
 
 SvalinnManager.prototype.genIntegratedAddress = function (paymentId, address) {
-    /*
-    let wsm = this;
-    return new Promise((resolve, reject) => {
-        address = address || wsession.get('loadedWalletAddress');
-        let params = { address: address, paymentId: paymentId };
-        wsm.serviceApi.createIntegratedAddress(params).then((result) => {
-            return resolve(result);
-        }).catch((err) => {
-            return reject(err);
-        });
-    });
-    */
 };
 
 function check_password (password) {
@@ -365,41 +213,71 @@ SvalinnManager.prototype.createWallet = function (walletFile, password)
             if (err) {
                 return reject (new Error (ERROR_WALLET_CREATE));
             }
-        }); 
+        });
 
         return resolve(walletFile);
     });
 };
 
-SvalinnManager.prototype.importFromKeys = function (walletFile, password, viewKey, spendKey, scanHeight) {
-    this.init();
-    let wsm = this;
-    return new Promise((resolve, reject) => {
-        scanHeight = scanHeight || 0;
+SvalinnManager.prototype.createTransaction = function (tx, transactionFile, walletFile, walletPass)
+{
+    return new Promise ((resolve, reject) => {
 
-        let serviceArgs = wsm.serviceArgsDefault.concat([
-            '-g', '-w', walletFile, '-p', password,
-            '--view-key', viewKey, '--spend-key', spendKey,
-            '--log-level', 0, '--log-file', path.join(remote.app.getPath('temp'), 'ts.log')
-        ]);
+        // Open the wallet
+        try {
+            console.log ("tx, transactionFile, walletFile, walletPass = ", tx, transactionFile, walletFile, walletPass);
+            const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
+            const wallet = IconService.IconWallet.loadKeystore (keystore, walletPass);
 
-        if (scanHeight >= 0) serviceArgs = serviceArgs.concat(['--scan-height', scanHeight]);
+            const icxTransaction = new IconService.IconBuilder.IcxTransactionBuilder()
+                .from(tx.from)
+                .to(tx.to)
+                .value(tx.value)
+                .stepLimit(tx.stepLimit)
+                .nid(tx.nid)
+                .nonce(tx.nonce)
+                .version(tx.version)
+                .timestamp(tx.timestamp)
+                .build();
 
-        childProcess.execFile(
-            wsm.serviceBin, serviceArgs, (error, stdout, stderr) => {
-                if (stdout) log.debug(stdout);
-                if (stderr) log.debug(stderr);
-                if (error) {
-                    log.debug(`Failed to import key: ${error.message}`);
-                    return reject(new Error(ERROR_WALLET_IMPORT));
-                } else {
-                    if (!wsutil.isRegularFileAndWritable(walletFile)) {
-                        return reject(new Error(ERROR_WALLET_IMPORT));
-                    }
-                    return resolve(walletFile);
+            console.log ("Signing...");
+            const signature = new IconService.SignedTransaction (icxTransaction, wallet).getProperties();
+            console.log (signature);
+
+            // Write transaction to disk
+            fs.writeFile (transactionFile, JSON.stringify(signature), function(err) {
+                if (err) {
+                    return reject(err);
                 }
+            }); 
+
+            return resolve (transactionFile);
+
+        } catch (err) {
+            return reject (err);
+        }
+    });
+};
+
+SvalinnManager.prototype.importFromKeys = function (walletFile, password, privateKey)
+{
+    return new Promise((resolve, reject) =>
+    {
+        if (!check_password (password)) {
+            return reject (new Error (ERROR_PASSWORD_FORMAT));
+        }
+
+        const wallet = IconService.IconWallet.loadPrivateKey (privateKey);
+        const keystore = wallet.store (password);
+
+        // Write keystore to disk
+        fs.writeFile (walletFile, JSON.stringify (keystore), function(err) {
+            if (err) {
+                return reject (new Error (ERROR_WALLET_CREATE));
             }
-        );
+        });
+
+        return resolve (walletFile);
     });
 };
 
@@ -436,15 +314,17 @@ SvalinnManager.prototype.importFromSeed = function (walletFile, password, mnemon
     });
 };
 
-SvalinnManager.prototype.getSecretKeys = function (address) {
-    let wsm = this;
+SvalinnManager.prototype.getSecretKeys = function (walletPass) {
+
     return new Promise((resolve, reject) => {
-        wsm.serviceApi.getBackupKeys({ address: address }).then((result) => {
-            return resolve(result);
-        }).catch((err) => {
-            log.debug(`Failed to get keys: ${err.message}`);
-            return reject(err);
-        });
+        try {
+            const walletFile = settings.get ('recentWallet');
+            const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
+            const wallet = IconService.IconWallet.loadKeystore (keystore, walletPass);
+            return resolve (wallet.getPrivateKey());
+        } catch (err) {
+            return reject (err);
+        }
     });
 };
 
@@ -456,6 +336,20 @@ SvalinnManager.prototype.sendTransaction = function (params) {
         }).catch((err) => {
             return reject(err);
         });
+    });
+};
+
+SvalinnManager.prototype.sendSignedTransaction = function (tx) {
+
+    return new Promise((resolve, reject) => {
+        try {
+            const httpProvider = new IconService.HttpProvider ('http://iconation.team:9000/api/v3');
+            const iconService = new IconService (httpProvider);
+            txHash = iconService.sendTransaction (tx).execute();
+            return resolve (txHash);
+        } catch (err) {
+            return reject(err);
+        }
     });
 };
 

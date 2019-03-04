@@ -13,20 +13,21 @@
                         wallet program.
                     </span>
                 </div>
+                
                 <div class="input-wrap">
-                    <h4 class="text-spaced">Your private view key:</h4>        
-                    <input data-cplabel="View key" placeholder="Click the Reveal button to see it" type="text" class="text-block ctcl" id="key-show-view" readonly="readonly" />
+                    <h4 class="text-spaced input-required">Wallet password</h4>
+                    <input required="required" autofocus="true" tabindex="0" type="password"
+                        class="text-block" id="overview-show-password" 
+                        placeholder="Password to open this wallet..."
+                        />
+                        <button tabindex="-1" class="togpass notabindex" data-pf="input-load-password"><i class="fas fa-eye"></i></button>
                 </div>
 
                 <div class="input-wrap">
-                    <h4 class="text-spaced">Your private spend key:</h4>
-                    <input data-cplabel="Spend key" placeholder="Click the Reveal button to see it" type="text" class="text-block  ctcl" id="key-show-spend" readonly="readonly" />
+                    <h4 class="text-spaced">Your private key:</h4>        
+                    <input data-cplabel="Private key" placeholder="Click the Reveal button to see it" type="text" class="text-block ctcl" id="key-show-view" readonly="readonly" />
                 </div>
 
-                <div class="input-wrap">
-                    <h4>Mnemonic Seed</h4>
-                    <textarea data-cplabel="Mnemonic seed" placeholder="Click the Reveal button to see it" class="default-textarea  ctcl" id="seed-show" readonly="readonly" rows="3"></textarea>
-                </div>
                 <div class="input-wrap">
                     <span class="form-ew form-msg text-spaced-error" id="text-secret-error"></span>
                     <span class="form-ew form-msg text-spaced-success" id="text-secret-success"></span>

@@ -90,10 +90,10 @@ function updateSyncProgress(data) {
             break;
         case syncStatus.IDLE:
             // sync status text
-            statusText = 'IDLE';
-            syncInfoBar.innerHTML = statusText;
+            // statusText = 'IDLE';
+            // syncInfoBar.innerHTML = statusText;
             // sync info bar class
-            syncDiv.className = '';
+            // syncDiv.className = '';
             // sync status icon
             // iconSync.setAttribute('data-icon', 'pause-circle');
             // iconSync.classList.remove('fa-spin');

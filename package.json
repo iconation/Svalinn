@@ -1,7 +1,7 @@
 {
   "name": "svalinn",
   "productName": "Svalinn",
-  "description": "ICONation GUI Wallet",
+  "description": "ICONation ICX Wallet",
   "version": "v0.3.11",
   "homepage": "https://github.com/ICONation/svalinn",
   "repository": "https://github.com/ICONation/svalinn",
@@ -9,10 +9,7 @@
   "scripts": {
     "start": "electron .",
     "debug": "electron . debug",
-    "dev": "electron . dev",
-    "dist-win": "./node_modules/.bin/electron-builder --x64 --win -c.extraResources=./bin/win/turtle-service.exe",
-    "dist-lin": "./node_modules/.bin/electron-builder --x64 --linux -c.extraResources=./bin/lin/turtle-service",
-    "dist-mac": "./node_modules/.bin/electron-builder --x64 --mac -c.extraResources=./bin/osx/turtle-service"
+    "dev": "electron . dev"
   },
   "keywords": [],
   "author": "ICONation",
@@ -72,7 +69,7 @@
       "maintainer": "Spl3en (@Spl3en_ICON)",
       "category": "Office",
       "vendor": "ICONation",
-      "synopsis": "ICONation Offline GUI Wallet"
+      "synopsis": "ICONation ICX Wallet"
     },
     "win": {
       "target": "nsis",

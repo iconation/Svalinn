@@ -95,7 +95,7 @@ body {
 
 /* Top navigation bar */
 .navbar {
-    background-color: #212721;
+    background-color: #0f5552;
     display: grid;
     width: 100%;
     grid-auto-flow: column;
@@ -117,13 +117,13 @@ body {
     text-align: center;
     font-size: 0.95rem;
     text-transform: uppercase;
-    background-color: #212721;
+    background-color: #0f5552;
     border: none;
     text-shadow: -1px -1px 0 #40404085;
 }
 
 .navbar-button:hover {
-    background-color: #4d524d;
+    background-color: #0f4542;
 }
 
 .navbar-button:focus {
@@ -132,7 +132,7 @@ body {
 
 .navbar-button:active,
 .navbar-button.btn-active{
-    background-color: #4d634d;
+    background-color: #008b86;
 }
 
 .navbar-button .navbar-label{
@@ -456,6 +456,10 @@ textarea#wallet-address{
     font-weight: bold;
 }
 
+#hidden-transaction-hash {
+    display : none;
+}
+
 /** form messages **/
 .form-msg{
     letter-spacing: normal !important;
@@ -472,7 +476,7 @@ span.form-msg{
     max-width: 98.5%;
 }
 .text-spaced-info{
-    background:#19473f;
+    background:#0e5f5c;
 }
 
 span.form-msg.important{
@@ -1147,7 +1151,7 @@ dialog[open]{
 .default-dialog{
     width: 500px;
     max-width: 80%;
-    background: #19473f;
+    background: #0e5f5c;
     color: #fff;
     border: 2px solid #fff;
     padding: 0 1rem;
@@ -1180,7 +1184,7 @@ span.dialog-close:active{
 }
 
 .tx-dialog{
-    background-color: #19473f;
+    background-color: #0e5f5c;
     background-size: cover;
     width: 90%;
     max-width: 1000px;
@@ -1361,7 +1365,7 @@ input.path-input-button{
     font-size: 1rem;
     display: inline-block;
     transform:translateX(0px);
-    background: #050605a6;
+    background: #0f5552;
     color: #fff;
     box-shadow: 1px 2px 2px #afafafd4;
     text-shadow:0px 0px 1px #656565;
@@ -1589,7 +1593,8 @@ input.path-input-button{
     padding: 4px 8px;
     border-radius: 3px;
     background: #3333339e;
-    box-shadow: inset 0px 0px 5px #7b7b7b;
+    border:1px solid #183433;
+    /* box-shadow: inset 0px 0px 5px #7b7b7b; */
 }
 
 .transferDetail{
@@ -1603,7 +1608,7 @@ input.path-input-button{
     font-size: 0.75rem;
     overflow: visible;
     word-wrap: break-word;
-    color: #fffb00;
+    color: #61cac4;
 }
 
 dt.dt-ib{
@@ -1659,7 +1664,7 @@ div.about-links a{
     border:1px solid #fefefe;
     padding: 8px 8px;
     border-radius: 4px;
-    background: #19473f;
+    background: #0e5f5c;
     line-height:normal;
 }
 

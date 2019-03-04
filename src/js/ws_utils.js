@@ -302,6 +302,47 @@ exports.validateWalletPath = (fullpath, defaultDir, isExisting) => {
     });
 };
 
+exports.normalizeTransactionFilename = (rawFilename) => {
+    if (!rawFilename) return '';
+    const transactionExt = config.transactionFileDefaultExt;
+    let ext = path.extname(rawFilename.trim());
+    if (ext.endsWith(`.${transactionExt}`)) return rawFilename;
+    if (ext.endsWith('.')) return `${rawFilename}${transactionExt}`;
+    return `${rawFilename}.${transactionExt}`;
+};
+
+exports.validateTransactionPath = (fullpath, defaultDir, isExisting) => {
+    return new Promise((resolve, reject) => {
+        fullpath = fullpath || '';
+        isExisting = isExisting || false;
+        defaultDir = defaultDir ? path.resolve(defaultDir) : path.resolve('.');
+        if (!fullpath.length) return reject(new Error('Transaction file path can not be left blank'));
+        const ERROR_DEFAULT = 'Please specify a full path to the transaction file and make sure you have a proper write permission to the file';
+        fullpath = path.resolve(fullpath);
+
+        fullpath = this.normalizeTransactionFilename(fullpath);
+
+        try {
+            let stats = fs.statSync(fullpath);
+            if (stats.isDirectory()) {
+                return reject(new Error('2' + ERROR_DEFAULT));
+            }
+        } catch (e) {
+            console.log(e.message);
+        }
+
+        if (isExisting) {
+            try {
+                fs.accessSync(fullpath);
+            } catch (e) {
+                return reject(new Error(ERROR_DEFAULT));
+            }
+        }
+        let finalPath = path.normalize(fullpath);
+        return resolve(finalPath);
+    });
+};
+
 exports.loadPrivateAddressBook = (path, password) => {
     let rawcontents = '';
     try {

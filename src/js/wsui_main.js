@@ -28,6 +28,7 @@ const win = remote.getCurrentWindow();
 const Menu = remote.Menu;
 const WS_VERSION = settings.get('version', 'unknown');
 const DEFAULT_WALLET_PATH = remote.app.getPath('documents');
+const DEFAULT_TRANSACTION_PATH = remote.app.getPath('documents');
 
 
 let WALLET_OPEN_IN_PROGRESS = false;
@@ -86,7 +87,11 @@ let sendInputAmount;
 let sendInputPaymentId;
 let sendInputFee;
 let sendButtonSend;
+let sendButtonSendTx;
 let sendMaxAmount;
+let sendTxFile;
+let inputLoadTx;
+let transactionHash;
 let sendOptimize;
 // create wallet
 let overviewButtonCreate;
@@ -162,6 +167,7 @@ function populateElementVars() {
     // open wallet page
     walletOpenInputPath = document.getElementById('input-load-path');
     walletOpenInputPassword = document.getElementById('input-load-password');
+    overviewShowPassword = document.getElementById('overview-show-password');
     walletOpenButtonOpen = document.getElementById('button-load-load');
     walletOpenButtons = document.getElementById('walletOpenButtons');
     walletOpenInputNode = document.getElementById('input-settings-node-address');
@@ -182,7 +188,12 @@ function populateElementVars() {
     sendInputAmount = document.getElementById('input-send-amount');
     sendInputPaymentId = document.getElementById('input-send-payid');
     sendInputFee = document.getElementById('input-send-fee');
+    sendTxFile = document.getElementById('input-send-txfile');
+    inputLoadTx = document.getElementById('input-load-tx');
+    transactionHashInput = document.getElementById('transaction-hash');
+    transactionHashContainer = document.getElementById('hidden-transaction-hash');
     sendButtonSend = document.getElementById('button-send-send');
+    sendButtonSendTx = document.getElementById('button-send-sendtx');
     // maxSendFormHelp = document.getElementById('sendFormHelp');
     sendMaxAmount = document.getElementById('sendMaxAmount');
     sendOptimize = document.getElementById('button-send-optimize');
@@ -220,9 +231,9 @@ let jtfr = {
     tFind: [
         "Svalinn",
         "https://github.com/ICONation/svalinn",
-        "TurtleCoin",
-        "TRTL",
-        "turtle-service"
+        "ICX",
+        "ICX",
+        "ICONation"
     ],
     tReplace: [
         config.appName,
@@ -388,9 +399,9 @@ function changeSection(sectionId, targetRedir) {
     targetRedir = targetRedir === true ? true : false;
     let targetSection = sectionId.trim();
 
-    let isSynced = wsession.get('synchronized') || false;
+    let isSynced = wsession.get('synchronized') || true;
     let isServiceReady = wsession.get('serviceReady') || false;
-    let needServiceReady = ['section-transactions', 'section-send', 'section-overview'];
+    let needServiceReady = ['section-send', 'section-overview'];
     let needServiceStopped = 'section-welcome';
     let needSynced = ['section-send'];
 
@@ -410,7 +421,7 @@ function changeSection(sectionId, targetRedir) {
         finalTarget = 'section-welcome';
         let notoast = finalTarget.concat(['section-overview']);
         if (!notoast.includes(origTarget)) {
-            toastMsg = "Please create/open your wallet!";
+            toastMsg = "Please create or open your wallet first !";
         }
     } else if (needSynced.includes(targetSection) && !isSynced) {
         // need synced, return early
@@ -640,6 +651,7 @@ function formMessageSet(target, status, txt) {
 
 // utility: blank tx filler
 function setTxFiller(show) {
+    /*
     show = show || false;
     let fillerRow = document.getElementById('txfiller');
     let txRow = document.getElementById('transaction-lists');
@@ -651,6 +663,7 @@ function setTxFiller(show) {
         txRow.classList.add('hidden');
         fillerRow.classList.remove('hidden');
     }
+    */
 }
 
 // display initial page, settings page on first run, else overview page
@@ -738,10 +751,10 @@ function initAddressCompletion(data) {
             var wname = spl[0];
             var waddr = spl[1];
             var wpayid = spl[2];
-            return `<div class="autocomplete-suggestion" data-paymentid="${wpayid}" data-val="${waddr}">${wname.replace(re, "<b>$1</b>")}<br><span class="autocomplete-wallet-addr">${waddr.replace(re, "<b>$1</b>")}<br>Payment ID: ${(wpayid ? wpayid.replace(re, "<b>$1</b>") : 'N/A')}</span></div>`;
+            return `<div class="autocomplete-suggestion" data-paymentid="${wpayid}" data-val="${waddr}">${wname.replace(re, "<b>$1</b>")}<br><span class="autocomplete-wallet-addr">${waddr.replace(re, "<b>$1</b>")}</span></div>`;
         },
         onSelect: function (e, term, item) {
-            document.getElementById('input-send-payid').value = item.getAttribute('data-paymentid');
+            // document.getElementById('input-send-payid').value = item.getAttribute('data-paymentid');
         }
     });
 }
@@ -1371,155 +1384,8 @@ function handleWalletOpen() {
         }
     }
 
-    function addCustomNodeForm() {
-        let dialog = document.getElementById('ab-dialog');
-        if (dialog.hasAttribute('open')) dialog.close();
-        let customNodes = settings.get('pubnodes_custom');
-        let cnode = '<ul class="cnodes">';
-        customNodes.forEach(node => {
-            cnode += `<li>${node} (<a href="#" title="remove this node" class="cnode-item" data-value="${node}">REMOVE</a>)</li>`;
-        });
-        cnode += '</ul>';
-
-        let iaform = `
-            <div class="transaction-panel">
-                <h4>Custom daemon/node address:</h4>
-                <div class="splitted-area splitted-2">
-                    <div class="splitted-content first">
-                        <p>Your Custom Nodes:</p>
-                        ${cnode}
-                    </div>
-                    <div class="splitted-content last">
-                        <div class="input-wrap f-right">
-                            <label>Add New Custom Node</label>
-                            <input type="text" id="customNodeAddress" placeholder="my.example.com:${config.daemonDefaultRpcPort}" class="text-block" />
-                            <span class="form-help">Required, example: my.example-domain.com:${config.daemonDefaultRpcPort}, 123.123.123.123:${config.daemonDefaultRpcPort}</span>
-                        </div>
-                        <div class="input-wrap">
-                            <span class="form-ew form-msg text-spaced-error hidden" id="text-customnode-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="div-panel-buttons">
-                    <button id="saveCustomNode" type="button" class="button-green">Save & activate</button>
-                </div>
-                <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
-            </div>`;
-        dialog.innerHTML = iaform;
-        dialog.showModal();
-    }
-
-    wsutil.liveEvent('.cnode-item', 'click', (e) => {
-        e.preventDefault();
-        let item = e.target.dataset.value.trim();
-        let tbr = e.target.closest('li');
-        let customNodes = settings.get('pubnodes_custom', []);
-        var index = customNodes.indexOf(item);
-        if (index !== -1) customNodes.splice(index, 1);
-        settings.set('pubnodes_custom', customNodes);
-        tbr.parentNode.removeChild(tbr);
-        initNodeSelection();
-    });
-
-    wsutil.liveEvent("#saveCustomNode", "click", (e) => {
-        e.preventDefault();
-        formMessageReset();
-        let customNodeAddressInput = document.getElementById('customNodeAddress');
-        let nodeAddressVal = customNodeAddressInput.value ? customNodeAddressInput.value.trim() : false;
-        if (!nodeAddressVal) {
-            formMessageSet('customnode', 'error', 'Invalid node address, accepted format: &lt;domain.tld&gt;:&lt;port_number&gt; or &lt;ip_address&gt;:&lt;port_number&gt;');
-            return;
-        }
-        let nodeAddress = nodeAddressVal.split(":");
-        if (nodeAddress.length !== 2) {
-            formMessageSet('customnode', 'error', 'Invalid node address, accepted format: &lt;domain.tld&gt;:&lt;port_number&gt;<br>&lt;ip_address&gt;:&lt;port_number&gt;');
-            return;
-        }
-
-        let validHost = nodeAddress[0] === 'localhost' ? true : false;
-        if (net.isIPv4(nodeAddress[0])) validHost = true;
-        if (!validHost) {
-            let domRe = new RegExp(/([a-z])([a-z0-9]+\.)*[a-z0-9]+\.[a-z.]+/i);
-            if (domRe.test(nodeAddress[0])) validHost = true;
-        }
-        if (!validHost) {
-            formMessageSet('customnode', 'error', 'Invalid node address');
-            return false;
-        }
-
-        if (parseInt(nodeAddress[1], 10) <= 0) {
-            formMessageSet('customnode', 'error', 'Invalid port');
-            return false;
-        }
-
-        let customNodes = settings.get('pubnodes_custom', []);
-        customNodes.push(nodeAddressVal);
-        settings.set('pubnodes_custom', customNodes);
-        initNodeSelection(nodeAddressVal);
-        let dialog = document.getElementById('ab-dialog');
-        if (dialog.hasAttribute('open')) dialog.close();
-        wsutil.showToast('New custom node have been added');
-    });
-
-    /*
-    walletOpenAddCustomNode.addEventListener('click', (e) => {
-        e.preventDefault();
-        addCustomNodeForm();
-    });
-
-    walletOpenRefreshNodes.addEventListener('click', () => {
-        if (!navigator.onLine) {
-            wsutil.showToast('Network connectivity problem detected, node list update can not be performed');
-            return;
-        }
-        if (!confirm("Refreshing node list may take a while to complete, are you sure?")) return;
-        fetchNodeInfo(true);
-    });
-    */
-
     walletOpenButtonOpen.addEventListener('click', () => {
         formMessageReset();
-
-        /*
-        if (parseInt(walletOpenInputNode.dataset.updating, 10) === 1) {
-            wsutil.showToast('Node list update in progress, please wait...');
-            return;
-        }
-
-        let nodeAddressValue = walletOpenInputNode.value;
-        let nodeAddress = nodeAddressValue.split(':');
-
-        let validHost = nodeAddress[0] === 'localhost' ? true : false;
-        if (net.isIPv4(nodeAddress[0])) validHost = true;
-        if (!validHost) {
-            let domRe = new RegExp(/([a-z])([a-z0-9]+\.)*[a-z0-9]+\.[a-z.]+/i);
-            if (domRe.test(nodeAddress[0])) validHost = true;
-        }
-        if (!validHost) {
-            formMessageSet('load', 'error', `Invalid daemon/node address!`);
-            return false;
-        }
-
-        if (parseInt(nodeAddress[1], 10) <= 0) {
-            formMessageSet('load', 'error', `Invalid daemon/node port number!`);
-            return false;
-        }
-
-        if (!navigator.onLine && !nodeAddress[0].startsWith('127') && nodeAddress[0] !== 'localhost') {
-            formMessageSet('load', 'error', `Network connectivity problem detected, unable to connect to remote node`);
-            return false;
-        }
-
-        let settingVals = {
-            service_bin: settings.get('service_bin'),
-            service_timeout: settings.get('service_timeout'),
-            node_address: nodeAddressValue,
-            tray_minimize: settings.get('tray_minimize'),
-            tray_close: settings.get('tray_close'),
-            pubnodes_exclude_offline: settingsInputExcludeOfflineNodes.checked
-        };
-        initSettingVal(settingVals);
-        */
 
         // actually open wallet
         if (!walletOpenInputPath.value) {
@@ -1555,9 +1421,8 @@ function handleWalletOpen() {
         }
 
         let walletFile = walletOpenInputPath.value;
-        let walletPass = walletOpenInputPassword.value;
 
-        fs.access(walletFile, fs.constants.R_OK, (err) => {
+        fs.access (walletFile, fs.constants.R_OK, (err) => {
             if (err) {
                 formMessageSet('load', 'error', "Invalid wallet file path");
                 setOpenButtonsState(0);
@@ -1569,26 +1434,11 @@ function handleWalletOpen() {
             WALLET_OPEN_IN_PROGRESS = true;
             settings.set('recentWallet', walletFile);
             settings.set('recentWalletDir', path.dirname(walletFile));
-            formMessageSet ('load', 'warning', "Accessing wallet...<br><progress></progress>");
+            // formMessageSet ('load', 'warning', "Accessing wallet...<br><progress></progress>");
             
-            wsmanager.startService (walletFile, walletPass, onError, onSuccess, onDelay);
+            wsmanager.startService (walletFile, onError, onSuccess, onDelay);
         });
     });
-
-    /*
-    // node selector
-    walletOpenSelectBox.addEventListener('click', () => {
-        if (walletOpenSelectBox.dataset.loading === "1") {
-            return;
-        }
-
-        if (walletOpenSelectOpts.classList.contains("hidden")) {
-            walletOpenSelectOpts.classList.remove("hidden");
-        } else {
-            walletOpenSelectOpts.classList.add("hidden");
-        }
-    });
-    */
 
     wsutil.liveEvent('.fake-options', 'click', (e) => {
         let sel = e.target.classList.contains('fake-options') ? e.target : e.target.closest('.fake-options');
@@ -1618,69 +1468,13 @@ function handleWalletOpen() {
 }
 
 function handleWalletRescan() {
-    /*
-    overviewWalletRescanButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        let walletOpened = wsession.get('serviceReady') || false;
-        if (!walletOpened) return;
 
-        let dialogTpl = `<div class="transaction-panel">
-            <h4>Rescan Wallet</h4>
-            <p class="form-help">
-                Re-scan the blockchain to search transactions belongs to your wallet address.
-                Do this if you think there are missing transactions data or if you put wrong scan height value during import.
-            </p>
-            <div class="input-wrap">
-                <label>Starting block height:</label>
-                <input type="number" min="0" step="1" class="text-block" 
-                        id="rescanScanHeight" value="1" 
-                        title="First block index to be scanned"
-                        />
-            </div>
-            <div class="input-wrap">
-                <span class="form-ew form-msg text-spaced-error hidden" id="text-rescanheight-error"></span>
-            </div>
-            <div class="div-panel-buttons">
-                <button type="button" class="form-bt button-green" id="button-rescan-start">Start Rescan</button>
-            </div>
-            <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
-        </div>`;
-        let dialog = document.getElementById('ab-dialog');
-        if (dialog.hasAttribute('open')) dialog.close();
-        dialog.innerHTML = dialogTpl;
-        dialog.showModal();
-    });
-
-    wsutil.liveEvent('#button-rescan-start', 'click', () => {
-        let scanHeightEl = document.getElementById('rescanScanHeight');
-        let scanHeight = scanHeightEl.value.length ? parseInt(scanHeightEl.value, 10) : -1;
-        formMessageReset();
-        if (scanHeight < 0) {
-            formMessageSet('rescanheight', 'error', 'Please specify a valid scan height');
-            return;
-        }
-        let confirmMsg = 'Rescanning process may take a long time to complete, are you sure?';
-        if (scanHeight === 0) {
-            confirmMsg = 'Setting scan height to 0 will fully reset your wallet. Rescanning process may take a long time to complete, are you sure?';
-        }
-        if (!confirm(confirmMsg)) return;
-        wsmanager.rescanWallet(scanHeight).then(() => {
-            resetTransactions();
-            wsutil.showToast('Rescan OK, your wallet will be re-synchronize');
-        }).catch(() => {
-            resetTransactions();
-            wsutil.showToast('Rescan OK, your wallet will be re-synchronize');
-        });
-        let d = document.querySelector('dialog[open]');
-        if (d) d.close();
-    });
-    */
 }
 
 function handleWalletClose() {
     overviewWalletCloseButton.addEventListener('click', (event) => {
         event.preventDefault();
-        if (!confirm('Are you sure want to close your wallet?')) return;
+        // if (!confirm('Are you sure you want to close your wallet?')) return;
 
         let dialog = document.getElementById('main-dialog');
         let htmlStr = '<div class="div-save-main" style="text-align: center;padding:1rem;"><i class="fas fa-spinner fa-pulse"></i><span style="padding:0px 10px;">Saving &amp; closing your wallet...</span></div>';
@@ -1694,25 +1488,12 @@ function handleWalletClose() {
         // clear form err msg
         formMessageReset();
         changeSection('section-overview');
-        // update/clear tx
-        txInputUpdated.value = 1;
-        txInputUpdated.dispatchEvent(new Event('change'));
-        // send fake blockUpdated event
-        let resetdata = {
-            type: 'blockUpdated',
-            data: {
-                blockCount: -100,
-                displayBlockCount: -100,
-                knownBlockCount: -100,
-                displayKnownBlockCount: -100,
-                syncPercent: -100
-            }
-        };
-        wsmanager.notifyUpdate(resetdata);
         dialog = document.getElementById('main-dialog');
         if (dialog.hasAttribute('open')) dialog.close();
         wsmanager.resetState();
         wsutil.clearChild(dialog);
+        // Go to welcome page
+        changeSection("section-welcome");
     });
 }
 
@@ -1772,8 +1553,6 @@ function handleWalletImportKeys() {
         let filePathValue = importKeyInputPath.value ? importKeyInputPath.value.trim() : '';
         let passwordValue = importKeyInputPassword.value ? importKeyInputPassword.value.trim() : '';
         let viewKeyValue = importKeyInputViewKey.value ? importKeyInputViewKey.value.trim() : '';
-        let spendKeyValue = importKeyInputSpendKey.value ? importKeyInputSpendKey.value.trim() : '';
-        let scanHeightValue = importKeyInputScanHeight.value ? parseInt(importKeyInputScanHeight.value, 10) : 0;
 
         // validate path
         wsutil.validateWalletPath(filePathValue, DEFAULT_WALLET_PATH).then((finalPath) => {
@@ -1782,24 +1561,8 @@ function handleWalletImportKeys() {
                 return;
             }
 
-            if (scanHeightValue < 0 || scanHeightValue.toPrecision().indexOf('.') !== -1) {
-                formMessageSet('import', 'error', 'Invalid scan height!');
-                return;
-            }
-
-            // validate viewKey
-            if (!viewKeyValue.length || !spendKeyValue.length) {
-                formMessageSet('import', 'error', 'View Key and Spend Key can not be left blank!');
-                return;
-            }
-
             if (!wsutil.validateSecretKey(viewKeyValue)) {
-                formMessageSet('import', 'error', 'Invalid view key!');
-                return;
-            }
-            // validate spendKey
-            if (!wsutil.validateSecretKey(spendKeyValue)) {
-                formMessageSet('import', 'error', 'Invalid spend key!');
+                formMessageSet('import', 'error', 'Invalid private key!');
                 return;
             }
 
@@ -1821,9 +1584,7 @@ function handleWalletImportKeys() {
             wsmanager.importFromKeys(
                 finalPath,// walletfile
                 passwordValue,
-                viewKeyValue,
-                spendKeyValue,
-                scanHeightValue
+                viewKeyValue
             ).then((walletFile) => {
                 settings.set('recentWallet', walletFile);
                 walletOpenInputPath.value = walletFile;
@@ -1905,26 +1666,27 @@ function handleWalletImportSeed() {
     });
 }
 
-function handleWalletExport() {
-    overviewShowKeyButton.addEventListener('click', () => {
+function handleWalletExport()
+{
+    overviewShowKeyButton.addEventListener('click', () =>
+    {
         formMessageReset();
-        if (!overviewWalletAddress.value) return;
-        wsmanager.getSecretKeys(overviewWalletAddress.value).then((keys) => {
-            showkeyInputViewKey.value = keys.viewSecretKey;
-            showkeyInputSpendKey.value = keys.spendSecretKey;
-            if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
-                showkeyInputSeed.value = keys.mnemonicSeed;
-                showkeyInputSeed.classList.add('ctcl');
-            } else {
-                showkeyInputSeed.value = `- Mnemonic seed is not available for this wallet -${os.EOL}You still can restore your wallet using private keys shown above.`;
-                showkeyInputSeed.classList.remove('ctcl');
-            }
-        }).catch(() => {
-            formMessageSet('secret', 'error', "Failed to get key, please try again in a few seconds");
+        let walletPass = overviewShowPassword.value;
+
+        if (!walletPass) {
+            formMessageSet ('secret', 'error', "You need to input the wallet password before clicking on Reveal");
+            return;
+        }
+
+        wsmanager.getSecretKeys (walletPass).then ((privateKey) => {
+            showkeyInputViewKey.value = privateKey;
+        }).catch((err) => {
+            formMessageSet ('secret', 'error', "Failed to decrypt the private key : " + err);
         });
     });
 
-    showkeyButtonExportKey.addEventListener('click', () => {
+    showkeyButtonExportKey.addEventListener('click', () =>
+    {
         formMessageReset();
         let filename = remote.dialog.showSaveDialog({
             title: "Export keys to file...",
@@ -1933,13 +1695,10 @@ function handleWalletExport() {
             ]
         });
         if (filename) {
-            wsmanager.getSecretKeys(overviewWalletAddress.value).then((keys) => {
+            let walletPass = overviewShowPassword.value;
+            wsmanager.getSecretKeys(walletPass).then((privateKey) => {
                 let textContent = `Wallet Address:${os.EOL}${wsession.get('loadedWalletAddress')}${os.EOL}`;
-                textContent += `${os.EOL}View Secret Key:${os.EOL}${keys.viewSecretKey}${os.EOL}`;
-                textContent += `${os.EOL}Spend Secret Key:${os.EOL}${keys.spendSecretKey}${os.EOL}`;
-                if (keys.mnemonicSeed && keys.mnemonicSeed.length > 1) {
-                    textContent += `${os.EOL}Mnemonic Seed:${os.EOL}${keys.mnemonicSeed}${os.EOL}`;
-                }
+                textContent += `${os.EOL}Private Key:${os.EOL}${privateKey}${os.EOL}`;
                 try {
                     fs.writeFileSync(filename, textContent);
                     formMessageSet('secret', 'success', 'Your keys have been exported, please keep the file secret!');
@@ -1959,31 +1718,24 @@ function handleSendTransfer() {
         if (maxsend) sendInputAmount.value = maxsend;
     });
 
-    sendInputFee.value = 0.1;
-    function setPaymentIdState(addr) {
-        if (addr.length > 99) {
-            sendInputPaymentId.value = '';
-            sendInputPaymentId.setAttribute('disabled', true);
-        } else {
-            sendInputPaymentId.removeAttribute('disabled');
-        }
-    }
+    sendInputFee.value = 100000;
+    
     sendInputAddress.addEventListener('change', (event) => {
         let addr = event.target.value || '';
         let abdata = wsession.get('addressBook').data || null;
         if (!addr.length) initAddressCompletion(abdata);
-        setPaymentIdState(addr);
+        // setPaymentIdState(addr);
     });
     sendInputAddress.addEventListener('keyup', (event) => {
         let addr = event.target.value || '';
         let abdata = wsession.get('addressBook').data || null;
         if (!addr.length) initAddressCompletion(abdata);
-        setPaymentIdState(addr);
+        // setPaymentIdState(addr);
     });
-
 
     sendButtonSend.addEventListener('click', () => {
         formMessageReset();
+
         function precision(a) {
             if (!isFinite(a)) return 0;
             let e = 1, p = 0;
@@ -2002,20 +1754,22 @@ function handleSendTransfer() {
             return;
         }
 
-        let paymentId = sendInputPaymentId.value ? sendInputPaymentId.value.trim() : '';
-        if (recipientAddress.length > 99) {
-            paymentId = '';
-        } else if (paymentId.length) {
-            if (!wsutil.validatePaymentId(paymentId)) {
-                formMessageSet('send', 'error', 'Sorry, invalid Payment ID');
-                return;
-            }
+        const passwordValue = walletOpenInputPassword.value ? walletOpenInputPassword.value.trim() : '';
+        if (passwordValue == '') {
+            formMessageSet ('send', 'error', `Wallet password must be filled`);
+            return;
         }
 
-        let total = 0;
+        let txFilePath = sendTxFile.value ? sendTxFile.value.trim() : '';
+        if (txFilePath == '') {
+            formMessageSet('send', 'error', `You need to submit the transaction file path.`);
+            return;
+        }
+
         let amount = sendInputAmount.value ? parseFloat(sendInputAmount.value) : 0;
-        if (amount <= 0) {
-            formMessageSet('send', 'error', 'Sorry, invalid amount');
+
+        if (amount < 0) {
+            formMessageSet('send', 'error', 'Sorry, invalid amount (must be positive)');
             return;
         }
 
@@ -2023,9 +1777,6 @@ function handleSendTransfer() {
             formMessageSet('send', 'error', `Amount can't have more than ${config.decimalPlaces} decimal places`);
             return;
         }
-
-        total += amount;
-        let txAmount = wsutil.amountForImmortal(amount); // final transfer amount
 
         let fee = sendInputFee.value ? parseFloat(sendInputFee.value) : 0;
         let minFee = config.minimumFee;
@@ -2035,36 +1786,28 @@ function handleSendTransfer() {
         }
 
         if (precision(fee) > config.decimalPlaces) {
-            formMessageSet('send', 'error', `Fee can't have more than  ${config.decimalPlaces} decimal places`);
+            formMessageSet('send', 'error', `Fee can't have more than ${config.decimalPlaces} decimal places`);
             return;
         }
 
-        total += fee;
-        let txFee = wsutil.amountForImmortal(fee);
+        var timeStampInMs = 
+            window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? 
+                window.performance.now() + window.performance.timing.navigationStart 
+              : Date.now();
 
-        let nodeFee = wsession.get('nodeFee') || 0; // nodeFee value is already for mortal
-        total += nodeFee;
-        let txTotal = wsutil.amountForMortal(total);
-
-        const availableBalance = wsession.get('walletUnlockedBalance') || (0).toFixed(config.decimalPlaces);
-
-        if (parseFloat(txTotal) > parseFloat(availableBalance)) {
-            formMessageSet(
-                'send',
-                'error',
-                `Sorry, you don't have enough funds to process this transfer. Transfer amount+fees: ${(txTotal)}`
-            );
-            return;
-        }
-
-        // todo: adjust decimal
         let tx = {
-            address: recipientAddress,
-            amount: txAmount,
-            fee: txFee
+            to: recipientAddress,
+            from: wsession.get('loadedWalletAddress'),
+            value: Math.pow (10, 18) * amount, // 1 ICX = 10**18 Loops
+            stepLimit: fee,
+            nid: 2,
+            nonce: 0,
+            version: "0x3",
+            timestamp: timeStampInMs * 1000
         };
 
-        if (paymentId.length) tx.paymentId = paymentId;
+        // if (paymentId.length) tx.paymentId = paymentId;
+
         let tpl = `
             <div class="div-transaction-panel">
                 <h4>Transfer Confirmation</h4>
@@ -2072,22 +1815,16 @@ function handleSendTransfer() {
                     <p>Please confirm that you have everything entered correctly.</p>
                     <dl>
                         <dt class="dt-ib">Recipient address:</dt>
-                        <dd class="dd-ib">${tx.address}</dd>
-                        <dt class="${paymentId.length ? 'dt-ib' : 'hidden'}">Payment ID:</dt>
-                        <dd class="${paymentId.length ? 'dd-ib' : 'hidden'}">${paymentId.length ? paymentId : 'N/A'}</dd>
+                        <dd class="dd-ib">${tx.to}</dd>
                         <dt class="dt-ib">Amount:</dt>
-                        <dd class="dd-ib">${amount} ${config.assetTicker}</dd>
-                        <dt class="dt-ib">Transaction Fee:</dt>
-                        <dd class="dd-ib">${fee} ${config.assetTicker}</dd>
-                        <dt class="dt-ib">Node Fee:</dt>
-                        <dd class="dd-ib">${(nodeFee > 0 ? nodeFee : '0.00')} ${config.assetTicker}</dd>
-                        <dt class="dt-ib">Total:</dt>
-                        <dd class="dd-ib">${total} ${config.assetTicker}</dd>
+                        <dd class="dd-ib">${tx.value / Math.pow (10, 18)} ${config.assetTicker}</dd>
+                        <dt class="dt-ib">Step Limit</dt>
+                        <dd class="dd-ib">${tx.stepLimit} steps</dd>
                     </dl>
                 </div>
                 <div class="div-panel-buttons">
                     <button data-target='#tf-dialog' type="button" class="form-bt button-red dialog-close-default" id="button-send-ko">Cancel</button>
-                    <button data-target='#tf-dialog' type="button" class="form-bt button-green" id="button-send-ok">OK, Send it!</button>
+                    <button data-target='#tf-dialog' type="button" class="form-bt button-green" id="button-send-ok">OK, Create the transaction</button>
                 </div>
                 <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
             </div>`;
@@ -2099,86 +1836,114 @@ function handleSendTransfer() {
 
         let sendBtn = dialog.querySelector('#button-send-ok');
 
-        sendBtn.addEventListener('click', (event) => {
+        sendBtn.addEventListener('click', (event) =>
+        {
             let md = document.querySelector(event.target.dataset.target);
             md.close();
-            formMessageSet('send', 'warning', 'Sending transaction, please wait...<br><progress></progress>');
-            wsmanager.sendTransaction(tx).then((result) => {
-                formMessageReset();
-                let txhashUrl = `<a class="external" title="view in block explorer" href="${config.blockExplorerUrl.replace('[[TX_HASH]]', result.transactionHash)}">${result.transactionHash}</a>`;
-                let okMsg = `Transaction sent!<br>Tx. hash: ${txhashUrl}.<br>Your balance may appear incorrect while transaction not fully confirmed.`;
-                formMessageSet('send', 'success', okMsg);
-                // save to address book if it's new address
-                let entryHash = wsutil.fnvhash(recipientAddress + paymentId);
-                let abook = wsession.get('addressBook');
-                let addressBookData = abook.data;
-                if (!addressBookData.hasOwnProperty(entryHash)) {
-                    let now = new Date().toISOString().split('T');
-                    let newAddress = {
-                        name: `NEW (${now[0]} ${now[1].split('.')[0]})`,
-                        address: recipientAddress,
-                        paymentId: paymentId,
-                        qrCode: wsutil.genQrDataUrl(recipientAddress)
-                    };
-                    abook.data[entryHash] = newAddress;
-                    wsession.set('addressBook', abook);
-                    let rowData = Object.entries(abook.data).map(([key, value]) => ({ key, value }));
-                    window.ABOPTSAPI.api.setRowData(rowData);
-                    window.ABOPTSAPI.api.deselectAll();
-                    window.ABOPTSAPI.api.resetQuickFilter();
-                    window.ABOPTSAPI.api.sizeColumnsToFit();
-                    setTimeout(() => {
-                        addressBook.save(abook);
-                        initAddressCompletion(abook.data);
-                    }, 500);
+            
+            // validate path
+            wsutil.validateTransactionPath (txFilePath, DEFAULT_TRANSACTION_PATH).then ((finalPath) => {
+                // user already confirm to overwrite
+                if (wsutil.isRegularFileAndWritable(finalPath)) {
+                    try {
+                        // delete the old tx file
+                        fs.unlinkSync(finalPath);
+                    } catch (err) {
+                        formMessageSet ('create', 'error', `Unable to overwrite existing file, please enter new transaction file path`);
+                        return;
+                    }
                 }
 
-                sendInputAddress.value = '';
-                sendInputPaymentId.value = '';
-                sendInputAmount.value = '';
+                // create transaction
+                wsmanager.createTransaction (tx, finalPath, settings.get('recentWallet'), passwordValue).then((transactionFile) => {
+                    // changeSection('section-overview-load');
+                    // wsutil.showToast('Transaction has been created, you can now send it using the "Send transaction" menu !', 12000);
+                    formMessageSet('send', 'success', 'Transaction has been created, you can now send it using the "Send transaction" menu !');
+                }).catch((err) => {
+                    formMessageSet('send', 'error', `Transaction can not be created, please check your input and try again : ${err}`);
+                    return;
+                });
+                
             }).catch((err) => {
-                err = err.message || err;
-                let msg = `${err}`;
-                if (err.includes('ESOCKETTIMEDOUT')) {
-                    msg = `Transaction was sent but failed to get transaction hash.
-                    Please wait for a few blocks, check your balance and transaction history before resending!`;
-                } else if (err.includes('size is too big')) {
-                    msg = `Failed to send Transaction:
-                    Transaction size is too big. Please optimize your wallet, or try sending in smaller amount`;
-                }
-                formMessageSet('send', 'error', `${msg}`);
+                formMessageSet('send', 'error', `Invalid transaction file path, please enter another one.`);
+                return;
             });
+
             wsutil.clearChild(md);
         });
     });
 
-    /*
-    sendOptimize.addEventListener('click', () => {
-        if (!wsession.get('synchronized', false)) {
-            wsutil.showToast('Synchronization is in progress, please wait.');
+    sendButtonSendTx.addEventListener('click', () => {
+        formMessageReset();
+        let tx;
+
+        let txPath = inputLoadTx.value ? inputLoadTx.value.trim() : '';
+        if (txPath == '') {
+            formMessageSet('sendtx', 'error', `You need to chose a transaction that contains your transaction to send.`);
             return;
         }
 
-        if (wsession.get('fusionProgress')) {
-            wsutil.showToast('Wallet optimization in progress, please wait');
+        try {
+            tx = JSON.parse (fs.readFileSync (txPath, 'utf8'));
+        } catch (err) {
+            formMessageSet('sendtx', 'error', `Cannot read the transaction file.`);
             return;
         }
 
-        if (!confirm('You are about to perform wallet optimization. This process may take a while to complete, are you sure?')) return;
-        wsutil.showToast('Optimization started, your balance may appear incorrect during the process', 3000);
+        // Hack : simulate a SignedTransaction object, as the SDK doesn't provide a way
+        // to create a SignedTransaction object without the private key
+        tx.getProperties = function () {
+            return this;
+        }
 
-        // start progress
-        let progressBar = document.getElementById('fusionProgress');
-        progressBar.classList.remove('hidden');
-        wsession.set('fusionProgress', true);
-        wsmanager.optimizeWallet().then(() => {
-            console.log('fusion started');
-        }).catch(() => {
-            console.log('fusion err');
+        let tpl = `
+            <div class="div-transaction-panel">
+                <h4>Transfer Confirmation</h4>
+                <div class="transferDetail">
+                    <p>Please confirm that the transaction is correct.</p>
+                    <dl>
+                        <dt class="dt-ib">Source address:</dt>
+                        <dd class="dd-ib">${tx.from}</dd>
+                        <dt class="dt-ib">Destination address:</dt>
+                        <dd class="dd-ib">${tx.to}</dd>
+                        <dt class="dt-ib">Amount:</dt>
+                        <dd class="dd-ib">${tx.value ? parseInt(tx.value, 16) / Math.pow (10, 18) : 0} ${config.assetTicker}</dd>
+                        <dt class="dt-ib">Step Limit</dt>
+                        <dd class="dd-ib">${parseInt(tx.stepLimit, 16)} steps</dd>
+                    </dl>
+                </div>
+                <div class="div-panel-buttons">
+                    <button data-target='#tf-dialog' type="button" class="form-bt button-red dialog-close-default" id="button-send-ko">Cancel</button>
+                    <button data-target='#tf-dialog' type="button" class="form-bt button-green" id="button-send-ok">OK, Send the transaction</button>
+                </div>
+                <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
+            </div>`;
+
+        let dialog = document.getElementById('tf-dialog');
+        wsutil.innerHTML(dialog, tpl);
+        dialog = document.getElementById('tf-dialog');
+        dialog.showModal();
+
+        let sendBtn = dialog.querySelector('#button-send-ok');
+
+        sendBtn.addEventListener('click', (event) =>
+        {
+            formMessageSet ('sendtx', 'warning', `Sending transaction...<br><progress></progress>`);
+
+            let md = document.querySelector(event.target.dataset.target);
+            md.close();
+ 
+            wsmanager.sendSignedTransaction (tx).then ((txHash) => {
+                transactionHashInput.value = txHash;
+                transactionHashContainer.style.display = "block";
+                formMessageSet('sendtx', 'success', `Transaction sent successfully !`);
+            }).catch((err) => {
+                formMessageSet('sendtx', 'error', `Cannot send the transaction : ${err}`);
+            });
+
+            wsutil.clearChild(md);
         });
-        return; // just return, it will notify when its done.
     });
-    */
 }
 
 function resetTransactions() {
@@ -2323,16 +2088,6 @@ function handleTransactions() {
         renderList(txs);
     }
 
-    // txupdate
-    txInputUpdated.addEventListener('change', (event) => {
-        let updated = parseInt(event.target.value, 10) === 1;
-        if (!updated) return;
-        txInputUpdated.value = 0;
-        listTransactions();
-    });
-
-    txButtonRefresh.addEventListener('click', listTransactions);
-
     function showTransaction(el) {
         let tx = el.data;
         let txdate = new Date(tx.timestamp * 1000).toUTCString();
@@ -2374,28 +2129,6 @@ function handleTransactions() {
         dialog = document.getElementById('tx-dialog');
         dialog.showModal();
     }
-
-    // sort
-    txButtonSortAmount.addEventListener('click', (event) => {
-        event.preventDefault();
-        let currentDir = event.target.dataset.dir;
-        let targetDir = (currentDir === 'desc' ? 'asc' : 'desc');
-        event.target.dataset.dir = targetDir;
-        resetTxSortMark();
-        event.target.classList.add(targetDir);
-        window.TXOPTSAPI.api.setSortModel(getSortModel('rawAmount', targetDir));
-    });
-
-
-    txButtonSortDate.addEventListener('click', (event) => {
-        event.preventDefault();
-        let currentDir = event.target.dataset.dir;
-        let targetDir = (currentDir === 'desc' ? 'asc' : 'desc');
-        event.target.dataset.dir = targetDir;
-        resetTxSortMark();
-        event.target.classList.add(targetDir);
-        window.TXOPTSAPI.api.setSortModel(getSortModel('timestamp', targetDir));
-    });
 
     // export
     function exportAsCsv(mode) {
@@ -2476,22 +2209,6 @@ function handleTransactions() {
     wsutil.liveEvent('button.export-txtype', 'click', (event) => {
         let txtype = event.target.dataset.txtype || 'all';
         return exportAsCsv(txtype);
-    });
-
-    txButtonExport.addEventListener('click', () => {
-        let dialogTpl = `<div class="transaction-panel">
-            <h4>Export Transactions to CSV:</h4>
-            <div class="div-panel-buttons">
-                <button data-txtype="all" type="button" class="button-green export-txtype">All Transfers</button>
-                <button data-txtype="in" type="button" class="button-green export-txtype">Incoming Transfers</button>
-                <button data-txtype="out" type="button" class="button-green export-txtype">Outgoing Transfers</button>
-                <button data-target="#ab-dialog" type="button" class="button-gray dialog-close-default">Cancel</button>
-            </div>
-        `;
-        let dialog = document.getElementById('ab-dialog');
-        if (dialog.hasAttribute('open')) dialog.close();
-        dialog.innerHTML = dialogTpl;
-        dialog.showModal();
     });
 }
 

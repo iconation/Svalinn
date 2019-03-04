@@ -1,10 +1,10 @@
-## Svalinn - GUI wallet for TurtleCoin.
+## Svalinn - GUI wallet for ICX.
 
 ![Svalinn Screens](https://i.imgur.com/41Ujq0S.gif "Svalinn Screens")
 
 ### Features:
 
-This wallet contains the basic functions required to mvanage your TurtleCoin assets:
+This wallet contains the basic functions required to mvanage your ICX assets:
 
 * Wallet creation:
   * Create new wallet.
@@ -28,7 +28,7 @@ This wallet contains the basic functions required to mvanage your TurtleCoin ass
   * Allow to optionally create password protected address book.
 * Misc:
   * Option to use system tray (on closing/minimizing wallet)
-  * Provides list of public nodes, fetch/updated daily from [turtlecoin-nodes-json](https://github.com/turtlecoin/turtlecoin-nodes-json) repo.
+  * Provides list of public nodes, fetch/updated daily from [turtlecoin-nodes-json](https://github.com/ICONation/turtlecoin-nodes-json) repo.
   * Allow to add custom node address.
   * Theme: Dark & Light Mode
   * [Keyboard shortcuts](docs/shortcut.md)
@@ -60,7 +60,7 @@ Once you have Node+npm installed:
 ```
 # first, download turtle-service binary for each platform
 # from TurtleCoin official repo
-# https://github.com/turtlecoin/turtlecoin/releases
+# https://github.com/ICONation/turtlecoin/releases
 # extract the turtle-service executable somewhere
 
 # clone the repo

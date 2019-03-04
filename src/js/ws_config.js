@@ -2,19 +2,21 @@ var config = {};
 
 // self explanatory, your application name, descriptions, etc
 config.appName = 'Svalinn';
-config.appDescription = 'ICONation Wallet';
-config.appSlogan = 'By ICONists, For ICONists';
+config.appDescription = 'ICONation ICX Wallet';
+config.appSlogan = 'Svalinn';
 config.appId = 'org.iconation.svalinn';
 config.appGitRepo = 'https://github.com/ICONation/svalinn';
 
-// default port number for your daemon (e.g. TurtleCoind)
+// default port number for your daemon
 config.daemonDefaultRpcPort = 11898;
 
 // wallet file created by this app will have this extension
 config.walletFileDefaultExt = 'icx';
+// transaction file created by this app will have this extension
+config.transactionFileDefaultExt = 'tx';
 
 // change this to match your wallet service executable filename
-config.walletServiceBinaryFilename = 'turtle-service';
+config.walletServiceBinaryFilename = 'svalinn';
 
 // version on the bundled service (turtle-service)
 config.walletServiceBinaryVersion = "v0.12.0";
@@ -53,15 +55,15 @@ config.addressPrefix = 'hx';
 config.addressLength = 42;
 
 // minimum fee for sending transaction
-config.minimumFee = 0.1;
+config.minimumFee = 100000;
 // minimum amount for sending transaction
-config.mininumSend = 0.1;
+config.mininumSend = 0.0;
 // default mixin/anonimity for transaction
 config.defaultMixin = 3;
 // to convert from atomic unit
-config.decimalDivisor = 100;
+config.decimalDivisor = 1000000000000000000;
 // to represent human readable value
-config.decimalPlaces = 2;
+config.decimalPlaces = 18;
 
 // obfuscate address book entries, set to false if you want to save it in plain json file.
 // not for security because the encryption key is attached here
