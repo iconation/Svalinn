@@ -89,19 +89,6 @@ function updateSyncProgress(data) {
             updateBalance(resetBalance);
             break;
         case syncStatus.IDLE:
-            // sync status text
-            // statusText = 'IDLE';
-            // syncInfoBar.innerHTML = statusText;
-            // sync info bar class
-            // syncDiv.className = '';
-            // sync status icon
-            // iconSync.setAttribute('data-icon', 'pause-circle');
-            // iconSync.classList.remove('fa-spin');
-            // connection status
-            // connInfoDiv.classList.remove('conn-warning');
-            // connInfoDiv.classList.add('empty');
-            // connInfoDiv.textContent = '';
-
             // sync sess flags
             wsession.set('syncStarted', false);
             wsession.set('synchronized', false);
@@ -110,6 +97,11 @@ function updateSyncProgress(data) {
             setWinTitle();
             // no node connected
             wsession.set('connectedNode', '');
+            let resetBalance = {
+                availableBalance: 0,
+                lockedAmount: 0
+            };
+            updateBalance(resetBalance);
             break;
         case syncStatus.RESET:
             if (!connInfoDiv.innerHTML.startsWith('Connected')) {
@@ -219,60 +211,11 @@ function fusionCompleted() {
     wsutil.showToast('Optimization completed. You may need to repeat the process until your wallet is fully optimized.', 5000);
 }
 
-function updateBalance(data) {
+function updateBalance (availableBalance)
+{
     const balanceAvailableField = document.querySelector('#balance-available > span');
-    const balanceLockedField = document.querySelector('#balance-locked > span');
-    const maxSendFormHelp = document.getElementById('sendFormHelp');
-    const sendMaxAmount = document.getElementById('sendMaxAmount');
-    let inputSendAmountField = document.getElementById('input-send-amount');
-
-    if (!data) return;
-    let availableBalance = parseFloat(data.availableBalance) || 0;
-
-    let bUnlocked = wsutil.amountForMortal(availableBalance);
-    let bLocked = wsutil.amountForMortal(data.lockedAmount);
-    let fees = (wsession.get('nodeFee') + config.minimumFee);
-    let maxSendRaw = (bUnlocked - fees);
-
-    if (maxSendRaw <= 0) {
-        inputSendAmountField.value = 0;
-        inputSendAmountField.setAttribute('max', '0.00');
-        inputSendAmountField.setAttribute('disabled', 'disabled');
-        maxSendFormHelp.innerHTML = "You don't have any funds to be sent.";
-        sendMaxAmount.dataset.maxsend = 0;
-        sendMaxAmount.classList.add('hidden');
-        wsession.set('walletUnlockedBalance', 0);
-        wsession.set('walletLockedBalance', 0);
-        if (availableBalance < 0) return;
-    }
-
-    balanceAvailableField.innerHTML = bUnlocked;
-    balanceLockedField.innerHTML = bLocked;
-    wsession.set('walletUnlockedBalance', bUnlocked);
-    wsession.set('walletLockedBalance', bLocked);
-    // update fusion progress
-    if (true === wsession.get('fusionProgress')) {
-        if (wsession.get('fusionStarted') && parseInt(bLocked, 10) <= 0) {
-            fusionCompleted();
-        } else {
-            if (parseInt(bLocked, 10) > 0) {
-                wsession.set('fusionStarted', true);
-            }
-        }
-    }
-
-    let walletFile = require('path').basename(settings.get('recentWallet'));
-    let wintitle = `(${walletFile}) - ${bUnlocked} ${config.assetTicker}`;
-    setWinTitle(wintitle);
-
-    if (maxSendRaw > 0) {
-        let maxSend = (maxSendRaw).toFixed(config.decimalPlaces);
-        inputSendAmountField.setAttribute('max', maxSend);
-        inputSendAmountField.removeAttribute('disabled');
-        maxSendFormHelp.innerHTML = `Max. amount is ${maxSend}`;
-        sendMaxAmount.dataset.maxsend = maxSend;
-        sendMaxAmount.classList.remove('hidden');
-    }
+    balanceAvailableField.innerHTML = availableBalance;
+    wsession.set ('walletUnlockedBalance', availableBalance);
 }
 
 function updateTransactions(result) {
@@ -377,27 +320,13 @@ function showFeeWarning(fee) {
     });
 }
 
-function updateQr(address) {
-    //let backupReminder = document.getElementById('button-overview-showkeys');
+function updateQr(address)
+{
     if (!address) {
         triggerTxRefresh();
-        //backupReminder.classList.remove('connected');
         try { clearInterval(window.backupReminderTimer); } catch (_e) { }
         return;
     }
-
-    // window.backupReminderTimer = setInterval(() => {
-    //     if (Math.floor(Math.random() * Math.floor(2)) >= 1) {
-    //         backupReminder.classList.add('connected');
-    //         backupReminder.classList.add('reminder');
-    //         setTimeout(() => {
-    //             backupReminder.classList.remove('reminder');
-    //         }, 2000);
-    //         setTimeout(() => {
-    //             backupReminder.classList.remove('connected');
-    //         }, 2200);
-    //     }
-    // }, 50000);
 
     let walletHash = wsutil.fnvhash(address);
     wsession.set('walletHash', walletHash);

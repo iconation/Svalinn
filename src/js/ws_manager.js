@@ -560,6 +560,20 @@ SvalinnManager.prototype.notifyUpdate = function (msg) {
     uiupdater.updateUiState(msg);
 };
 
+SvalinnManager.prototype.getBalance = function (address) {
+    
+    return new Promise ((resolve, reject) => {
+        try {
+            const httpProvider = new IconService.HttpProvider ('http://iconation.team:9000/api/v3');
+            const iconService = new IconService (httpProvider);
+            const balance = iconService.getBalance (address).execute();
+            return resolve (balance);
+        } catch (err) {
+            return reject (err);
+        }
+    });
+};
+
 SvalinnManager.prototype.resetState = function () {
     return this._reinitSession();
 };

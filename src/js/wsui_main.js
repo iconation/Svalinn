@@ -29,6 +29,9 @@ const Menu = remote.Menu;
 const WS_VERSION = settings.get('version', 'unknown');
 const DEFAULT_WALLET_PATH = remote.app.getPath('documents');
 const DEFAULT_TRANSACTION_PATH = remote.app.getPath('documents');
+const WALLET_REFRESH_INTERVAL = 4 * 1000;
+
+let refreshWalletWorker;
 
 
 let WALLET_OPEN_IN_PROGRESS = false;
@@ -1264,11 +1267,28 @@ function handleWalletOpen() {
             return false;
         }
 
+        function balanceUpdate (address) {
+            
+            wsmanager.getBalance (address).then ((balance) => {
+                balance = Number.parseFloat (balance / Math.pow(10, 18));
+                wsmanager.notifyUpdate ({
+                    type: 'balanceUpdated',
+                    data: balance
+                });
+            }).catch((err) => {
+                formMessageSet('load', 'warning', `Cannot get the balance (are you connected to Internet?)`);
+            });
+        }
+
         function onSuccess() {
             walletOpenInputPath.value = settings.get('recentWallet');
             overviewWalletAddress.value = wsession.get('loadedWalletAddress');
+            balanceUpdate (overviewWalletAddress.value);
+            
+            refreshWalletWorker = setInterval(() =>{
+                balanceUpdate (overviewWalletAddress.value);
+            }, WALLET_REFRESH_INTERVAL);
 
-            wsmanager.getNodeFee();
             WALLET_OPEN_IN_PROGRESS = false;
             changeSection('section-overview');
 
@@ -1353,6 +1373,9 @@ function handleWalletClose() {
         if (dialog.hasAttribute('open')) dialog.close();
         wsmanager.resetState();
         wsutil.clearChild(dialog);
+
+        clearInterval(refreshWalletWorker);
+
         // Go to welcome page
         changeSection("section-welcome");
     });
@@ -1642,7 +1665,7 @@ function handleSendTransfer() {
         let fee = sendInputFee.value ? parseFloat(sendInputFee.value) : 0;
         let minFee = config.minimumFee;
         if (fee < minFee) {
-            formMessageSet('send', 'error', `Fee can't be less than ${wsutil.amountForMortal(minFee)}`);
+            formMessageSet('send', 'error', `Fee can't be less than ${config.minimumFee}`);
             return;
         }
 
@@ -1659,13 +1682,15 @@ function handleSendTransfer() {
         let tx = {
             to: recipientAddress,
             from: wsession.get('loadedWalletAddress'),
-            value: Math.pow (10, 18) * amount, // 1 ICX = 10**18 Loops
+            value: Math.trunc (Math.pow (10, 18) * amount), // 1 ICX = 10**18 Loops
             stepLimit: fee,
             nid: 2,
             nonce: 0,
             version: "0x3",
             timestamp: timeStampInMs * 1000
         };
+
+        console.log(tx);
 
         // if (paymentId.length) tx.paymentId = paymentId;
 
@@ -2428,7 +2453,7 @@ function initKeyBindings() {
         return openedDialog.close();
     });
 
-    Mousetrap.bind([`ctrl+\\`, `command+\\`], () => {
+    Mousetrap.bind([`ctrl+d`, `command+d`], () => {
         setDarkMode(!document.documentElement.classList.contains('dark'));
     });
 }

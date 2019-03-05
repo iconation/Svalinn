@@ -39,7 +39,7 @@ const DEFAULT_SETTINGS = {
     pubnodes_exclude_offline: false,
     tray_minimize: false,
     tray_close: false,
-    darkmode: true,
+    darkmode: false,
     service_config_format: config.walletServiceConfigFormat
 };
 const DEFAULT_SIZE = { width: 840, height: 700 };
@@ -232,6 +232,7 @@ function createWindow() {
 }
 
 function serviceBinCheck() {
+    /*
     if (DEFAULT_SERVICE_BIN.startsWith('/tmp')) {
         log.warn(`AppImage env, copying service bin file`);
         let targetPath = path.join(app.getPath('userData'), SERVICE_FILENAME);
@@ -266,6 +267,7 @@ function serviceBinCheck() {
             settings.set('service_bin', DEFAULT_SERVICE_BIN);
         }
     }
+    */
 }
 
 function initSettings() {
@@ -276,10 +278,12 @@ function initSettings() {
     });
     settings.set('service_password', crypto.randomBytes(32).toString('hex'));
     settings.set('version', SVALINN_VERSION);
-    serviceBinCheck();
+    // serviceBinCheck();
+    /*
     fs.unlink(WALLET_CFGFILE, (err) => {
         if (err) log.debug(err.code === 'ENOENT' ? 'No stalled wallet config' : err.message);
     });
+    */
 }
 
 app.on('browser-window-created', function (e, window) {
