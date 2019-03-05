@@ -5,8 +5,6 @@
     alt="ICONation logo">
 </p>
 
- [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
 <h1 align="center">Svalinn - GUI wallet for ICX</h1>
 
 <p align="center">
@@ -15,6 +13,8 @@
     width="500px"
     alt="Svalinn Screens">
 </p>
+
+ [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ### Features:
 
