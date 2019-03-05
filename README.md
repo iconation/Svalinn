@@ -5,7 +5,7 @@
     alt="ICONation logo">
 </p>
 
-<h1 align="center">Svalinn - GUI wallet for ICX</h1>
+<h1 align="center">Svalinn - GUI wallet for ICON</h1>
 
 <p align="center">
   <img 
