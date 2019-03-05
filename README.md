@@ -9,7 +9,7 @@
 
 <p align="center">
   <img 
-    src="https://i.imgur.com/XvovifF.png"
+    src="https://i.imgur.com/l5fpalj.png"
     width="500px"
     alt="Svalinn Screens">
 </p>
