@@ -1,6 +1,20 @@
-## Svalinn - GUI wallet for ICX.
+<p align="center">
+  <img 
+    src="https://iconation.team/images/very_small.png" 
+    width="120px"
+    alt="ICONation logo">
+</p>
 
-![Svalinn Screens](https://i.imgur.com/XvovifF.png "Svalinn Screens")
+<h1 align="center">Svalinn - GUI wallet for ICON</h1>
+
+<p align="center">
+  <img 
+    src="https://i.imgur.com/XvovifF.png"
+    width="500px"
+    alt="Svalinn Screens">
+</p>
+
+ [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ### Features:
 
@@ -39,7 +53,40 @@ This wallet contains the basic functions required to manage your ICX assets:
 2. Extract downloaded zip archived
 3. Run the executable binary (`Svalinn.app/Contents/MacOs/Svalinn`)
 
-### Using Svalinn
-Please visit our wiki page: [Svalinn User Guide](../../wiki).
-
 ### Building/Packaging Svalinn
+
+#### macOS
+
+- Install XCode : 
+https://itunes.apple.com/us/app/xcode/id497799835?mt=12
+
+- Install Homebrew : 
+
+```console
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+- Install Node :
+
+```console
+brew install node
+```
+
+- Install Git :
+
+```console
+brew install git
+```
+
+- Download Svalinn source code :
+
+```console
+git clone https://github.com/iconation/Svalinn.git && cd Svalinn
+```
+
+- Build Svalinn :
+
+```console
+npm install && npm run debug
+```
+
