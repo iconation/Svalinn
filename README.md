@@ -40,18 +40,28 @@ This wallet contains the basic functions required to manage your ICX assets:
 
 #### Windows:
 1. Download the latest installer here: https://github.com/ICONation/svalinn/releases/latest
-2. Run the installer (`svalinn-<version>-win-setup.exe`) and follow the installation wizard.
-3. Launch Svalinn via start menu or desktop shortcut.
-
-#### GNU/Linux (AppImage):
-1. Download latest AppImage bundle here: https://github.com/ICONation/svalinn/releases/latest
-2. Make it executable, either via GUI file manager or command line, e.g. `chmod +x svalinn-<version>-linux.AppImage`
-3. Run/execute the file, double click in file manager, or run via shell/command line (See: https://docs.appimage.org/user-guide/run-appimages.html)
+2. Extract `Svalinn-win32-x64.7z`and run `Svalinn.exe` inside.
 
 #### macOS
 1. Download latest archive here: https://github.com/ICONation/svalinn/releases/latest
-2. Extract downloaded zip archived
-3. Run the executable binary (`Svalinn.app/Contents/MacOs/Svalinn`)
+2. Extract `Svalinn-darwin-x64.zip` and run `Svalinn.app` inside.
+
+## Available keyboard shortcut
+
+| Shortcut                                       | Target                               | Conditions |
+| ---------                                      | -------                              | ---------- |
+| <kbd>Ctrl</kbd>+<kbd>Home</kbd>                | Go to **overview/welcome** screen    | - |
+| <kbd>Ctrl</kbd>+<kbd>Tab</kbd>                 | Go to **next tab/screen**            | - |
+| <kbd>Ctrl</kbd>+<kbd>n</kbd>                   | Create new wallet                    | No wallet is being opened |
+| <kbd>Ctrl</kbd>+<kbd>o</kbd>                   | Open a wallet                        | No wallet is being opened |
+| <kbd>Ctrl</kbd>+<kbd>i</kbd>                   | Import wallet from private keys      | No wallet is being opened |
+| <kbd>Ctrl</kbd>+<kbd>e</kbd>                   | Export private keys                  | Wallet is currently opened |
+| <kbd>Ctrl</kbd>+<kbd>t</kbd>                   | Go to **Create Transaction** screen  | Wallet is currently opened |
+| <kbd>Ctrl</kbd>+<kbd>s</kbd>                   | Go to **Send Transaction** screen    | Wallet is currently opened |
+| <kbd>Ctrl</kbd>+<kbd>x</kbd>                   | Close currently opened wallet        | Wallet is currently opened |
+| <kbd>Ctrl</kbd>+<kbd>d</kbd>                   | Toggle dark/night mode               | - |
+| <kbd>Ctrl</kbd>+<kbd>/</kbd>                   | Display list of available shortcuts  | - |
+| <kbd>Esc</kbd>                                 | Close any opened dialog              | - |
 
 ### Building/Packaging Svalinn
 
