@@ -1,7 +1,5 @@
 ## Available keyboard shortcut
 
-![Svalinn Logo](svalinn.png)
-
 | Shortcut                                       | Target                               | Conditions |
 | ---------                                      | -------                              | ---------- |
 | <kbd>Ctrl</kbd>+<kbd>Home</kbd>                | Go to **overview/welcome** screen    | - |
