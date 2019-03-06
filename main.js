@@ -42,7 +42,7 @@ const DEFAULT_SETTINGS = {
     darkmode: false,
     service_config_format: config.walletServiceConfigFormat
 };
-const DEFAULT_SIZE = { width: 840, height: 700 };
+const DEFAULT_SIZE = { width: 840, height: 840 };
 const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
 
 app.prompExit = true;
