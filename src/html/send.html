@@ -28,11 +28,11 @@
                     <div class="div-send-amount  inline-block-div half-width">
                         <h4 class="text-spaced input-required">Amount (ICX)</h4>
                         <input tabindex="0" title="Required, amount of ICX you want to send." 
-                            required="required" type="number" step="1.0" 
+                            value = "0.00" required="required" type="number" step="1.0" 
                             min="0.00" class="text-block" id="input-send-amount" 
                             placeholder="0.00"
                         />
-                        <span id="sendFormHelp" class="form-help"><!--Max. amount you can send is 0.00 ICX--></span>
+                        <span id="sendFormHelp" class="form-help"></span>
                         <span tabindex="0" id="sendMaxAmount" class="hidden">send all</span>
                     </div>
                     <div class="div-send-fee inline-block-div half-width half-width-end">
@@ -41,7 +41,7 @@
                                 data-noclear="1" value="100000" required="required" type="number" step="10000" min="100000"
                                 class="text-block" id="input-send-fee" placeholder="100000"
                             />
-                            <span id="sendFormHelp" class="form-help"><!--Min. fee is 0.10 ICX--></span>
+                            <span id="sendFormHelp" class="form-help"></span>
                     </div>
                 </div>
 
@@ -53,6 +53,17 @@
                         placeholder="Required, full path to store this transaction..."
                         />
                     <button data-fileobj="transaction file" data-extension="tx" data-object="Transactions" data-selection="saveFile"  data-targetinput="input-send-txfile" type="button" class="button-green path-input-button notabindex" id="button-create-browse"><i class="fas fa-folder-open"></i></button>
+                </div>
+                
+                <div class="input-wrap">
+                    <h4 class="text-spaced input-required">Select network</h4>
+                    <label class="select-label">
+                    <select required="required" tabindex="0" name="node-address" id="input-settings-node-address" class="text-block">
+                        <option value="1">Mainnet</option>
+                        <option value="2">Testnet for Exchanges (Euljiro)</option>
+                        <option value="3">Testnet for DApps (Yeouido)</option>
+                    </select>
+                    </label>
                 </div>
                 
                 <div class="input-wrap">
