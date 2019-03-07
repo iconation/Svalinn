@@ -8,4 +8,4 @@ bin/*
 *.code-workspace
 resources
 Svalinn-win32-x64
-Svalinn-win32-x64.7z
+Svalinn-win32-x64.*
