@@ -10,29 +10,39 @@
             </div>
 
             <div class="main-balance-overview">
+                
                 <div class="div-overview-balance">
                     <h2 class="title">Balance:</h2>
                     <h4 class="text-block" id="balance-available" title="Available Balance">
                         <i class="fas fa-unlock-alt"></i> ICX
-                        <span data-cplabel="Balance" style="float: right;" class="tctcl">0.00</span>
+                        <span data-cplabel="Balance" style="float: right;" class="tctcl">...</span>
                     </h4>
                 </div>
+                            
+                <div class="div-overview-balance half-width half-width-end">
+                    <h2 class="title">Select network</h4>
+                    <select required="required" tabindex="0" name="node-address" id="overview-network-id" class="text-block">
+                        <option value="1">Mainnet</option>
+                        <option value="2">Testnet for Exchanges (Euljiro)</option>
+                        <option value="3">Testnet for DApps (Yeouido)</option>
+                    </select>
+                </div>
 
-                <div class="div-main-address-qr" id="div-w-qr">
-                    <span class="form-help form-help-qr hidden" id="scan-qr-help">Scan to share your address</span>
+                <div class="input-wrap">
+                        <span class="form-ew form-msg text-spaced-error" id="text-overview-error"></span>
+                        <span class="form-ew form-msg text-spaced-warning" id="text-overview-warning"></span>
+                        <span class="form-ew form-msg text-spaced-success" id="text-overview-success"></span>
                 </div>
             </div>
+
             <div class="input-wrap button-wrap">
                 <button tabindex="0" type="button" class="form-bt button-green" 
                     data-section="section-overview-show" 
-                    title="Backup your private keys, YOU REALLY HAVE TO DO THIS! (ctrl+e)" 
+                    title="Backup your private keys (ctrl+e)" 
                     id="button-overview-showkeys">Backup Keys</button>
                 <button tabindex="0" type="button" class="form-bt  button-green" 
                     title="Close current wallet, so you can open another wallet (ctrl+x)"
                     id="button-overview-closewallet">Close</button>
-                <div id="fusionProgress" class="fusion-progress hidden">
-                    <i class="fas fa-cogs fa-spin"></i> Wallet optimization in progress <i class="fas fa-cogs fa-spin"></i>
-                </div>
             </div>
         </div>
     </section>

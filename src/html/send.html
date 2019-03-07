@@ -25,16 +25,18 @@
                 </div>
                 
                 <div class="input-wrap">
+                    
                     <div class="div-send-amount  inline-block-div half-width">
                         <h4 class="text-spaced input-required">Amount (ICX)</h4>
                         <input tabindex="0" title="Required, amount of ICX you want to send." 
-                            value = "0.00" required="required" type="number" step="1.0" 
-                            min="0.00" class="text-block" id="input-send-amount" 
-                            placeholder="0.00"
+                            data-noclear="1" value = "0" required="required" type="number" step="0.1" 
+                            min="0" class="text-block" id="input-send-amount" 
+                            placeholder="0"
                         />
                         <span id="sendFormHelp" class="form-help"></span>
                         <span tabindex="0" id="sendMaxAmount" class="hidden">send all</span>
                     </div>
+
                     <div class="div-send-fee inline-block-div half-width half-width-end">
                             <h4 class="text-spaced input-required">Step Limit (step)</h4>
                             <input tabindex="0" title="Required, Step price is paid in loop and 1 loop is fixed to 0.000000000000000001 (10^18) ICX. ICON transaction fee is imposed according to various factors such as the number of smart contract usage, the amount of blockchain database used and the size of transaction data, etc." required="required" 

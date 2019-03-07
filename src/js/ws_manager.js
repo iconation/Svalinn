@@ -53,6 +53,13 @@ var SvalinnManager = function () {
     this.serviceApi = null;
     this.syncWorker = null;
     this.fusionTxHash = [];
+    
+    this.iconNetworks = [
+        {desc: "None", url: "unknown", nid: 0},
+        {desc: "Mainnet", url: "https://ctz.solidwallet.io", nid: 1},
+        {desc: "Testnet for Exchanges (Euljiro)", url: "https://test-ctz.solidwallet.io", nid: 2},
+        {desc: "Testnet for DApps (Yeouido)", url: "https://bicon.net.solidwallet.io", nid: 3}
+    ];
 };
 
 SvalinnManager.prototype.init = function () {
@@ -153,7 +160,7 @@ SvalinnManager.prototype._wipeConfig = function () {
 
 SvalinnManager.prototype.startService = function (walletFile, onError, onSuccess, onDelay) {
     
-    const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
+    const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8').replace(/^\uFEFF/, ''));
 
     try {
         wsession.set ('loadedWalletAddress', keystore.address);
@@ -225,7 +232,7 @@ SvalinnManager.prototype.createTransaction = function (tx, transactionFile, wall
 
         // Open the wallet
         try {
-            const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
+            const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8').replace(/^\uFEFF/, ''));
             const wallet = IconService.IconWallet.loadKeystore (keystore, walletPass);
 
             const icxTransaction = new IconService.IconBuilder.IcxTransactionBuilder()
@@ -316,7 +323,7 @@ SvalinnManager.prototype.getSecretKeys = function (walletPass) {
     return new Promise((resolve, reject) => {
         try {
             const walletFile = settings.get ('recentWallet');
-            const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8'));
+            const keystore = JSON.parse (fs.readFileSync (walletFile, 'utf8').replace(/^\uFEFF/, ''));
             const wallet = IconService.IconWallet.loadKeystore (keystore, walletPass);
             return resolve (wallet.getPrivateKey());
         } catch (err) {
@@ -338,9 +345,13 @@ SvalinnManager.prototype.sendTransaction = function (params) {
 
 SvalinnManager.prototype.sendSignedTransaction = function (tx) {
 
+    let mgr = this;
+
     return new Promise((resolve, reject) => {
         try {
-            const httpProvider = new IconService.HttpProvider ('http://iconation.team:9000/api/v3');
+            let nid = parseInt(tx.nid, 16);
+            let url = mgr.iconNetworks[nid].url;
+            const httpProvider = new IconService.HttpProvider (url + "/api/v3");
             const iconService = new IconService (httpProvider);
             txHash = iconService.sendTransaction (tx).execute();
             return resolve (txHash);
@@ -560,15 +571,19 @@ SvalinnManager.prototype.notifyUpdate = function (msg) {
     uiupdater.updateUiState(msg);
 };
 
-SvalinnManager.prototype.getBalance = function (address) {
+SvalinnManager.prototype.getBalance = function (address, nid) {
     
+    let mgr = this;
+
     return new Promise ((resolve, reject) => {
         try {
-            const httpProvider = new IconService.HttpProvider ('http://iconation.team:9000/api/v3');
+            let url = mgr.iconNetworks[nid].url;
+            const httpProvider = new IconService.HttpProvider (url + "/api/v3");
             const iconService = new IconService (httpProvider);
             const balance = iconService.getBalance (address).execute();
             return resolve (balance);
         } catch (err) {
+            console.log("[getBalance] err : ", err);
             return reject (err);
         }
     });

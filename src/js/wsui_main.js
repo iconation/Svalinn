@@ -33,7 +33,6 @@ const WALLET_REFRESH_INTERVAL = 4 * 1000;
 
 let refreshWalletWorker;
 
-
 let WALLET_OPEN_IN_PROGRESS = false;
 
 /*  dom elements vars; */
@@ -59,6 +58,7 @@ let overviewWalletRescanButton;
 let overviewPaymentIdGen;
 let overviewIntegratedAddressGen;
 let overviewShowKeyButton;
+let overviewNetworkId;
 // addressbook page
 let addressBookInputName;
 let addressBookInputWallet;
@@ -159,6 +159,8 @@ function populateElementVars() {
     overviewPaymentIdGen = document.getElementById('payment-id-gen');
     overviewIntegratedAddressGen = document.getElementById('integrated-wallet-gen');
     overviewWalletRescanButton = document.getElementById('button-overview-rescan');
+    overviewNetworkId = document.getElementById('overview-network-id');
+    
     // addressbook page
     addressBookInputName = document.getElementById('input-addressbook-name');
     addressBookInputWallet = document.getElementById('input-addressbook-wallet');
@@ -1248,6 +1250,34 @@ function handleWalletOpen() {
         }
     }
 
+    function balanceUpdate (address)
+    {
+        let networkId = overviewNetworkId ? parseInt(overviewNetworkId.value) : 1;
+
+        wsmanager.getBalance (address, networkId).then ((balance) => {
+            balance = Number.parseFloat (balance / Math.pow(10, 18));
+            wsmanager.notifyUpdate ({
+                type: 'balanceUpdated',
+                data: balance
+            });
+            formMessageReset();
+        }).catch((err) => {
+            wsmanager.notifyUpdate ({
+                type: 'balanceUpdated',
+                data: "..."
+            });
+            formMessageSet('overview', 'warning', `Cannot get the balance (are you connected to Internet?)`);
+        });
+    }
+
+    overviewNetworkId.addEventListener ('change', () => {
+        wsmanager.notifyUpdate ({
+            type: 'balanceUpdated',
+            data: "..."
+        });
+        balanceUpdate (overviewWalletAddress.value);
+    });
+
     walletOpenButtonOpen.addEventListener('click', () => {
         formMessageReset();
 
@@ -1265,19 +1295,6 @@ function handleWalletOpen() {
             WALLET_OPEN_IN_PROGRESS = false;
             setOpenButtonsState(0);
             return false;
-        }
-
-        function balanceUpdate (address) {
-            
-            wsmanager.getBalance (address).then ((balance) => {
-                balance = Number.parseFloat (balance / Math.pow(10, 18));
-                wsmanager.notifyUpdate ({
-                    type: 'balanceUpdated',
-                    data: balance
-                });
-            }).catch((err) => {
-                formMessageSet('load', 'warning', `Cannot get the balance (are you connected to Internet?)`);
-            });
         }
 
         function onSuccess() {
@@ -1650,6 +1667,23 @@ function handleSendTransfer() {
             return;
         }
 
+        // Check network ID
+        let networkId = walletOpenInputNode.value ? walletOpenInputNode.value.trim() : '';
+        if (networkId == '') {
+            formMessageSet('send', 'error', `You need to submit a network.`);
+            return;
+        }
+
+        networkId = parseInt(networkId);
+
+        if (networkId > wsmanager.iconNetworks.length) {
+            formMessageSet('send', 'error', `Invalid network.`);
+            return;
+        }
+
+        let network = wsmanager.iconNetworks[networkId];
+
+        // Check amount
         let amount = sendInputAmount.value ? parseFloat(sendInputAmount.value) : 0;
 
         if (amount < 0) {
@@ -1662,6 +1696,7 @@ function handleSendTransfer() {
             return;
         }
 
+        // Check fee
         let fee = sendInputFee.value ? parseFloat(sendInputFee.value) : 0;
         let minFee = config.minimumFee;
         if (fee < minFee) {
@@ -1684,13 +1719,11 @@ function handleSendTransfer() {
             from: wsession.get('loadedWalletAddress'),
             value: Math.trunc (Math.pow (10, 18) * amount), // 1 ICX = 10**18 Loops
             stepLimit: fee,
-            nid: 2,
+            nid: network.nid,
             nonce: 0,
             version: "0x3",
             timestamp: timeStampInMs * 1000
         };
-
-        console.log(tx);
 
         // if (paymentId.length) tx.paymentId = paymentId;
 
@@ -1708,6 +1741,8 @@ function handleSendTransfer() {
                         <dd class="dd-ib">${tx.value / Math.pow (10, 18)} ${config.assetTicker}</dd>
                         <dt class="dt-ib">Step Limit</dt>
                         <dd class="dd-ib">${tx.stepLimit} steps</dd>
+                        <dt class="dt-ib">Network</dt>
+                        <dd class="dd-ib">${wsmanager.iconNetworks[tx.nid].desc} (${wsmanager.iconNetworks[tx.nid].url})</dd>
                     </dl>
                 </div>
                 <div class="div-panel-buttons">
@@ -1784,6 +1819,9 @@ function handleSendTransfer() {
             return this;
         }
 
+        let nid = parseInt(tx.nid, 16);
+        let txValue = tx.value ? parseInt(tx.value, 16) / Math.pow (10, 18) : 0;
+
         let tpl = `
             <div class="div-transaction-panel">
                 <h4>Transfer Confirmation</h4>
@@ -1795,9 +1833,11 @@ function handleSendTransfer() {
                         <dt class="dt-ib">Destination address:</dt>
                         <dd class="dd-ib">${tx.to}</dd>
                         <dt class="dt-ib">Amount:</dt>
-                        <dd class="dd-ib">${tx.value ? parseInt(tx.value, 16) / Math.pow (10, 18) : 0} ${config.assetTicker}</dd>
+                        <dd class="dd-ib">${txValue} ${config.assetTicker}</dd>
                         <dt class="dt-ib">Step Limit</dt>
                         <dd class="dd-ib">${parseInt(tx.stepLimit, 16)} steps</dd>
+                        <dt class="dt-ib">Network</dt>
+                        <dd class="dd-ib">${wsmanager.iconNetworks[nid].desc} (${wsmanager.iconNetworks[nid].url})</dd>
                     </dl>
                 </div>
                 <div class="div-panel-buttons">
