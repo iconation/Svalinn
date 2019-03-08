@@ -98,6 +98,11 @@ npm install
 npm run debug
 ```
 
+- Package Svalinn :
+
+```console
+.\node_modules\.bin\electron-packager . Svalinn
+```
 
 #### macOS
 
@@ -134,3 +139,8 @@ git clone https://github.com/iconation/Svalinn.git && cd Svalinn
 npm install && npm run debug
 ```
 
+- Package Svalinn :
+
+```console
+.\node_modules\.bin\electron-packager . Svalinn
+```
