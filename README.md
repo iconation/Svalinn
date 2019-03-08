@@ -65,6 +65,40 @@ This wallet contains the basic functions required to manage your ICX assets:
 
 ### Building/Packaging Svalinn
 
+
+#### Windows
+
+- Install Chocolatey : https://chocolatey.org/docs/installation
+
+- Install Node (Admin Powershell/cmd) :
+
+```console
+choco install nodejs -y
+```
+
+- Install Git (Admin Powershell/cmd) :
+
+```console
+choco install git -y
+```
+
+- Restart a new Powershell/CMD window
+
+- Download Svalinn source code :
+
+```console
+git clone https://github.com/iconation/Svalinn.git
+cd Svalinn
+```
+
+- Build Svalinn :
+
+```console
+npm install
+npm run debug
+```
+
+
 #### macOS
 
 - Install XCode : 
