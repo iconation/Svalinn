@@ -34,7 +34,7 @@ This wallet contains the basic functions required to manage your ICX assets:
   * Allow to optionally create password protected address book.
 * Misc:
   * Theme: Dark & Light Mode
-  * [Keyboard shortcuts](docs/shortcut.md)
+  * Keyboard shortcuts
 
 ### Download &amp; Run Svalinn
 
