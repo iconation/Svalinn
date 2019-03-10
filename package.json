@@ -2,7 +2,7 @@
   "name": "svalinn",
   "productName": "Svalinn",
   "description": "ICONation ICX Wallet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/ICONation/svalinn",
   "repository": "https://github.com/ICONation/svalinn",
   "main": "main.js",
