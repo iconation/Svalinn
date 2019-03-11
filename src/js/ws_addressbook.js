@@ -6,7 +6,7 @@ const wsutil = require('./ws_utils');
 var SvalinnAddressBook = function (path, name, pass) {
     if (!(this instanceof SvalinnAddressBook)) return new SvalinnAddressBook(pass, name, path);
     this.path = path;
-    this.name = name || 'Default/Builtin';
+    this.name = name || 'Default/Built-in';
     this.pass = pass || config.addressBookObfuscationKey;
     this.cipherConfig = config.addressBookCipherConfig;
 };

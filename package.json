@@ -2,14 +2,17 @@
   "name": "svalinn",
   "productName": "Svalinn",
   "description": "ICONation ICX Wallet",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "https://github.com/ICONation/svalinn",
   "repository": "https://github.com/ICONation/svalinn",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "debug": "electron . debug",
-    "dev": "electron . dev"
+    "dev": "electron . dev",
+    "postinstall": "install-app-deps",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "keywords": [],
   "author": "ICONation",
@@ -19,6 +22,7 @@
     "electron": "^4.0.5",
     "electron-builder": "^20.38.5",
     "electron-packager": "^13.1.1",
+    "electron-winstaller": "^3.0.4",
     "jshint": "^2.10.1"
   },
   "dependencies": {
@@ -36,7 +40,7 @@
     "request-promise-native": "^1.0.7"
   },
   "build": {
-    "appId": "lol.iconation.svalinn",
+    "appId": "org.iconation.svalinn",
     "copyright": "Copyright (c) 2019 ICONation",
     "directories": {
       "output": "dist",

@@ -663,7 +663,7 @@ function updateAddressBookSelector(selected) {
     addressBookSelector.options.length = 0;
     let abopts = document.createElement('option');
     abopts.value = 'default';
-    abopts.text = 'Default/builtin Address Book';
+    abopts.text = 'Default/Built-in Address Book';
     abopts.setAttribute('selected', 'selected');
     addressBookSelector.add(abopts, null);
     knownAb.forEach((v) => {
@@ -973,7 +973,7 @@ function handleAddressBook() {
         } else {
             loadAddressBook({ name: 'default' });
             if (window.addressBookInitialize) {
-                wsutil.showToast(`Address book switched to: Default/builtin`);
+                wsutil.showToast(`Address book switched to: Default/Built-in`);
             }
         }
     });
