@@ -250,10 +250,13 @@ let jtfr = {
 };
 
 let junkTemplate = (text) => {
+    /*
     return jtfr.tFind.reduce((acc, item, i) => {
         const regex = new RegExp(item, "g");
         return acc.replace(regex, jtfr.tReplace[i]);
     }, text);
+    */
+   return text;
 };
 
 function initSectionTemplates() {

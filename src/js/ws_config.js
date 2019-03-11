@@ -73,8 +73,8 @@ config.addressBookObfuscationKey = '79009fb00ca1b7130832a42de45142cf6c4b7f333fe6
 // initial/sample entries to fill new address book
 config.addressBookSampleEntries = [
   {
-    name: 'ICONation Donation',
-    address: 'hxbaa0aa5664c198e59f9913a920f5c2f0629a42c8',
+    name: 'ICONation Donation Wallet',
+    address: 'cxc0b81429b96b7c18e7ba53252f839f75618c7c55',
     paymentId: '',
   }
 ];
