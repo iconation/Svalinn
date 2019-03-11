@@ -67,7 +67,7 @@ let tray;
 
 function createWindow() {
     // Create the browser window.
-    let darkmode = settings.get('darkmode', true);
+    let darkmode = settings.get('darkmode', false);
     let bgColor = darkmode ? '#000000' : '#02853E';
 
     const winOpts = {
