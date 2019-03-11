@@ -40,11 +40,11 @@ This wallet contains the basic functions required to manage your ICX assets:
 
 #### Windows:
 1. Download the latest installer here: https://github.com/ICONation/svalinn/releases/latest
-2. Run and install `Svalinn-<version>-win-setup.exe`.
+2. Run the installer `Svalinn-<version>-win-setup.exe`.
 
 #### macOS
 1. Download latest archive here: https://github.com/ICONation/svalinn/releases/latest
-2. Extract `Svalinn-darwin-x64.zip` and run `Svalinn.app` inside.
+2. Extract `Svalinn-<version>-mac.zip` and run `Svalinn.app` inside.
 
 ## Available keyboard shortcut
 
