@@ -1,6 +1,6 @@
 <p align="center">
   <img 
-    src="https://iconation.team/images/very_small.png" 
+    src="build/icon.png" 
     width="120px"
     alt="ICONation logo">
 </p>
