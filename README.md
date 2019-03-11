@@ -101,7 +101,7 @@ npm run debug
 - Package Svalinn :
 
 ```console
-.\node_modules\.bin\electron-packager . Svalinn
+npm run dist
 ```
 
 #### macOS
@@ -142,5 +142,5 @@ npm install && npm run debug
 - Package Svalinn :
 
 ```console
-.\node_modules\.bin\electron-packager . Svalinn
+npm run dist
 ```
