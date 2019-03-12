@@ -74,7 +74,7 @@ config.addressBookObfuscationKey = '79009fb00ca1b7130832a42de45142cf6c4b7f333fe6
 config.addressBookSampleEntries = [
   {
     name: 'ICONation Donation Wallet',
-    address: 'cxc0b81429b96b7c18e7ba53252f839f75618c7c55',
+    address: 'cx87fda925272496ae3f0bdeb551dad8fd29e0c7cf',
     paymentId: '',
   }
 ];
