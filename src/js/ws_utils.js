@@ -7,11 +7,9 @@ const config = require('./ws_config');
 const fnv = require('fnv-plus');
 const GCM = require('node-crypto-gcm').GCM;
 
-const ADDRESS_REGEX_STR = `^(hx|cx)(?=[aA-zZ0-9]*$)(?:.{${config.addressLength - config.addressPrefix.length}})$`;
+const ADDRESS_REGEX_STR = `^(hx|cx)(?=[a-z0-9]*$)(?:.{${config.addressLength - config.addressPrefix.length}})$`;
 const ADDRESS_REGEX = new RegExp(ADDRESS_REGEX_STR);
-const PAYMENT_ID_REGEX = new RegExp(/^([aA-zZ0-9]{64})$/);
-const SECRET_KEY_REGEX = new RegExp(/^[aA-zZ0-9]{64}$/);
-const MNEMONIC_SEED_REGEX = new RegExp(/^[aA-zZ]+(?!.*  )[a-zA-Z0-9 ]*$/);
+const SECRET_KEY_REGEX = new RegExp(/^[a-z0-9]{64}$/);
 
 /***** * DOM util *****/
 exports.triggerEvent = (el, type) => {
@@ -94,7 +92,7 @@ exports.showToast = (msg, duration, elId) => {
         }, duration + 100);
     }
 
-    blekok.innerText = msg;
+    blekok.innerHTML = msg;
     blekok.classList.remove('off');
     window.TOASTT = setTimeout(function () {
         blekok.classList.add('off');
@@ -167,56 +165,12 @@ exports.genQrDataUrl = (inputStr) => {
     return nImg.toDataURL();
 };
 
-let decimalAdjust = (type, value, exp) => {
-    if (typeof exp === 'undefined' || +exp === 0) {
-        return Math[type](value);
-    }
-    value = +value;
-    exp = +exp;
-    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-        return NaN;
-    }
-    // Shift
-    value = value.toString().split('e');
-    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-    // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
-};
-
 exports.validateAddress = (address) => {
     return ADDRESS_REGEX.test(address);
 };
 
-exports.validatePaymentId = (paymentId) => {
-    if (!paymentId) return true; // true allow empty
-    return PAYMENT_ID_REGEX.test(paymentId);
-};
-
 exports.validateSecretKey = (key) => {
     return SECRET_KEY_REGEX.test(key);
-};
-
-exports.validateMnemonic = (seed) => {
-    if (!seed) return false;
-
-    if (!MNEMONIC_SEED_REGEX.test(seed)) return false;
-
-    if (seed.split(' ').length !== 25) return false;
-
-    return true;
-};
-
-exports.amountForMortal = (amount) => {
-    if (!config.decimalDivisor) return amount;
-    let decimalPlaces = config.decimalPlaces || 2;
-    return (amount / config.decimalDivisor).toFixed(decimalPlaces);
-};
-
-exports.amountForImmortal = (amount) => {
-    if (!config.decimalDivisor) return amount;
-    let da = decimalAdjust("round", parseFloat(amount), -(config.decimalPlaces));
-    return parseInt(da * config.decimalDivisor);
 };
 
 exports.isFileExist = (filePath) => {

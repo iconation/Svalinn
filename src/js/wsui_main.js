@@ -1,9 +1,9 @@
 /*jshint bitwise: false*/
 /* global AbortController */
 const os = require('os');
-const net = require('net');
 const path = require('path');
 const fs = require('fs');
+const superagent = require('superagent');
 const { clipboard, remote, ipcRenderer, shell } = require('electron');
 const Store = require('electron-store');
 const Mousetrap = require('./extras/mousetrap.min.js');
@@ -12,7 +12,6 @@ const wsutil = require('./ws_utils');
 const SvalinnSession = require('./ws_session');
 const SvalinnManager = require('./ws_manager');
 const config = require('./ws_config');
-const async = require('async');
 const AgGrid = require('ag-grid-community');
 const wsmanager = new SvalinnManager();
 const sessConfig = { debug: remote.app.debug, walletConfig: remote.app.walletConfig };
@@ -116,11 +115,7 @@ let importSeedInputPassword;
 let importSeedInputMnemonic;
 let importSeedInputScanHeight;
 // transaction
-let txButtonRefresh;
-let txButtonSortAmount;
 let txButtonSortDate;
-let txInputUpdated;
-let txButtonExport;
 // misc
 let thtml;
 let dmswitch;
@@ -144,14 +139,6 @@ function populateElementVars()
 
     // Main section link
     sectionButtons = document.querySelectorAll('[data-section]');
-
-    // Settings input & elements
-    settingsInputServiceBin = document.getElementById('input-settings-path');
-    settingsInputMinToTray = document.getElementById('checkbox-tray-minimize');
-    settingsInputCloseToTray = document.getElementById('checkbox-tray-close');
-    settingsInputExcludeOfflineNodes = document.getElementById('pubnodes-exclude-offline');
-    settingsInputTimeout = document.getElementById('input-settings-timeout');
-    settingsButtonSave = document.getElementById('button-settings-save');
 
     // Overview pages
     overviewWalletAddress = document.getElementById('wallet-address');
@@ -245,7 +232,7 @@ function setDarkMode(dark)
         dmswitch.firstChild.dataset.icon = 'sun';
     } else {
         thtml.classList.remove('dark');
-        dmswitch.setAttribute('title', 'Swith to dark mode');
+        dmswitch.setAttribute('title', 'Switch to dark mode');
         dmswitch.firstChild.classList.remove('fa-sun');
         dmswitch.firstChild.classList.add('fa-moon');
         settings.set('darkmode', false);
@@ -269,6 +256,29 @@ function showKeyBindings()
     dialog.showModal();
 }
 
+function checkUpdate ()
+{
+    superagent.get('https://api.github.com/repos/iconation/svalinn/releases/latest').end((err, res) => {
+        if (!err && res) {
+            let result = JSON.parse (res.text);
+            let tag = result.tag_name;
+            if (settings.get('version') != tag)
+            {
+                wsutil.showToast ('A new version of Svalinn is available (' + tag + ') ! '
+                            +     'Checkout <a href="#" class="dont-color-link" id="go-latest-release-github">https://github.com/iconation/svalinn</a>', 
+                            20 * 1000);
+                            
+                dialog = document.getElementById('belekok');
+                let goLatestRelease = dialog.querySelector ('#go-latest-release-github');
+
+                goLatestRelease.addEventListener('click', (event) => {
+                    shell.openExternal ('https://github.com/iconation/Svalinn/releases/latest');
+                });
+            }
+        }
+    });
+}
+
 function showAbout()
 {
     let dialog = document.getElementById('ab-dialog');
@@ -281,10 +291,10 @@ function showAbout()
         </div>`;
     dialog.innerHTML = info;
     dialog.showModal();
-
 }
 
-function switchTab() {
+function switchTab()
+{
     if (WALLET_OPEN_IN_PROGRESS) {
         wsutil.showToast('Opening wallet in progress, please wait...');
         return;
@@ -297,8 +307,6 @@ function switchTab() {
     if (!isServiceReady) {
         skippedSections = ['section-create-transaction', 'section-send-transaction'];
         if (nextSection === 'section-overview') nextSection = 'section-welcome';
-    } else if (wsession.get('fusionProgress')) {
-        skippedSections = ['section-create-transaction'];
     }
 
     while (skippedSections.indexOf(nextSection) >= 0) {
@@ -309,7 +317,8 @@ function switchTab() {
 }
 
 // section switcher
-function changeSection(sectionId, targetRedir) {
+function changeSection(sectionId, targetRedir)
+{
     wsutil.showToast('');
 
     if (WALLET_OPEN_IN_PROGRESS) {
@@ -320,22 +329,13 @@ function changeSection(sectionId, targetRedir) {
     targetRedir = targetRedir === true ? true : false;
     let targetSection = sectionId.trim();
 
-    let isSynced = wsession.get('synchronized') || true;
     let isServiceReady = wsession.get('serviceReady') || false;
     let needServiceReady = ['section-create-transaction', 'section-overview'];
     let needServiceStopped = 'section-welcome';
-    let needSynced = ['section-create-transaction'];
 
     let origTarget = targetSection;
     let finalTarget = targetSection;
     let toastMsg = '';
-
-
-    if (needSynced.includes(targetSection) && wsession.get('fusionProgress')) {
-        // fusion in progress, return early
-        wsutil.showToast('Wallet optimization in progress, please wait');
-        return;
-    }
 
     if (needServiceReady.includes(targetSection) && !isServiceReady) {
         // no access to wallet, send, tx when no wallet opened
@@ -344,10 +344,6 @@ function changeSection(sectionId, targetRedir) {
         if (!notoast.includes(origTarget)) {
             toastMsg = "Please create or open your wallet first !";
         }
-    } else if (needSynced.includes(targetSection) && !isSynced) {
-        // need synced, return early
-        wsutil.showToast("Please wait until the syncing completes!");
-        return;
     } else if (needServiceStopped.includes(targetSection) && isServiceReady) {
         finalTarget = 'section-overview';
     } else {
@@ -362,9 +358,6 @@ function changeSection(sectionId, targetRedir) {
     }
 
     // reset quick filters
-    if (finalTarget === 'section-send-transaction' && window.TXOPTSAPI) {
-        window.TXOPTSAPI.api.setQuickFilter('');
-    }
     if (finalTarget === 'section-addressbook' && window.ABOPTSAPI) {
         window.ABOPTSAPI.api.setQuickFilter('');
     }
@@ -397,38 +390,6 @@ function changeSection(sectionId, targetRedir) {
     }
 }
 
-function initNodeSelection(nodeAddr)
-{
-}
-
-// initial settings value or updater
-function initSettingVal(values) {
-    values = values || null;
-    if (values) {
-        // save new settings
-        settings.set('service_bin', values.service_bin);
-        settings.set('node_address', values.node_address);
-        settings.set('tray_minimize', values.tray_minimize);
-        settings.set('tray_close', values.tray_close);
-        settings.set('service_timeout', values.service_timeout);
-        settings.set('pubnodes_exclude_offline', values.pubnodes_exclude_offline);
-    }
-    settingsInputServiceBin.value = settings.get('service_bin');
-    settingsInputMinToTray.checked = settings.get('tray_minimize');
-    settingsInputCloseToTray.checked = settings.get('tray_close');
-    settingsInputExcludeOfflineNodes.checked = settings.get('pubnodes_exclude_offline');
-
-    // if custom node, save it
-    let mynode = settings.get('node_address');
-    let pnodes = settings.get('pubnodes_data');
-    if (!settings.has('pubnodes_custom')) settings.set('pubnodes_custom', []);
-    let cnodes = settings.get('pubnodes_custom');
-    if (pnodes.indexOf(mynode) === -1 && cnodes.indexOf(mynode) === -1) {
-        cnodes.push(mynode);
-        settings.set('pubnodes_custom', cnodes);
-    }
-}
-
 // generic form message reset
 function formMessageReset() {
     if (!genericFormMessage.length) return;
@@ -453,74 +414,13 @@ function formMessageSet(target, status, txt) {
     }
 }
 
-// utility: blank tx filler
-function setTxFiller(show) {
-    /*
-    show = show || false;
-    let fillerRow = document.getElementById('txfiller');
-    let txRow = document.getElementById('transaction-lists');
-
-    if (!show && fillerRow) {
-        fillerRow.classList.add('hidden');
-        txRow.classList.remove('hidden');
-    } else {
-        txRow.classList.add('hidden');
-        fillerRow.classList.remove('hidden');
-    }
-    */
-}
-
 // display initial page, settings page on first run, else overview page
 function showInitialPage() {
     // other initiations here
     formMessageReset();
-    initSettingVal(); // initial settings value
     changeSection('section-welcome');
-    settings.set('firstRun', 0);
     let versionInfo = document.getElementById('svalinnVersion');
     if (versionInfo) versionInfo.innerHTML = WS_VERSION;
-    let tsVersionInfo = document.getElementById('turtleServiceVersion');
-    if (tsVersionInfo) tsVersionInfo.innerHTML = config.walletServiceBinaryVersion;
-}
-
-// settings page handlers
-function handleSettings() {
-    settingsButtonSave.addEventListener('click', function () {
-        formMessageReset();
-        let serviceBinValue = settingsInputServiceBin.value ? settingsInputServiceBin.value.trim() : '';
-        let timeoutValue = settingsInputTimeout.value ? parseInt(settingsInputTimeout.value,10): 30;
-
-        if (!serviceBinValue.length) {
-            formMessageSet('settings', 'error', `Settings can't be saved, please enter correct values`);
-            return false;
-        }
-
-        if (!wsutil.isRegularFileAndWritable(serviceBinValue)) {
-            formMessageSet('settings', 'error', `Unable to find ${config.walletServiceBinaryFilename}, please enter the correct path`);
-            return false;
-        }
-
-        if(timeoutValue < 30 || timeoutValue > 120) {
-            formMessageSet('settings', 'error', `Timeout value must be between 0 and 120`);
-            return false;
-        }
-
-        let vals = {
-            service_bin: serviceBinValue,
-            node_address: settings.get('node_address'),
-            service_timeout: timeoutValue,
-            tray_minimize: settingsInputMinToTray.checked,
-            tray_close: settingsInputCloseToTray.checked,
-            pubnodes_exclude_offline: settingsInputExcludeOfflineNodes.checked
-        };
-
-        initSettingVal(vals);
-
-        formMessageReset();
-        let goTo = wsession.get('loadedWalletAddress').length ? 'section-overview' : 'section-welcome';
-        changeSection(goTo, true);
-        wsutil.showToast('Settings have been updated.', 8000);
-    });
 }
 
 // address book completions
@@ -558,7 +458,6 @@ function initAddressCompletion(data) {
             return `<div class="autocomplete-suggestion" data-paymentid="${wpayid}" data-val="${waddr}">${wname.replace(re, "<b>$1</b>")}<br><span class="autocomplete-wallet-addr">${waddr.replace(re, "<b>$1</b>")}</span></div>`;
         },
         onSelect: function (e, term, item) {
-            // document.getElementById('input-send-payid').value = item.getAttribute('data-paymentid');
         }
     });
 }
@@ -722,13 +621,6 @@ function handleAddressBook() {
         let dialog = document.getElementById('ab-dialog');
         if (dialog.hasAttribute('open')) dialog.close();
 
-        let sendTrtl = '';
-        let myaddress = wsession.get('loadedWalletAddress');
-        let isSynced = wsession.get('synchronized') || false;
-        if (myaddress && isSynced) {
-            sendTrtl = `<button data-addressid="${data.key}" type="button" class="form-bt button-green ab-send" id="button-addressbook-panel-send">Send ${config.assetTicker}</button>`;
-        }
-
         let tpl = `
         <div class="div-transactions-panel">
                  <h4>Address Detail</h4>
@@ -746,7 +638,6 @@ function handleAddressBook() {
                      </div>
                  </div>
                 <div class="div-panel-buttons">
-                    ${sendTrtl}
                     <button data-addressid="${data.key}" type="button" class="form-bt button-green ab-edit" id="button-addressbook-panel-edit">Edit</button>
                     <button data-addressid="${data.key}" type="button" class="form-bt button-red ab-delete" id="button-addressbook-panel-delete">Delete</button>
                 </div>
@@ -757,20 +648,6 @@ function handleAddressBook() {
         dialog = document.getElementById('ab-dialog');
         dialog.showModal();
     }
-
-    // disable payment id input for non standard adress
-    function setAbPaymentIdState(addr) {
-    }
-
-    addressBookInputWallet.addEventListener('change', (event) => {
-        let val = event.target.value || '';
-        setAbPaymentIdState(val);
-    });
-
-    addressBookInputWallet.addEventListener('keyup', (event) => {
-        let val = event.target.value || '';
-        setAbPaymentIdState(val);
-    });
 
     // add new address book file
     addressBookButtonAdd.addEventListener('click', () => {
@@ -947,7 +824,7 @@ function handleAddressBook() {
         }
 
         if (!wsutil.validateAddress(addressValue)) {
-            formMessageSet('addressbook', 'error', `Invalid ${config.assetName} address`);
+            formMessageSet('addressbook', 'error', `Invalid ${config.assetName} address : must be 'hx' or 'cx' + 40 lowercase characters 0123456789abcdef`);
             return;
         }
 
@@ -958,7 +835,7 @@ function handleAddressBook() {
         let abook = wsession.get('addressBook');
         let addressBookData = abook.data;
         if (addressBookData.hasOwnProperty(entryHash) && !isUpdate) {
-            formMessageSet('addressbook', 'error', "This combination of address and payment ID already exist, please enter new address or different payment id.");
+            formMessageSet('addressbook', 'error', "This address already exists, please enter a new address.");
             return;
         }
 
@@ -1184,18 +1061,37 @@ function handleWalletOpen() {
         });
     }
 
+    function startRefreshingWalletBalance ()
+    {
+        wsmanager.notifyUpdate ({
+            type: 'balanceUpdated',
+            data: "..."
+        });
+
+        overviewWalletAddress.value = wsession.get('loadedWalletAddress');
+        balanceUpdate (overviewWalletAddress.value);
+
+        if (refreshWalletWorker) {
+            clearInterval (refreshWalletWorker);
+        }
+        
+        refreshWalletWorker = setInterval(() =>{
+            balanceUpdate (overviewWalletAddress.value);
+        }, WALLET_REFRESH_INTERVAL);
+    }
+
     overviewNetworkId.addEventListener ('change', () => {
         wsmanager.notifyUpdate ({
             type: 'balanceUpdated',
             data: "..."
         });
-        balanceUpdate (overviewWalletAddress.value);
     });
 
-    walletOpenButtonOpen.addEventListener('click', () => {
+    walletOpenButtonOpen.addEventListener('click', () =>
+    {
         formMessageReset();
 
-        // actually open wallet
+        // Open the wallet
         if (!walletOpenInputPath.value) {
             formMessageSet('load', 'error', "Invalid wallet file path");
             WALLET_OPEN_IN_PROGRESS = false;
@@ -1213,12 +1109,7 @@ function handleWalletOpen() {
 
         function onSuccess() {
             walletOpenInputPath.value = settings.get('recentWallet');
-            overviewWalletAddress.value = wsession.get('loadedWalletAddress');
-            balanceUpdate (overviewWalletAddress.value);
-            
-            refreshWalletWorker = setInterval(() =>{
-                balanceUpdate (overviewWalletAddress.value);
-            }, WALLET_REFRESH_INTERVAL);
+            startRefreshingWalletBalance();
 
             WALLET_OPEN_IN_PROGRESS = false;
             changeSection('section-overview');
@@ -1246,8 +1137,6 @@ function handleWalletOpen() {
             WALLET_OPEN_IN_PROGRESS = true;
             settings.set('recentWallet', walletFile);
             settings.set('recentWalletDir', path.dirname(walletFile));
-            // formMessageSet ('load', 'warning', "Accessing wallet...<br><progress></progress>");
-            
             wsmanager.startService (walletFile, onError, onSuccess, onDelay);
         });
     });
@@ -1279,10 +1168,6 @@ function handleWalletOpen() {
     });
 }
 
-function handleWalletRescan() {
-
-}
-
 function handleWalletClose() {
     overviewWalletCloseButton.addEventListener('click', (event) => {
         event.preventDefault();
@@ -1295,8 +1180,6 @@ function handleWalletClose() {
         dialog = document.getElementById('main-dialog');
         dialog.showModal();
         // save + SIGTERMed wallet daemon
-        // reset tx
-        resetTransactions();
         // clear form err msg
         formMessageReset();
         changeSection('section-overview');
@@ -1492,7 +1375,7 @@ function handleCreateTransaction()
 
         let recipientAddress = createTransactionRecipientAddress.value ? createTransactionRecipientAddress.value.trim() : '';
         if (!recipientAddress.length || !wsutil.validateAddress(recipientAddress)) {
-            formMessageSet('create-transaction', 'error', `Invalid ${config.assetName} address`);
+            formMessageSet('create-transaction', 'error', `Invalid ${config.assetName} address : must be 'hx' or 'cx' + 40 lowercase characters 0123456789abcdef`);
             return;
         }
 
@@ -1708,7 +1591,13 @@ function handleCreateTransaction()
             md.close();
  
             wsmanager.sendSignedTransaction (tx).then ((txHash) => {
-                sendTransactionTxHash.value = txHash;
+                let url = wsmanager.iconNetworks[nid].tracker + "/transaction/" + txHash;
+                sendTransactionTxHash.innerHTML = '<a href="#" id="go-tracker-transaction" class="dont-color-link">' + txHash + '</a>';
+                let goTrackerTx = sendTransactionTxHash.querySelector ('#go-tracker-transaction');
+                goTrackerTx.addEventListener('click', (event) => {
+                    shell.openExternal (url);
+                });
+
                 sendTransactionHiddenTxHash.style.display = "block";
                 formMessageSet('send-transaction', 'success', `Transaction sent successfully !`);
             }).catch((err) => {
@@ -1720,287 +1609,9 @@ function handleCreateTransaction()
     });
 }
 
-function resetTransactions() {
-    setTxFiller(true);
-    if (window.TXGRID === null || window.TXOPTSAPI === null) {
-        return;
-    }
-    window.TXOPTSAPI.api.destroy();
-    window.TXOPTSAPI = null;
-    window.TXGRID = null;
-    if (document.querySelector('.txlist-item')) {
-        let grid = document.getElementById('txGrid');
-        wsutil.clearChild(grid);
-    }
-
-}
-
-window.TXOPTSAPI = null;
-window.TXGRID = null;
-function handleTransactions() {
-    function resetTxSortMark() {
-        let sortedEl = document.querySelectorAll('#transaction-lists .asc, #transaction-lists .desc');
-        Array.from(sortedEl).forEach((el) => {
-            el.classList.remove('asc');
-            el.classList.remove('desc');
-        });
-    }
-
-    function sortDefault() {
-        resetTxSortMark();
-        window.TXOPTSAPI.api.setSortModel(getSortModel('timestamp', 'desc'));
-        txButtonSortDate.dataset.dir = 'desc';
-        txButtonSortDate.classList.add('desc');
-    }
-
-    function getSortModel(col, dir) {
-        return [{ colId: col, sort: dir }];
-    }
-
-    function renderList(txs) {
-        setTxFiller();
-        if (window.TXGRID === null) {
-            let columnDefs = [
-                {
-                    headerName: 'Data',
-                    field: 'timestamp',
-                    autoHeight: true,
-                    cellClass: 'txinfo',
-                    cellRenderer: function (params) {
-                        let out = `
-                            <p class="tx-date">${params.data.timeStr}</p>
-                            <p class="tx-ov-info">Tx. Hash: ${params.data.transactionHash}</p>
-                            <p class="tx-ov-info">Payment ID: ${params.data.paymentId}</p>
-                            `;
-                        return out;
-                    },
-                    getQuickFilterText: function (params) {
-                        let txdate = new Date(params.data.timeStr).toLocaleString(
-                            'en-US',
-                            { weekday: 'long', year: 'numeric', month: 'long', timeZone: 'UTC' }
-                        );
-                        let search_data = `${txdate} ${params.data.transactionHash}`;
-                        if (params.data.paymentId !== '-') {
-                            search_data += ` ${params.data.paymentId}`;
-                        }
-                        if (params.data.extra !== '-') {
-                            search_data += ` ${params.data.extra}`;
-                        }
-                        search_data += ` ${params.data.amount}`;
-                        return search_data;
-                    }
-                },
-                {
-                    headerName: "Amount",
-                    field: "rawAmount",
-                    width: 200,
-                    suppressSizeToFit: true,
-                    cellClass: ['amount', 'tx-amount'],
-                    cellRenderer: function (params) {
-                        return `<span data-txType="${params.data.txType}">${params.data.amount}</span>`;
-                    },
-                    suppressFilter: true,
-                    getQuickFilterText: function () { return null; }
-                }
-            ];
-            let gridOptions = {
-                columnDefs: columnDefs,
-                rowData: txs,
-                pagination: true,
-                rowClass: 'txlist-item',
-                paginationPageSize: 20,
-                cacheQuickFilter: true,
-                enableSorting: true,
-                onRowClicked: showTransaction
-
-            };
-            let txGrid = document.getElementById('txGrid');
-            window.TXGRID = new AgGrid.Grid(txGrid, gridOptions);
-            window.TXOPTSAPI = gridOptions;
-
-            gridOptions.onGridReady = function () {
-                setTxFiller();
-                txGrid.style.width = "100%";
-                setTimeout(function () {
-                    window.TXOPTSAPI.api.doLayout();
-                    window.TXOPTSAPI.api.sizeColumnsToFit();
-                    sortDefault();
-                }, 10);
-            };
-
-            window.addEventListener('resize', () => {
-                if (window.TXOPTSAPI) {
-                    window.TXOPTSAPI.api.sizeColumnsToFit();
-                }
-            });
-
-            let txfilter = document.getElementById('tx-search');
-            txfilter.addEventListener('input', function () {
-                if (window.TXOPTSAPI) {
-                    window.TXOPTSAPI.api.setQuickFilter(this.value);
-                }
-            });
-        } else {
-            window.TXOPTSAPI.api.updateRowData({ add: txs });
-            window.TXOPTSAPI.api.resetQuickFilter();
-            sortDefault();
-        }
-    }
-
-    function listTransactions() {
-        if (wsession.get('txLen') <= 0) {
-            //setTxFiller(true);
-            return;
-        }
-
-        let txs = wsession.get('txNew');
-        if (!txs.length) {
-            //if(window.TXGRID === null ) setTxFiller(true);
-            return;
-        }
-        setTxFiller();
-        renderList(txs);
-    }
-
-    function showTransaction(el) {
-        let tx = el.data;
-        let txdate = new Date(tx.timestamp * 1000).toUTCString();
-        let txhashUrl = `<a class="external" title="view in block explorer" href="${config.blockExplorerUrl.replace('[[TX_HASH]]', tx.transactionHash)}">View in block explorer</a>`;
-        let dialogTpl = `
-                <div class="div-transactions-panel">
-                    <h4>Transaction Detail</h4>
-                    <table class="custom-table" id="transactions-panel-table">
-                        <tbody>
-                            <tr><th scope="col">Hash</th>
-                                <td data-cplabel="Tx. hash" class="tctcl">${tx.transactionHash}</td></tr>
-                            <tr><th scope="col">Address</th>
-                                <td data-cplabel="Address" class="tctcl">${wsession.get('loadedWalletAddress')}</td></tr>
-                            <tr><th scope="col">Payment Id</th>
-                                <td data-cplabel="Payment ID" class="${tx.paymentId !== '-' ? 'tctcl' : 'xtctl'}">${tx.paymentId}</td></tr>
-                            <tr><th scope="col">Amount</th>
-                                <td data-cplabel="Tx. amount" class="tctcl">${tx.amount}</td></tr>
-                            <tr><th scope="col">Fee</th>
-                                <td  data-cplabel="Tx. fee" class="tctcl">${tx.fee}</td></tr>
-                            <tr><th scope="col">Timestamp</th>
-                                <td data-cplabel="Tx. date" class="tctcl">${tx.timestamp} (${txdate})</td></tr>
-                            <tr><th scope="col">Block Index</th>
-                                <td data-cplabel="Tx. block index" class="tctcl">${tx.blockIndex}</td></tr>
-                            <tr><th scope="col">Is Base?</th>
-                                <td>${tx.isBase}</td></tr>
-                            <tr><th scope="col">Extra</th>
-                                <td data-cplabel="Tx. extra" class="${tx.extra !== '-' ? 'tctcl' : 'xtctl'}">${tx.extra}</td></tr>
-                            <tr><th scope="col">Unlock Time</th>
-                                <td>${tx.unlockTime}</td></tr>
-                        </tbody>
-                    </table>
-                    <p class="text-center">${txhashUrl}</p>
-                    <span title="Close this dialog (esc)" class="dialog-close dialog-close-default" data-target="#ab-dialog"><i class="fas fa-window-close"></i></span>
-                </div>
-            `;
-
-        let dialog = document.getElementById('tx-dialog');
-        wsutil.innerHTML(dialog, dialogTpl);
-        dialog = document.getElementById('tx-dialog');
-        dialog.showModal();
-    }
-
-    // export
-    function exportAsCsv(mode) {
-        if (wsession.get('txLen') <= 0) return;
-
-        formMessageReset();
-        mode = mode || 'all';
-        let recentDir = settings.get('recentWalletDir', remote.app.getPath('documents'));
-        let filename = remote.dialog.showSaveDialog({
-            title: "Export transactions as scv...",
-            defaultPath: recentDir,
-            filters: [
-                { name: 'CSV files', extensions: ['csv'] }
-            ]
-        });
-        if (!filename) return;
-
-        const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-        const csvWriter = createCsvWriter({
-            path: filename,
-            header: [
-                { id: 'timeStr', title: 'Time' },
-                { id: 'amount', title: 'Amount' },
-                { id: 'paymentId', title: 'PaymentId' },
-                { id: 'transactionHash', title: 'Transaction Hash' },
-                { id: 'fee', title: 'Transaction Fee' },
-                { id: 'extra', title: 'Extra Data' },
-                { id: 'blockIndex', title: 'Block Height' }
-            ]
-        });
-        let rawTxList = wsession.get('txList');
-        let txlist = rawTxList.map((obj) => {
-            return {
-                timeStr: obj.timeStr,
-                amount: obj.amount,
-                paymentId: obj.paymentId,
-                transactionHash: obj.transactionHash,
-                fee: obj.fee,
-                extra: obj.extra,
-                blockIndex: obj.blockIndex,
-                txType: obj.txType
-            };
-        });
-
-        let dialog = document.getElementById('ab-dialog');
-        let outData = [];
-        let outType = '';
-        switch (mode) {
-            case 'in':
-                outData = txlist.filter((obj) => obj.txType === "in");
-                outType = "incoming";
-                break;
-            case 'out':
-                outData = txlist.filter((obj) => { return obj.txType === "out"; });
-                outType = "outgoing";
-                break;
-            default:
-                outData = txlist;
-                outType = 'all';
-                break;
-        }
-
-        if (!outData.length) {
-            wsutil.showToast(`Transaction export failed, ${outType} transactions is not available!`);
-            if (dialog.hasAttribute('open')) dialog.close();
-            return;
-        }
-
-        csvWriter.writeRecords(outData).then(() => {
-            if (dialog.hasAttribute('open')) dialog.close();
-            wsutil.showToast(`Transaction list exported to ${filename}`);
-        }).catch((err) => {
-            if (dialog.hasAttribute('open')) dialog.close();
-            wsutil.showToast(`Transaction export failed, ${err.message}`);
-        });
-    }
-
-    wsutil.liveEvent('button.export-txtype', 'click', (event) => {
-        let txtype = event.target.dataset.txtype || 'all';
-        return exportAsCsv(txtype);
-    });
-}
-
-function handleNetworkChange() {
-    window.addEventListener('online', () => {
-        let connectedNode = wsession.get('connectedNode');
-        if (!connectedNode.length || connectedNode.startsWith('127.0.0.1')) return;
-        wsmanager.networkStateUpdate(1);
-    });
-    window.addEventListener('offline', () => {
-        let connectedNode = wsession.get('connectedNode');
-        if (!connectedNode.length || connectedNode.startsWith('127.0.0.1')) return;
-        wsmanager.networkStateUpdate(0);
-    });
-}
-
 // event handlers
-function initHandlers() {
+function initHandlers()
+{
     initSectionTemplates();
     setDarkMode(settings.get('darkmode', true));
 
@@ -2077,7 +1688,6 @@ function initHandlers() {
         }, 400);
     }
 
-    //handleNetworkChange();
     // open wallet
     handleWalletOpen();
     // create wallet
@@ -2086,22 +1696,16 @@ function initHandlers() {
     handleWalletImportKeys();
     // delay some handlers
     setTimeout(() => {
-        // settings handlers
-        handleSettings();
         // addressbook handlers
         handleAddressBook();
         // close wallet
         handleWalletClose();
-        // rescan/reset wallet
-        handleWalletRescan();
         // export keys/seed
         handleWalletExport();
-        // send transfer
+        // Create Transaction
         handleCreateTransaction();
-        // transactions
-        handleTransactions();
-        // netstatus
-        handleNetworkChange();
+        // Check update
+        checkUpdate();
         //external link handler
         wsutil.liveEvent('a.external', 'click', (event) => {
             event.preventDefault();
@@ -2168,57 +1772,6 @@ function initHandlers() {
                 }
             });
         });
-        //genpaymentid+integAddress
-        /*
-        overviewPaymentIdGen.addEventListener('click', () => {
-            genPaymentId(false);
-        });
-        wsutil.liveEvent('#makePaymentId', 'click', () => {
-            let payId = genPaymentId(true);
-            let iaf = document.getElementById('genOutputIntegratedAddress');
-            document.getElementById('genInputPaymentId').value = payId;
-            iaf.value = '';
-        });
-        overviewIntegratedAddressGen.addEventListener('click', showIntegratedAddressForm);
-        */
-
-        /*
-        wsutil.liveEvent('#doGenIntegratedAddr', 'click', () => {
-            formMessageReset();
-            let genInputAddress = document.getElementById('genInputAddress');
-            let genInputPaymentId = document.getElementById('genInputPaymentId');
-            let outputField = document.getElementById('genOutputIntegratedAddress');
-            let addr = genInputAddress.value ? genInputAddress.value.trim() : '';
-            let pid = genInputPaymentId.value ? genInputPaymentId.value.trim() : '';
-            outputField.value = '';
-            outputField.removeAttribute('title');
-            if (!addr.length || !pid.length) {
-                formMessageSet('gia', 'error', 'Address & Payment ID is required');
-                return;
-            }
-            if (!wsutil.validateAddress(addr)) {
-                formMessageSet('gia', 'error', `Invalid ${config.assetName} address`);
-                return;
-            }
-            // only allow standard address
-            if (addr.length > 99) {
-                formMessageSet('gia', 'error', `Only standard ${config.assetName} address are supported`);
-                return;
-            }
-            if (!wsutil.validatePaymentId(pid)) {
-                formMessageSet('gia', 'error', 'Invalid Payment ID');
-                return;
-            }
-
-            wsmanager.genIntegratedAddress(pid, addr).then((res) => {
-                formMessageReset();
-                outputField.value = res.integratedAddress;
-                outputField.setAttribute('title', 'click to copy');
-            }).catch((err) => {
-                formMessageSet('gia', 'error', err.message);
-            });
-        });
-        */
        
         // inputs click to copy handlers
         wsutil.liveEvent('textarea.ctcl, input.ctcl', 'click', (event) => {
@@ -2342,100 +1895,10 @@ function initKeyBindings() {
     });
 }
 
-function fetchNodeInfo(force) {
-    force = force || false;
-
-    function fetchWait(url, timeout) {
-        let controller = new AbortController();
-        let signal = controller.signal;
-        timeout = timeout || 6800;
-        return Promise.race([
-            fetch(url, { signal }),
-            new Promise((resolve) =>
-                setTimeout(() => {
-                    let fakeout = { "address": "", "amount": 0, "status": "KO" };
-                    window.FETCHNODESIG = controller;
-                    return resolve(fakeout);
-                }, timeout)
-            )
-        ]);
-    }
-
-    window.ELECTRON_ENABLE_SECURITY_WARNINGS = false;
-    let aliveNodes = settings.get('pubnodes_tested', []);
-    if (aliveNodes.length && !force) {
-        initNodeSelection(settings.get('node_address'));
-        return aliveNodes;
-    }
-
-    // todo: also check block height?
-    let nodes = settings.get('pubnodes_data');
-
-    let reqs = [];
-    //let hrstart = process.hrtime();
-    nodes.forEach(h => {
-        let out = {
-            host: h,
-            label: h,
-        };
-
-        let url = `http://${h}/feeinfo`;
-        reqs.push(function (callback) {
-            return fetchWait(url)
-                .then((response) => {
-                    if (response.hasOwnProperty('status')) { // fake/timeout response
-                        try { window.FETCHNODESIG.abort(); } catch (e) { }
-                        return response;
-                    } else {
-                        return response.json();
-                    }
-                }).then(json => {
-                    if (!json || !json.hasOwnProperty("address") || !json.hasOwnProperty("amount")) {
-                        return callback(null, null);
-                    }
-
-                    let feeAmount = "";
-                    if (json.status === "KO") {
-                        feeAmount = 'Fee: unknown/timeout';
-                    } else {
-                        feeAmount = parseInt(json.amount, 10) > 0 ? `Fee: ${wsutil.amountForMortal(json.amount)} ${config.assetTicker}` : "FREE";
-                    }
-                    out.label = `${h.split(':')[0]} | ${feeAmount}`;
-                    return callback(null, out);
-                }).catch(() => {
-                    callback(null, null);
-                });
-        });
-    });
-    const parLimit = 12;
-    async.parallelLimit(reqs, parLimit, function (error, results) {
-        if (results) {
-            let res = results.filter(val => val);
-            if (res.length) {
-                settings.set('pubnodes_tested', res);
-            }
-
-            //let hrend = process.hrtime(hrstart);
-            // console.info('Execution time (hr): %ds %dms', hrend[0], hrend[1] / 1000000);
-            // console.info(`parlimit: ${parLimit}`);
-            // console.info(`total nodes: ${nodes.length}`);
-            // console.info(`alive nodes: ${res.length}`);
-            initNodeSelection();
-        } else {
-            initNodeSelection();
-        }
-    });
-}
-
 // spawn event handlers
 document.addEventListener('DOMContentLoaded', () => {
     initHandlers();
     showInitialPage();
-    if (navigator.onLine) {
-        fetchNodeInfo();
-    } else {
-        setTimeout(() => initNodeSelection, 500);
-    }
 }, false);
 
 ipcRenderer.on('cleanup', () => {
@@ -2453,7 +1916,6 @@ ipcRenderer.on('cleanup', () => {
     let htmlStr = `<div class="div-save-main" style="text-align: center;padding:1rem;"><i class="fas fa-spinner fa-pulse"></i><span style="padding:0px 10px;">${htmlText}</span></div>`;
     dialog.innerHTML = htmlStr;
     dialog.showModal();
-    wsmanager.stopSyncWorker();
     try { fs.unlinkSync(wsession.get('walletConfig')); } catch (e) { }
     win.close();
 });

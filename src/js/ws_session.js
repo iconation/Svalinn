@@ -1,15 +1,4 @@
-//const path = require('path');
-//const remote = require('electron').remote;
-const Store = require('electron-store');
-const settings = new Store({ name: 'Settings' });
-const config = require('./ws_config');
-
-const WS_VERSION = settings.get('version', 'unknown');
-const DEFAULT_TITLE = `${config.appName} ${WS_VERSION} - ${config.appDescription}`;
-const SESSION_KEY = 'wlshell';
-
-//const IS_DEBUG = remote.getGlobal('wsession').debug;
-//const WALLET_CFG = path.join(remote.app.getPath('userData'), 'wconfig.txt');
+const SESSION_KEY = 'svalinSessionKey';
 
 var SvalinnSession = function (opts) {
     if (!(this instanceof SvalinnSession)) return new SvalinnSession(opts);
@@ -19,43 +8,22 @@ var SvalinnSession = function (opts) {
     this.eventName = 'sessionUpdated';
     this.sessDefault = {
         loadedWalletAddress: '',
-        walletHash: '',
         walletUnlockedBalance: 0,
-        walletLockedBalance: 0,
         walletConfig: opts.walletConfig || 'wconfig.txt',
-        synchronized: false,
-        syncStarted: false,
         serviceReady: false,
-        connectedNode: '',
-        txList: [],
-        txLen: 0,
-        txLastHash: null,
-        txLastTimestamp: null,
-        txNew: [],
-        nodeFee: 0,
-        nodeChoices: settings.get('pubnodes_data', []),
-        servicePath: settings.get('service_bin', 'svalinn'),
-        configUpdated: false,
-        uiStateChanged: false,
-        defaultTitle: DEFAULT_TITLE,
         debug: opts.debug || false,
-        fusionStarted: false,
-        fusionProgress: false,
         addressBookErr: false
     };
 
     this.stickyVals = {
-        publicNodes: [],
-        addressBook: null // {id: null, name: null, path: null, data: {}}
+        addressBook: null
     };
-    /* jshint ignore:start */
-    this.keys = Object.keys({ ...this.sessDefault, ...this.stickyVals });
 
+    this.keys = Object.keys({ ...this.sessDefault, ...this.stickyVals });
     // initialize
     if (!sessionStorage.getItem(this.sessKey)) {
         sessionStorage.setItem(this.sessKey, JSON.stringify({ ...this.sessDefault, ...this.stickyVals }));
     }
-    /* jshint ignore:end */
 };
 
 SvalinnSession.prototype.get = function (key) {
@@ -98,14 +66,13 @@ SvalinnSession.prototype.reset = function (key) {
         sessData[key] = this.sessDefault[key]; // set to default value
         return sessionStorage.setItem(this.sessKey, JSON.stringify(sessData[key]));
     }
-    //return sessionStorage.setItem(this.sessKey, JSON.stringify(this.sessDefault));
+
     let stickyData = {};
     Object.keys(this.stickyVals).forEach((e) => {
         stickyData[e] = this.get(e);
     });
-    /* jshint ignore: start */
+
     return sessionStorage.setItem(this.sessKey, JSON.stringify({ ...this.sessDefault, ...stickyData }));
-    /* jshint ignore: end */
 };
 
 SvalinnSession.prototype.destroy = function () {

@@ -1076,6 +1076,10 @@ h4.input-required:after{
     text-shadow: 1px 1px 1px #000;
 }
 
+.dont-color-link {
+    color : inherit;
+}
+
 .help-hl{
     color: rgba(255,255,255,1.0);
 }

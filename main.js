@@ -1,10 +1,8 @@
-const { app, dialog, Tray, Menu } = require('electron');
+const { app, Tray, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
-const https = require('https');
 const platform = require('os').platform();
-const crypto = require('crypto');
 const Store = require('electron-store');
 const settings = new Store({ name: 'Settings' });
 const log = require('electron-log');
@@ -15,32 +13,12 @@ const IS_DEV = (process.argv[1] === 'dev' || process.argv[2] === 'dev');
 const IS_DEBUG = IS_DEV || process.argv[1] === 'debug' || process.argv[2] === 'debug';
 const LOG_LEVEL = IS_DEBUG ? 'debug' : 'warn';
 const WALLET_CFGFILE = path.join(app.getPath('userData'), 'wconfig.txt');
-
-const SVALINN_VERSION = app.getVersion() || '0.3.x';
-const SERVICE_FILENAME = (platform === 'win32' ? `${config.walletServiceBinaryFilename}.exe` : config.walletServiceBinaryFilename);
-const SERVICE_OSDIR = (platform === 'win32' ? 'win' : (platform === 'darwin' ? 'osx' : 'lin'));
-const DEFAULT_SERVICE_BIN = path.join(process.resourcesPath, 'bin', SERVICE_OSDIR, SERVICE_FILENAME);
-
-const DEFAULT_REMOTE_NODE = config.remoteNodeListFallback
-    .map((a) => ({ sort: Math.random(), value: a }))
-    .sort((a, b) => a.sort - b.sort)
-    .map((a) => a.value)[0];
+const SVALINN_VERSION = app.getVersion();
 
 const DEFAULT_SETTINGS = {
-    service_bin: DEFAULT_SERVICE_BIN,
-    service_host: '127.0.0.1',
-    service_port: config.walletServiceRpcPort,
-    service_password: 'passwrd',
-    service_timeout: 10,
-    node_address: DEFAULT_REMOTE_NODE,
-    pubnodes_last_updated: 946697799000,
-    pubnodes_data: config.remoteNodeListFallback,
-    pubnodes_custom: ['127.0.0.1:11898'],
-    pubnodes_exclude_offline: false,
     tray_minimize: false,
     tray_close: false,
     darkmode: false,
-    service_config_format: config.walletServiceConfigFormat
 };
 const DEFAULT_SIZE = { width: 840, height: 840 };
 const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
@@ -50,7 +28,6 @@ app.prompShown = false;
 app.needToExit = false;
 app.debug = IS_DEBUG;
 app.walletConfig = WALLET_CFGFILE;
-app.publicNodesUpdated = false;
 app.setAppUserModelId(config.appId);
 
 log.transports.console.level = LOG_LEVEL;
@@ -65,7 +42,8 @@ let trayIconHide = path.join(__dirname, 'src/assets/trayon.png');
 let win;
 let tray;
 
-function createWindow() {
+function createWindow()
+{
     // Create the browser window.
     let darkmode = settings.get('darkmode', false);
     let bgColor = darkmode ? '#000000' : '#02853E';
@@ -152,7 +130,6 @@ function createWindow() {
         tray.setToolTip(config.appSlogan);
         tray.setContextMenu(contextMenu);
 
-
         tray.on('click', () => {
             if(!win.isFocused() && win.isVisible()){
                 win.focus();
@@ -231,59 +208,13 @@ function createWindow() {
     });
 }
 
-function serviceBinCheck() {
-    /*
-    if (DEFAULT_SERVICE_BIN.startsWith('/tmp')) {
-        log.warn(`AppImage env, copying service bin file`);
-        let targetPath = path.join(app.getPath('userData'), SERVICE_FILENAME);
-        try {
-            fs.renameSync(targetPath, `${targetPath}.bak`, (err) => {
-                if (err) log.error(err);
-            });
-        } catch (_e) { }
-
-        try {
-            fs.copyFile(DEFAULT_SERVICE_BIN, targetPath, (err) => {
-                if (err) {
-                    log.error(err);
-                    return;
-                }
-                settings.set('service_bin', targetPath);
-                log.debug(`service binary copied to ${targetPath}`);
-            });
-        } catch (_e) { }
-    } else {
-        // don't trust user's settings, recheck
-        let svcbin = settings.get('service_bin');
-        try{
-            if(!fs.existsSync(svcbin)){
-                log.warn(`Service binary can't be found, falling back to default`);
-                settings.set('service_bin', DEFAULT_SERVICE_BIN);
-            }else{
-                log.info('Service binary found');
-            }
-        }catch(_e) {
-            log.warn('Failed to check for service binary path, falling back to default');
-            settings.set('service_bin', DEFAULT_SERVICE_BIN);
-        }
-    }
-    */
-}
-
 function initSettings() {
     Object.keys(DEFAULT_SETTINGS).forEach((k) => {
         if (!settings.has(k) || settings.get(k) === null) {
             settings.set(k, DEFAULT_SETTINGS[k]);
         }
     });
-    settings.set('service_password', crypto.randomBytes(32).toString('hex'));
     settings.set('version', SVALINN_VERSION);
-    // serviceBinCheck();
-    /*
-    fs.unlink(WALLET_CFGFILE, (err) => {
-        if (err) log.debug(err.code === 'ENOENT' ? 'No stalled wallet config' : err.message);
-    });
-    */
 }
 
 app.on('browser-window-created', function (e, window) {
@@ -343,10 +274,4 @@ app.on('ready', () => {
     if (tx > 0 && ty > 0) {
         try { win.setPosition(parseInt(tx, 10), parseInt(ty, 10)); } catch (_e) { }
     }
-
-    // remove old settings cruft if exist
-    setTimeout(() => {
-        try { settings.delete('pubnodes_checked'); } catch (e) { }
-        try { settings.delete('pubnodes_date'); } catch (e) { }
-    }, 2500);
 });

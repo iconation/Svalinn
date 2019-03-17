@@ -7,43 +7,10 @@ config.appSlogan = 'Svalinn';
 config.appId = 'org.iconation.svalinn';
 config.appGitRepo = 'https://github.com/ICONation/svalinn';
 
-// default port number for your daemon
-config.daemonDefaultRpcPort = 11898;
-
 // wallet file created by this app will have this extension
 config.walletFileDefaultExt = 'icx';
 // transaction file created by this app will have this extension
 config.transactionFileDefaultExt = 'tx';
-
-// change this to match your wallet service executable filename
-config.walletServiceBinaryFilename = 'svalinn';
-
-// version on the bundled service (turtle-service)
-config.walletServiceBinaryVersion = "v0.12.0";
-
-// config file format supported by wallet service, possible values:
-// ini -->  for turtle service (or its forks) version <= v0.8.3
-// json --> for turtle service (or its forks) version >= v0.8.4
-config.walletServiceConfigFormat = "json";
-
-// default port number for your wallet service (e.g. turtle-service)
-config.walletServiceRpcPort = 8070;
-
-// block explorer url, the [[TX_HASH]] will be substituted w/ actual transaction hash
-config.blockExplorerUrl = 'https://explorer.turtlecoin.lol/transaction.html?hash=[[TX_HASH]]';
-
-// default remote node to connect to, set this to a known reliable node for 'just works' user experience
-config.remoteNodeDefaultHost = 'turtlenode.co';
-
-// remote node list update url, set to null if you don't have one
-config.remoteNodeListUpdateUrl = 'https://raw.githubusercontent.com/turtlecoin/turtlecoin-nodes-json/master/turtlecoin-nodes.json';
-
-// fallback remote node list, in case fetching update failed, fill this with known to works remote nodes
-config.remoteNodeListFallback = [
-  'turtlenode.co:11898',
-  'nodes.hashvault.pro:11898',
-  'turtle.mine.nu:11898',
-];
 
 // your currency name
 config.assetName = 'ICX';
@@ -58,10 +25,6 @@ config.addressLength = 42;
 config.minimumFee = 100000;
 // minimum amount for sending transaction
 config.mininumSend = 0.0;
-// default mixin/anonimity for transaction
-config.defaultMixin = 3;
-// to convert from atomic unit
-config.decimalDivisor = 1000000000000000000;
 // to represent human readable value
 config.decimalPlaces = 18;
 
