@@ -456,7 +456,7 @@ textarea#wallet-address{
     font-weight: bold;
 }
 
-#hidden-transaction-hash {
+#send-transaction-hidden-txhash {
     display : none;
 }
 
@@ -1074,29 +1074,6 @@ h4.input-required:after{
 .ab-tools .input-extra-link:hover{
     color: #fff;
     text-shadow: 1px 1px 1px #000;
-}
-
-
-#sendMaxAmount{
-    cursor: pointer;
-    display: block;
-    padding-left: 12px;
-    font-size: 0.82rem;
-    text-align: right;
-    font-style: normal;
-    float: right;
-    margin: 0.2rem 0 0 0;
-    /* text-decoration: underline; */
-    color: #fffb00;
-    position: relative;
-    right: 10px;
-    text-transform: uppercase;
-}
-#sendMaxAmount:hover{
-    text-decoration:underline;
-}
-#sendMaxAmount:focus{
-    outline:none;
 }
 
 .help-hl{

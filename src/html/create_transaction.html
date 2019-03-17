@@ -1,0 +1,80 @@
+<template>
+    <section class="section" id="section-create-transaction">
+        <div class="section-contents darkened">
+
+            <div class="div-title">
+                <h2 class="title">Create ICX transaction</h2>
+            </div>
+
+            <div class="div-input">
+
+                <div class="input-wrap">
+                    <h4 class="text-spaced input-required">Wallet password</h4>
+                    <input required="required" autofocus="true" tabindex="0" type="password"
+                        class="text-block" id="create-transaction-wallet-password" 
+                        placeholder="Password to open this wallet..."
+                        />
+                        <button tabindex="-1" class="togpass notabindex" data-pf="create-transaction-wallet-password"><i class="fas fa-eye"></i></button>
+                </div>
+
+                <div class="input-wrap">
+                    <h4 class="text-spaced input-required">Recipient Address</h4>
+                    <input tabindex="0" required="required" class="text-block" id="create-transaction-recipient-address" 
+                        placeholder="Required, a valid ICX address..."
+                    />
+                    <span class="form-help">Type one or more characters to search from address book, or type new address.</span>
+                </div>
+
+                <div class="input-wrap">
+                    <div class="div-send-amount  inline-block-div half-width">
+                        <h4 class="text-spaced input-required">Amount (ICX)</h4>
+                        <input tabindex="0" title="Required, amount of ICX you want to send." 
+                            data-noclear="1" value="0" required="required" type="number" step="0.1" 
+                            min="0" class="text-block" id="create-transaction-icx-amount" 
+                            placeholder="0"
+                        />
+                    </div>
+                    <div class="div-send-fee inline-block-div half-width half-width-end">
+                            <h4 class="text-spaced input-required">Step Limit (step)</h4>
+                            <input tabindex="0" title="Required, Step price is paid in loop and 1 loop is fixed to 0.000000000000000001 (10^18) ICX. ICON transaction fee is imposed according to various factors such as the number of smart contract usage, the amount of blockchain database used and the size of transaction data, etc." 
+                                required="required" data-noclear="1" value="100000" required="required" type="number" step="10000" min="100000"
+                                class="text-block" id="create-transaction-step-limit" placeholder="100000"
+                            />
+                    </div>
+                </div>
+
+                <div class="input-wrap">
+                    <h4 class="text-spaced input-required">Select where the transaction file will be stored</h4>
+                    <input required="required" data-fileobj="transaction file" data-extension="tx" data-object="Transactions" 
+                        data-selection="saveFile"  data-targetinput="create-transaction-txfile" 
+                        readonly="readonly" class="text-block path-input-button" id="create-transaction-txfile" 
+                        placeholder="Required, full path to store this transaction..."
+                        />
+                    <button data-fileobj="transaction file" data-extension="tx" data-object="Transactions" data-selection="saveFile"  data-targetinput="create-transaction-txfile" type="button" class="button-green path-input-button notabindex" id="button-create-browse"><i class="fas fa-folder-open"></i></button>
+                </div>
+
+                <div class="input-wrap">
+                    <h4 class="text-spaced input-required">Select network</h4>
+                    <label class="select-label">
+                    <select required="required" tabindex="0" name="node-address" id="create-transaction-node-network" class="text-block">
+                        <option value="1">Mainnet</option>
+                        <option value="2">Testnet for Exchanges (Euljiro)</option>
+                        <option value="3">Testnet for DApps (Yeouido)</option>
+                    </select>
+                    </label>
+                </div>
+
+                <div class="input-wrap">
+                    <span class="form-ew form-msg text-spaced-error" id="text-create-transaction-error"></span>
+                    <span class="form-ew form-msg text-spaced-warning" id="text-create-transaction-warning"></span>
+                    <span class="form-ew form-msg text-spaced-success" id="text-create-transaction-success"></span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="form-bt button-green" id="button-create-transaction-create">Create</button>
+                <button type="button" class="form-bt button-red" data-section="section-overview" id="button-create-transaction-back">Back</button>
+            </div>
+        </div>
+    </section>
+</template>

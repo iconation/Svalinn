@@ -7,7 +7,7 @@ const config = require('./ws_config');
 const fnv = require('fnv-plus');
 const GCM = require('node-crypto-gcm').GCM;
 
-const ADDRESS_REGEX_STR = `^${config.addressPrefix}(?=[aA-zZ0-9]*$)(?:.{${config.addressLength - config.addressPrefix.length}})$`;
+const ADDRESS_REGEX_STR = `^(hx|cx)(?=[aA-zZ0-9]*$)(?:.{${config.addressLength - config.addressPrefix.length}})$`;
 const ADDRESS_REGEX = new RegExp(ADDRESS_REGEX_STR);
 const PAYMENT_ID_REGEX = new RegExp(/^([aA-zZ0-9]{64})$/);
 const SECRET_KEY_REGEX = new RegExp(/^[aA-zZ0-9]{64}$/);
