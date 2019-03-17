@@ -16,7 +16,7 @@
 
  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### Features:
+## Features:
 
 This wallet contains the basic functions required to manage your ICX assets:
 
@@ -36,7 +36,7 @@ This wallet contains the basic functions required to manage your ICX assets:
   * Theme: Dark & Light Mode
   * Keyboard shortcuts
 
-### Download &amp; Run Svalinn
+## Download &amp; Run Svalinn
 
 #### Windows:
 1. Download the latest installer here: https://github.com/ICONation/svalinn/releases/latest
@@ -63,8 +63,8 @@ This wallet contains the basic functions required to manage your ICX assets:
 | <kbd>Ctrl</kbd>+<kbd>/</kbd>                   | Display list of available shortcuts  | - |
 | <kbd>Esc</kbd>                                 | Close any opened dialog              | - |
 
-### Building/Packaging Svalinn
 
+## Building/Packaging Svalinn
 
 #### Windows
 
