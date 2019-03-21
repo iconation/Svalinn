@@ -9,8 +9,8 @@
 
 <p align="center">
   <img 
-    src="https://i.imgur.com/l5fpalj.png"
-    width="500px"
+    src="https://i.imgur.com/yYyYxEB.png"
+    width="700px"
     alt="Svalinn Screens">
 </p>
 
