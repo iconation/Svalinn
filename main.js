@@ -20,7 +20,7 @@ const DEFAULT_SETTINGS = {
     tray_close: false,
     darkmode: false,
 };
-const DEFAULT_SIZE = { width: 840, height: 840 };
+const DEFAULT_SIZE = { width: 840, height: 640 };
 const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
 
 app.prompExit = true;

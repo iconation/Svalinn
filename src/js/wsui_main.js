@@ -121,6 +121,9 @@ let thtml;
 let dmswitch;
 let kswitch;
 let iswitch;
+//added by FidelVe delete from here
+let _LANG_;
+//added by FidelVe delete to here
 
 function populateElementVars()
 {
@@ -130,6 +133,10 @@ function populateElementVars()
     kswitch = document.getElementById('kswitch');
     iswitch = document.getElementById('button-section-about');
     firstTab = document.querySelector('.navbar-button');
+    //added by FidelVe delete from here
+    _LANG_ = document.getElementById('button-lang');
+    //added by FidelVe delete to here
+
 
     // Generics
     genericBrowseButton = document.querySelectorAll('.path-input-button:not(.d-opened');
@@ -278,6 +285,14 @@ function checkUpdate ()
         }
     });
 }
+
+//added by FidelVe delete from here
+function showLangSelection()
+{
+  // Popup with the language options
+  console.log('language selection button clicked');
+}
+//delete to here
 
 function showAbout()
 {
@@ -1627,6 +1642,9 @@ function initHandlers()
     });
     kswitch.addEventListener('click', showKeyBindings);
     iswitch.addEventListener('click', showAbout);
+    //added by FidelVe delete from here
+    _LANG_.addEventListener('click', showLangSelection);
+    //delete to here
 
     function handleBrowseButton(args) {
         if (!args) return;
