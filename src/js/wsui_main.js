@@ -34,6 +34,9 @@ let refreshWalletWorker;
 
 let WALLET_OPEN_IN_PROGRESS = false;
 
+//FidelVe: import dictionary
+const _DICT_ = require('./extras/dictionary').dictionary;
+
 /*  dom elements vars; */
 // main section link
 let sectionButtons;
@@ -121,8 +124,33 @@ let thtml;
 let dmswitch;
 let kswitch;
 let iswitch;
+
 //added by FidelVe delete from here
 let _LANG_;
+
+ipcRenderer.on('change-lang', (event, langSelected) => {
+  translateApp(langSelected);
+});
+
+function showLangSelection() {
+  // Popup with the language options
+  ipcRenderer.send('select-lang');
+}
+
+function translateApp(selectedLanguage) {
+  //this functions takes all the text elements on the app and translate them depending on the language selected by the user
+
+  //taking the text elements from the DOM
+  let textElements = [ 
+    ['.welcome-intro-title'], ['.welcome-intro'], ['#button-welcome-openwallet'], ['#button-welcome-createwallet'], ['#button-welcome-import-key']
+  ];
+  for (let each of textElements) {
+    //Getting the text DOM elements
+    let element = document.querySelector(each[0]);
+    //Changing the innerHTML content of each text element based on theselected language
+    element.innerHTML = _DICT_[selectedLanguage][each[0]];
+   };
+}
 //added by FidelVe delete to here
 
 function populateElementVars()
@@ -285,14 +313,6 @@ function checkUpdate ()
         }
     });
 }
-
-//added by FidelVe delete from here
-function showLangSelection()
-{
-  // Popup with the language options
-  console.log('language selection button clicked');
-}
-//delete to here
 
 function showAbout()
 {
