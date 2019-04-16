@@ -1,9 +1,0 @@
-Things added to the code:
-  *I added a tag comment on all the new code I added to try and make clear the parts that I added/modified
-
-  * Modified the main window height. I reduce the height but this only because my laptop resolution cannot show the entire window with the original height, I know this breaks the flow of the main window but I had to do it in order to be able to see the entire window.
-
-  * created src/js/extras/dictionary.js file with the language dictionary info
-
-  * Modified the /src/html/index.html file by adding a button to the 'side-buttons' div element. 
-  * Modified the /src/js/wsui_main.js. In this file Is where I added the most code, but basically just created the _LANG_ variable, added the event listener for the 'click' event, created the function in charge of showing the popup with the language options.
