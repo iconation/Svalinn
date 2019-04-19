@@ -198,8 +198,64 @@ let tempDict = {
     },
     // src/html/index.html
     "#index-text-1": {
-      "text": '',
+      "text": "Svalinn - ICONation ICX Wallet",
       "tag": false
+    },
+    "#index-text-2": {
+      "text": false,
+      "tag": true,
+      "title": "Wallet Overview"
+    },
+    "#index-text-2-1": {
+      "text": "Wallet",
+      "tag": false
+    },
+    "#index-text-3": {
+      "text": false,
+      "tag": true,
+      "title": "Address Book"
+    },
+    "#index-text-4": {
+      "text": 'Address Book',
+      "tag": false
+    },
+    "#index-text-5": {
+      "text": false,
+      "tag": true,
+      "title": "Create transaction"
+    },
+    "#index-text-6": {
+      "text": 'Create transaction',
+      "tag": false
+    },
+    "#index-text-7": {
+      "text": false,
+      "tag": true,
+      "title": "Send transaction"
+    },
+    "#index-text-8": {
+      "text": 'Send transaction',
+      "tag": false
+    },
+    "#index-text-9": {
+      "text": false,
+      "tag": true,
+      "title": "Language"
+    },
+    "#index-text-10": {
+      "text": false,
+      "tag": true,
+      "title": "About"
+    },
+    "#index-text-11": {
+      "text": false,
+      "tag": true,
+      "title": "Show keyboard shorcut"
+    },
+    "#index-text-12": {
+      "text": false,
+      "tag": true,
+      "title": "Switch to dark mode"
     },
     // src/html/overview_create.html
     "#overview-create-text-1": {
