@@ -2,7 +2,7 @@
 // "language-label": {
 //    "#element-id": { 
 //      "text": "text content here",
-//      "tag": false, // [false, "title", "placeholder"]
+//      "tag": false, // [false, true]
 //      "title": "text content of title tag",
 //      "placeholder": "text content of placeholder tag",
 //      }
@@ -120,7 +120,80 @@ let tempDict = {
     },
     // src/html/create_transaction.html
     "#create-text-1": {
-      "text": '',
+      "text": 'Create ICX transaction',
+      "tag": false
+    },
+    "#create-text-2": {
+      "text": 'Wallet password',
+      "tag": false
+    },
+    "#create-text-3": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Password to open this wallet..."
+    },
+    "#create-text-4": {
+      "text": 'Recipient address',
+      "tag": false
+    },
+    "#create-text-5": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Required, a valid ICX address..."
+    },
+    "#create-text-6": {
+      "text": 'Type one or more characters to search from address book, or type new address.',
+      "tag": false
+    },
+    "#create-text-7": {
+      "text": 'Amount (ICX)',
+      "tag": false
+    },
+    "create-text-8": {
+      "text": false,
+      "tag": true,
+      "title": "Required, amount of ICX you want to send."
+    },
+    "#create-text-9": {
+      "text": 'Step Limit (step)',
+      "tag": false
+    },
+    "#create-text-10": {
+      "text": false,
+      "tag": true,
+      "title": "Required, step price is paiid in loop and 1 loop is fixed to 0.000000000000000001 (10^18) ICX. ICON transaction fee is imposed according to various factors such as the number of smart contract usage, the amount of blockchain database used and the size of transaction data, etc"
+    },
+    "#create-text-11": {
+      "text": 'Select where the transaction file will be stored',
+      "tag": false
+    },
+    "#create-text-12": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Required, full path to store this transaction..."
+    },
+    "#create-text-13": {
+      "text": 'Select network',
+      "tag": false
+    },
+    "#create-text-14": {
+      "text": 'Mainnet',
+      "tag": false
+    },
+    "#create-text-15": {
+      "text": 'Testnet for Exchanges (Euljiro)',
+      "tag": false
+    },
+    "#create-text-16": {
+      "text": 'Testnet for DApps (Yeouido)',
+      "tag": false
+    },
+    "#create-text-17": {
+      "text": 'Create',
+      "tag": false
+    },
+    "#create-text-18": {
+      "text": 'Back',
       "tag": false
     },
     // src/html/index.html
