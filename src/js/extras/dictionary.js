@@ -376,7 +376,24 @@ let tempDict = {
     },
     // src/html/overview_load.html
     "#overview-load-text-1": {
-      "text": '',
+      "text": 'Open a wallet',
+      "tag": false
+    },
+    "#overview-load-text-2": {
+      "text": 'Select the wallet file',
+      "tag": false
+    },
+    "#overview-load-text-3": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Full path to the wallet file to be opened..."
+    },
+    "#overview-load-text-4": {
+      "text": 'Open',
+      "tag": false
+    },
+    "#overview-load-text-5": {
+      "text": 'Back',
       "tag": false
     },
     // src/html/overview_show.html
