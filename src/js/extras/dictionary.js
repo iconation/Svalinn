@@ -259,7 +259,33 @@ let tempDict = {
     },
     // src/html/overview_create.html
     "#overview-create-text-1": {
-      "text": '',
+      "text": 'Create new wallet',
+      "tag": false
+    },
+    "#overview-create-text-2": {
+      "text": 'Select where the wallet file will be stored',
+      "tag": false
+    },
+    "#overview-create-text-3": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Required, full path to store this wallet..."
+    },
+    "#overview-create-text-4": {
+      "text": 'Set password to open this wallet',
+      "tag": false
+    },
+    "#overview-create-text-5": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Required, set a password to open your new wallet..."
+    },
+    "#overview-create-text-6": {
+      "text": 'Create',
+      "tag": false
+    },
+    "#overview-create-text-7": {
+      "text": 'Cancel',
       "tag": false
     },
     // src/html/overview.html
