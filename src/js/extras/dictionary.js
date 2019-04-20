@@ -398,7 +398,41 @@ let tempDict = {
     },
     // src/html/overview_show.html
     "#overview-show-text-1": {
-      "text": '',
+      "text": 'Reveal or export your Private Key',
+      "tag": false
+    },
+    "#overview-show-text-2": {
+      "text": 'Important!!!<br>Please be sure to backup your keys and store them somewhere private and safe.<br>If your wallet file is corrupted or lost you can always import these keys to restore the wallet in any compatible program.',
+      "tag": false
+    },
+    "#overview-show-text-3": {
+      "text": 'Wallet password',
+      "tag": false
+    },
+    "#overview-show-text-4": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Password to open this wallet..."
+    },
+    "#overview-show-text-5": {
+      "text": 'Your private key:',
+      "tag": false
+    },
+    "#overview-show-text-6": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Click the Reveal button to see it"
+    },
+    "#overview-show-text-7": {
+      "text": 'Reveal',
+      "tag": false
+    },
+    "#overview-show-text-8": {
+      "text": 'Export to file',
+      "tag": false
+    },
+    "#overview-show-text-9": {
+      "text": 'Back',
       "tag": false
     },
     // src/html/send_transaction.html
