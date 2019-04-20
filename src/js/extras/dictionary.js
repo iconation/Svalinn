@@ -335,7 +335,43 @@ let tempDict = {
     },
     // src/html/overview_import_key.html
     "#overview-import-text-1": {
-      "text": '',
+      "text": 'Import Private Key',
+      "tag": false
+    },
+    "#overview-import-text-2": {
+      "text": 'Select where the wallet file will be stored',
+      "tag": false
+    },
+    "#overview-import-text-3": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Required, full path to store this wallet..."
+    },
+    "#overview-import-text-4": {
+      "text": 'Set password to open this wallet',
+      "tag": false
+    },
+    "#overview-import-text-5": {
+      "text": false,
+      "tag": true,
+      "title": "Required",
+      "placeholder": "Required, set a password to open this wallet..."
+    },
+    "#overview-import-text-6": {
+      "text": 'Private key to be imported',
+      "tag": false
+    },
+    "#overview-import-text-7": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Required, your private view key to be imported..."
+    },
+    "#overview-import-text-8": {
+      "text": 'Import',
+      "tag": false
+    },
+    "#overview-import-text-9": {
+      "text": 'Cancel',
       "tag": false
     },
     // src/html/overview_load.html
