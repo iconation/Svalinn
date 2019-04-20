@@ -290,8 +290,48 @@ let tempDict = {
     },
     // src/html/overview.html
     "#overview-text-1": {
-      "text": '',
+      "text": 'Address:',
       "tag": false
+    },
+    "#overview-text-2": {
+      "text": false,
+      "tag": true,
+      "title": "click to copy"
+    },
+    "#overview-text-3": {
+      "text": 'Balance:',
+      "tag": false
+    },
+    "#overview-text-4": {
+      "text": false,
+      "tag": true,
+      "title": "Available Balance"
+    },
+    "#overview-text-5": {
+      "text": 'Select network',
+      "tag": false
+    },
+    "#overview-text-6": {
+      "text": 'Mainnet',
+      "tag": false
+    },
+    "#overview-text-7": {
+      "text": 'Testnet for Exchanges (Euljiro)',
+      "tag": false
+    },
+    "#overview-text-8": {
+      "text": 'Testnet for DApps (Yeouido)',
+      "tag": false
+    },
+    "#overview-text-9": {
+      "text": 'Backup Keys',
+      "tag": true,
+      "title": "Backup your private keys (ctrl+e)"
+    },
+    "#overview-text-10": {
+      "text": 'Close',
+      "tag": true,
+      "title": "Close current wallet, so you can open another wallet (ctrl+x)"
     },
     // src/html/overview_import_key.html
     "#overview-import-text-1": {
