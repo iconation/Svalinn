@@ -1,526 +1,516 @@
-// Dictionary object format
-// "language-label": {
-//    "#element-id": { 
-//      "text": "text content here",
-//      "tag": false, // [false, true]
-//      "title": "text content of title tag",
-//      "placeholder": "text content of placeholder tag",
-//      }
-// }
-//
 let tempDict = {
   "en-US": {
     // src/html/welcome.html
     "#welcome-text-1": {
-      "text": `Welcome!`,
+      "text": "STRING-101", 
       "tag": false,
     },
     "#welcome-text-2": {
-      "text": `Get started by creating a new wallet,<br> open or import your existing wallet.`,
+      "text": "STRING-102", 
       "tag": false,
     },
     "#welcome-text-3": {
-      "text": `Open wallet`,
+      "text": "STRING-103", 
       "tag": true,
-      "title": "Open your existing wallet file (ctrl+o)"
+      "title": "STRING-104"
     },
     "#welcome-text-4": {
-      "text": `Create New Wallet`,
+      "text": "STRING-105",
       "tag": true,
-      "title": "Create new wallet file (ctrl+n)"
+      "title": "STRING-106"
     },
     "#welcome-text-5": {
-      "text": `Import key`,
+      "text": "STRING-107",
       "tag": true,
-      "title": "Import/restore your private keys (ctrl+i)"
+      "title": "STRING-108"
     },
     // src/html/about.html
     "#about-text-1": {
-      "text": `<p>This is a GUI front-end to manage ICX assets (ICX).</p><p>You can use this software to create and import new ICX wallets, or open existing wallets. Then you can manage your wallet, such as viewing your balance and transactions history, sending/transferring ICX, etc.</p>`,
+      "text": "STRING-109",
       "tag": false
     },
     "#about-text-2": {
-      "text": `Donate to: <strong>ICONation</strong>`,
+      "text": "STRING-110",
       "tag": false
     },
     "#about-text-3": {
       "text": false,
       "tag": true,
-      "title": "Click to copy"
+      "title": "STRING-111"
     },
     "#about-text-4": {
-      "text": `Source codes, release notes, documentations & bugs tracker can be found at our Github repo:<br> <a tabindex="0" class="external" href="https://github.com/ICONation/svalinn">https://github.com/ICONation/svalinn</a>`,
+      "text": "STRING-112",
       "tag": false
     },
     // src/html/address_book_add.html
     "#address-add-text-1": {
-      "text": `Add Address Book Entry`,
+      "text": "STRING-113", 
       "tag": false
     },
     "#address-add-text-2": {
-      "text": `Name`,
+      "text": "STRING-114",
       "tag": false
     },
     "#address-add-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, give a unique name/label to make it easy to identify...",
+      "placeholder": "STRING-115", 
     },
     "#address-add-text-4": {
-      "text": "Wallet Address",
+      "text": "STRING-116",
       "tag": false
     },
     "#address-add-text-5": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, a valid ICX address, non unique address is allow as long as it have different payment id...",
+      "placeholder": "STRING-117",
     },
     "#address-add-text-6": {
-      "text": 'Save',
+      "text": "STRING-118",
       "tag": false
     },
     "#address-add-text-7": {
-      "text": 'Back',
+      "text": "STRING-119",
       "tag": false
     },
     // src/html/address_book.html
     "#address-book-text-1": {
-      "text": "Address Book",
+      "text": "STRING-120",
       "tag": false
     },
     "#address-book-text-2": {
-      "text": "Search",
+      "text": "STRING-121",
       "tag": false
     },
     "#address-book-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Search by name or wallet address"
+      "placeholder": "STRING-122"
     },
     "#address-book-text-4": {
-      "text": "Select address book",
+      "text": "STRING-123",
       "tag": false
     },
     "#address-book-text-5": {
-      "text": "Default/Built-in Address Book",
+      "text": "STRING-124",
       "tag": false
     },
     "#address-book-text-6": {
       "text": false,
       "tag": true,
-      "title": "Create new address book"
+      "title": "STRING-125"
     },
     "#address-book-text-7": {
-      "text": "Add New Entry",
+      "text": "STRING-126",
       "tag": false
     },
     "#address-book-text-8": {
-      "text": "Back",
+      "text": "STRING-127",
       "tag": false,
     },
     // src/html/create_transaction.html
     "#create-text-1": {
-      "text": 'Create ICX transaction',
+      "text": "STRING-128",
       "tag": false
     },
     "#create-text-2": {
-      "text": 'Wallet password',
+      "text": "STRING-129",
       "tag": false
     },
     "#create-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Password to open this wallet..."
+      "placeholder": "STRING-130"
     },
     "#create-text-4": {
-      "text": 'Recipient address',
+      "text": "STRING-131",
       "tag": false
     },
     "#create-text-5": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, a valid ICX address..."
+      "placeholder": "STRING-132"
     },
     "#create-text-6": {
-      "text": 'Type one or more characters to search from address book, or type new address.',
+      "text": "STRING-133",
       "tag": false
     },
     "#create-text-7": {
-      "text": 'Amount (ICX)',
+      "text": "STRING-134", 
       "tag": false
     },
     "create-text-8": {
       "text": false,
       "tag": true,
-      "title": "Required, amount of ICX you want to send."
+      "title": "STRING-135" 
     },
     "#create-text-9": {
-      "text": 'Step Limit (step)',
+      "text": "STRING-136", 
       "tag": false
     },
     "#create-text-10": {
       "text": false,
       "tag": true,
-      "title": "Required, step price is paiid in loop and 1 loop is fixed to 0.000000000000000001 (10^18) ICX. ICON transaction fee is imposed according to various factors such as the number of smart contract usage, the amount of blockchain database used and the size of transaction data, etc"
+      "title": "STRING-137"
     },
     "#create-text-11": {
-      "text": 'Select where the transaction file will be stored',
+      "text": "STRING-138",
       "tag": false
     },
     "#create-text-12": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, full path to store this transaction..."
+      "placeholder": "STRING-139"
     },
     "#create-text-13": {
-      "text": 'Select network',
+      "text": "STRING-140",
       "tag": false
     },
     "#create-text-14": {
-      "text": 'Mainnet',
+      "text": "STRING-141",
       "tag": false
     },
     "#create-text-15": {
-      "text": 'Testnet for Exchanges (Euljiro)',
+      "text": "STRING-142",
       "tag": false
     },
     "#create-text-16": {
-      "text": 'Testnet for DApps (Yeouido)',
+      "text": "STRING-143",
       "tag": false
     },
     "#create-text-17": {
-      "text": 'Create',
+      "text": "STRING-144", 
       "tag": false
     },
     "#create-text-18": {
-      "text": 'Back',
+      "text": "STRING-145",
       "tag": false
     },
     // src/html/index.html
     "#index-text-1": {
-      "text": "Svalinn - ICONation ICX Wallet",
+      "text": "STRING-146", 
       "tag": false
     },
     "#index-text-2": {
       "text": false,
       "tag": true,
-      "title": "Wallet Overview"
+      "title": "STRING-147"
     },
     "#index-text-2-1": {
-      "text": "Wallet",
+      "text": "STRING-148",
       "tag": false
     },
     "#index-text-3": {
       "text": false,
       "tag": true,
-      "title": "Address Book"
+      "title": "STRING-149"
     },
     "#index-text-4": {
-      "text": 'Address Book',
+      "text": "STRING-150",
       "tag": false
     },
     "#index-text-5": {
       "text": false,
       "tag": true,
-      "title": "Create transaction"
+      "title": "STRING-151"
     },
     "#index-text-6": {
-      "text": 'Create transaction',
+      "text": "STRING-152",
       "tag": false
     },
     "#index-text-7": {
       "text": false,
       "tag": true,
-      "title": "Send transaction"
+      "title": "STRING-153"
     },
     "#index-text-8": {
-      "text": 'Send transaction',
+      "text": "STRING-154",
       "tag": false
     },
     "#index-text-9": {
       "text": false,
       "tag": true,
-      "title": "Language"
+      "title": "STRING-155"
     },
     "#index-text-10": {
       "text": false,
       "tag": true,
-      "title": "About"
+      "title": "STRING-156"
     },
     "#index-text-11": {
       "text": false,
       "tag": true,
-      "title": "Show keyboard shorcut"
+      "title": "STRING-157"
     },
     "#index-text-12": {
       "text": false,
       "tag": true,
-      "title": "Switch to dark mode"
+      "title": "STRING-158"
     },
     // src/html/overview_create.html
     "#overview-create-text-1": {
-      "text": 'Create new wallet',
+      "text": "STRING-159",
       "tag": false
     },
     "#overview-create-text-2": {
-      "text": 'Select where the wallet file will be stored',
+      "text": "STRING-160",
       "tag": false
     },
     "#overview-create-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, full path to store this wallet..."
+      "placeholder": "STRING-161"
     },
     "#overview-create-text-4": {
-      "text": 'Set password to open this wallet',
+      "text": "STRING-162",
       "tag": false
     },
     "#overview-create-text-5": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, set a password to open your new wallet..."
+      "placeholder": "STRING-163"
     },
     "#overview-create-text-6": {
-      "text": 'Create',
+      "text": "STRING-164",
       "tag": false
     },
     "#overview-create-text-7": {
-      "text": 'Cancel',
+      "text": "STRING-165",
       "tag": false
     },
     // src/html/overview.html
     "#overview-text-1": {
-      "text": 'Address:',
+      "text": "STRING-166",
       "tag": false
     },
     "#overview-text-2": {
       "text": false,
       "tag": true,
-      "title": "click to copy"
+      "title": "STRING-167"
     },
     "#overview-text-3": {
-      "text": 'Balance:',
+      "text": "STRING-168",
       "tag": false
     },
     "#overview-text-4": {
       "text": false,
       "tag": true,
-      "title": "Available Balance"
+      "title": "STRING-169"
     },
     "#overview-text-5": {
-      "text": 'Select network',
+      "text": "STRING-170", 
       "tag": false
     },
     "#overview-text-6": {
-      "text": 'Mainnet',
+      "text": "STRING-171",
       "tag": false
     },
     "#overview-text-7": {
-      "text": 'Testnet for Exchanges (Euljiro)',
+      "text": "STRING-172",
       "tag": false
     },
     "#overview-text-8": {
-      "text": 'Testnet for DApps (Yeouido)',
+      "text": "STRING-173",
       "tag": false
     },
     "#overview-text-9": {
-      "text": 'Backup Keys',
+      "text": "STRING-174",
       "tag": true,
-      "title": "Backup your private keys (ctrl+e)"
+      "title": "STRING-175"
     },
     "#overview-text-10": {
-      "text": 'Close',
+      "text": "STRING-176",
       "tag": true,
-      "title": "Close current wallet, so you can open another wallet (ctrl+x)"
+      "title": "STRING-177"
     },
     // src/html/overview_import_key.html
     "#overview-import-text-1": {
-      "text": 'Import Private Key',
+      "text": "STRING-178",
       "tag": false
     },
     "#overview-import-text-2": {
-      "text": 'Select where the wallet file will be stored',
+      "text": "STRING-179",
       "tag": false
     },
     "#overview-import-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, full path to store this wallet..."
+      "placeholder": "STRING-180"
     },
     "#overview-import-text-4": {
-      "text": 'Set password to open this wallet',
+      "text": "STRING-181",
       "tag": false
     },
     "#overview-import-text-5": {
       "text": false,
       "tag": true,
-      "title": "Required",
-      "placeholder": "Required, set a password to open this wallet..."
+      "title": "STRING-182",
+      "placeholder": "STRING-183"
     },
     "#overview-import-text-6": {
-      "text": 'Private key to be imported',
+      "text": "STRING-184",
       "tag": false
     },
     "#overview-import-text-7": {
       "text": false,
       "tag": true,
-      "placeholder": "Required, your private view key to be imported..."
+      "placeholder": "STRING-185"
     },
     "#overview-import-text-8": {
-      "text": 'Import',
+      "text": "STRING-186",
       "tag": false
     },
     "#overview-import-text-9": {
-      "text": 'Cancel',
+      "text": "STRING-187",
       "tag": false
     },
     // src/html/overview_load.html
     "#overview-load-text-1": {
-      "text": 'Open a wallet',
+      "text": "STRING-188",
       "tag": false
     },
     "#overview-load-text-2": {
-      "text": 'Select the wallet file',
+      "text": "STRING-189",
       "tag": false
     },
     "#overview-load-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Full path to the wallet file to be opened..."
+      "placeholder": "STRING-190"
     },
     "#overview-load-text-4": {
-      "text": 'Open',
+      "text": "STRING-191",
       "tag": false
     },
     "#overview-load-text-5": {
-      "text": 'Back',
+      "text": "STRING-192",
       "tag": false
     },
     // src/html/overview_show.html
     "#overview-show-text-1": {
-      "text": 'Reveal or export your Private Key',
+      "text": "STRING-193",
       "tag": false
     },
     "#overview-show-text-2": {
-      "text": 'Important!!!<br>Please be sure to backup your keys and store them somewhere private and safe.<br>If your wallet file is corrupted or lost you can always import these keys to restore the wallet in any compatible program.',
+      "text": "STRING-194",
       "tag": false
     },
     "#overview-show-text-3": {
-      "text": 'Wallet password',
+      "text": "STRING-195",
       "tag": false
     },
     "#overview-show-text-4": {
       "text": false,
       "tag": true,
-      "placeholder": "Password to open this wallet..."
+      "placeholder": "STRING-196"
     },
     "#overview-show-text-5": {
-      "text": 'Your private key:',
+      "text": "STRING-197",
       "tag": false
     },
     "#overview-show-text-6": {
       "text": false,
       "tag": true,
-      "placeholder": "Click the Reveal button to see it"
+      "placeholder": "STRING-198"
     },
     "#overview-show-text-7": {
-      "text": 'Reveal',
+      "text": "STRING-199",
       "tag": false
     },
     "#overview-show-text-8": {
-      "text": 'Export to file',
+      "text": "STRING-200",
       "tag": false
     },
     "#overview-show-text-9": {
-      "text": 'Back',
+      "text": "STRING-201",
       "tag": false
     },
     // src/html/send_transaction.html
     "#send-text-1": {
-      "text": 'Send ICX transaction',
+      "text": "STRING-202",
       "tag": false
     },
     "#send-text-2": {
-      "text": 'Select the transaction file',
+      "text": "STRING-203",
       "tag": false
     },
     "#send-text-3": {
       "text": false,
       "tag": true,
-      "placeholder": "Full path to the transaction file to be opened..."
+      "placeholder": "STRING-204"
     },
     "#send-text-4": {
-      "text": 'Transaction Hash:',
+      "text": "STRING-205", 
       "tag": false
     },
     "#send-text-5": {
       "text": false,
       "tag": true,
-      "title": "Click to see the transaction on the tracker"
+      "title": "STRING-206"
     },
     "#send-text-6": {
-      "text": 'Send',
+      "text": "STRING-207",
       "tag": false
     },
     "#send-text-7": {
-      "text": 'Back',
+      "text": "STRING-208",
       "tag": false
     },
     // src/html/shortcuts.html
     "#shortcuts-text-1": { 
-      "text": "Available Keybindings", 
+      "text": "STRING-209", 
       "tag": false
     },
     "#shortcuts-text-2": { 
-      "text": "Switch to <strong>overview/welcome</strong> screen", 
+      "text": "STRING-210", 
       "tag": false
     },
     "#shortcuts-text-3": { 
-      "text": "Switch to <strong>next screen</strong>", 
+      "text": "STRING-211", 
       "tag": false
     },
     "#shortcuts-text-4": { 
-      "text": "Switch to <strong>next screen</strong>", 
+      "text": "STRING-212", 
       "tag": false
     },
     "#shortcuts-text-5": { 
-      "text": "Switch to <strong>Create new wallet</strong> screen", 
+      "text": "STRING-213", 
       "tag": false
     },
     "#shortcuts-text-6": { 
-      "text": "Switch to <strong>Open a wallet</strong> screen", 
+      "text": "STRING-214", 
       "tag": false
     },
     "#shortcuts-text-7": { 
-      "text": "Switch to <strong>Import wallet from private keys</strong> screen", 
+      "text": "STRING-215", 
       "tag": false
     },
     "#shortcuts-text-8": { 
-      "text": "Switch to <strong>Export private keys</strong> screen (when wallet opened)", 
+      "text": "STRING-216", 
       "tag": false
     },
     "#shortcuts-text-9": { 
-      "text": "Switch to <strong>Create Transaction</strong> screen (when wallet opened)", 
+      "text": "STRING-217", 
       "tag": false
     },
     "#shortcuts-text-10": { 
-      "text": "Switch to <strong>Send Transactions</strong> screen (when wallet opened)", 
+      "text": "STRING-218"
       "tag": false
     },
     "#shortcuts-text-11": { 
-      "text": "Close wallet", 
+      "text": "STRING-219", 
       "tag": false
     },
     "#shortcuts-text-12": { 
-      "text": "Toggle dark/night mode", 
+      "text": "STRING-220", 
       "tag": false
     },
     "#shortcuts-text-13": { 
-      "text": "Display shortcut key information (this dialog)", 
+      "text": "STRING-221"
       "tag": false
     },
     "#shortcuts-text-14": { 
-        "text": "Close any opened dialog (like this dialog)", 
+        "text": "STRING-222"
       "tag": false
     }
   },
