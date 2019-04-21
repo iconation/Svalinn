@@ -437,7 +437,33 @@ let tempDict = {
     },
     // src/html/send_transaction.html
     "#send-text-1": {
-      "text": '',
+      "text": 'Send ICX transaction',
+      "tag": false
+    },
+    "#send-text-2": {
+      "text": 'Select the transaction file',
+      "tag": false
+    },
+    "#send-text-3": {
+      "text": false,
+      "tag": true,
+      "placeholder": "Full path to the transaction file to be opened..."
+    },
+    "#send-text-4": {
+      "text": 'Transaction Hash:',
+      "tag": false
+    },
+    "#send-text-5": {
+      "text": false,
+      "tag": true,
+      "title": "Click to see the transaction on the tracker"
+    },
+    "#send-text-6": {
+      "text": 'Send',
+      "tag": false
+    },
+    "#send-text-7": {
+      "text": 'Back',
       "tag": false
     },
     // src/html/shortcuts.html
