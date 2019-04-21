@@ -467,8 +467,60 @@ let tempDict = {
       "tag": false
     },
     // src/html/shortcuts.html
-    "#shortcuts-text-1": {
-      "text": '',
+    "#shortcuts-text-1": { 
+      "text": "Available Keybindings", 
+      "tag": false
+    },
+    "#shortcuts-text-2": { 
+      "text": "Switch to <strong>overview/welcome</strong> screen", 
+      "tag": false
+    },
+    "#shortcuts-text-3": { 
+      "text": "Switch to <strong>next screen</strong>", 
+      "tag": false
+    },
+    "#shortcuts-text-4": { 
+      "text": "Switch to <strong>next screen</strong>", 
+      "tag": false
+    },
+    "#shortcuts-text-5": { 
+      "text": "Switch to <strong>Create new wallet</strong> screen", 
+      "tag": false
+    },
+    "#shortcuts-text-6": { 
+      "text": "Switch to <strong>Open a wallet</strong> screen", 
+      "tag": false
+    },
+    "#shortcuts-text-7": { 
+      "text": "Switch to <strong>Import wallet from private keys</strong> screen", 
+      "tag": false
+    },
+    "#shortcuts-text-8": { 
+      "text": "Switch to <strong>Export private keys</strong> screen (when wallet opened)", 
+      "tag": false
+    },
+    "#shortcuts-text-9": { 
+      "text": "Switch to <strong>Create Transaction</strong> screen (when wallet opened)", 
+      "tag": false
+    },
+    "#shortcuts-text-10": { 
+      "text": "Switch to <strong>Send Transactions</strong> screen (when wallet opened)", 
+      "tag": false
+    },
+    "#shortcuts-text-11": { 
+      "text": "Close wallet", 
+      "tag": false
+    },
+    "#shortcuts-text-12": { 
+      "text": "Toggle dark/night mode", 
+      "tag": false
+    },
+    "#shortcuts-text-13": { 
+      "text": "Display shortcut key information (this dialog)", 
+      "tag": false
+    },
+    "#shortcuts-text-14": { 
+        "text": "Close any opened dialog (like this dialog)", 
       "tag": false
     },
     // src/html/splash.html
@@ -521,3 +573,4 @@ if (typeof require != 'undefined' && require.main == module) {
     }
   }
 }
+
