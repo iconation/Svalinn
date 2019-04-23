@@ -1,0 +1,583 @@
+{
+  "#welcome-text-1": {
+    "innerHTML": "STRING-101", 
+    "placeholder": false,
+    "title": false
+  },
+  "#welcome-text-2": {
+    "innerHTML": "STRING-102", 
+    "placeholder": false,
+    "title": false
+  },
+  "#welcome-text-3": {
+    "innerHTML": "STRING-103", 
+    "placeholder": false,
+    "title": "STRING-104"
+  },
+  "#welcome-text-4": {
+    "innerHTML": "STRING-105",
+    "placeholder": false,
+    "title": "STRING-106"
+  },
+  "#welcome-text-5": {
+    "innerHTML": "STRING-107",
+    "placeholder": false,
+    "title": "STRING-108"
+  },
+  "#about-text-1": {
+    "innerHTML": "STRING-109",
+    "placeholder": false,
+    "title": false
+  },
+  "#about-text-2": {
+    "innerHTML": "STRING-110",
+    "placeholder": false,
+    "title": false
+  },
+  "#about-text-3": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-111"
+  },
+  "#about-text-4": {
+    "innerHTML": "STRING-112",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-add-text-1": {
+    "innerHTML": "STRING-113", 
+    "placeholder": false,
+    "title": false
+  },
+  "#address-add-text-2": {
+    "innerHTML": "STRING-114",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-add-text-3": {
+    "innerHTML": false,
+    "placeholder": "STRING-115", 
+    "title": false
+  },
+  "#address-add-text-4": {
+    "innerHTML": "STRING-116",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-add-text-5": {
+    "innerHTML": false,
+    "placeholder": "STRING-117",
+    "title": false
+  },
+  "#address-add-text-6": {
+    "innerHTML": "STRING-118",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-add-text-7": {
+    "innerHTML": "STRING-119",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-book-text-1": {
+    "innerHTML": "STRING-120",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-book-text-2": {
+    "innerHTML": "STRING-121",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-book-text-3": {
+    "innerHTML": false,
+    "placeholder": "STRING-122",
+    "title": false
+  },
+  "#address-book-text-4": {
+    "innerHTML": "STRING-123",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-book-text-5": {
+    "innerHTML": "STRING-124",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-book-text-6": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-125"
+  },
+  "#address-book-text-7": {
+    "innerHTML": "STRING-126",
+    "placeholder": false,
+    "title": false
+  },
+  "#address-book-text-8": {
+    "innerHTML": "STRING-127",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-1": {
+    "innerHTML": "STRING-128",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-2": {
+    "innerHTML": "STRING-129",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-3": {
+    "innerHTML": false,
+    "placeholder": "STRING-130",
+    "title": false
+  },
+  "#create-text-4": {
+    "innerHTML": "STRING-131",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-5": {
+    "innerHTML": false,
+    "placeholder": "STRING-132",
+    "title": false
+  },
+  "#create-text-6": {
+    "innerHTML": "STRING-133",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-7": {
+    "innerHTML": "STRING-134", 
+    "placeholder": false,
+    "title": false
+  },
+  "create-text-8": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-135" 
+  },
+  "#create-text-9": {
+    "innerHTML": "STRING-136", 
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-10": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-137"
+  },
+  "#create-text-11": {
+    "innerHTML": "STRING-138",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-12": {
+    "innerHTML": false,
+    "placeholder": "STRING-139",
+    "title": false
+  },
+  "#create-text-13": {
+    "innerHTML": "STRING-140",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-14": {
+    "innerHTML": "STRING-141",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-15": {
+    "innerHTML": "STRING-142",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-16": {
+    "innerHTML": "STRING-143",
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-17": {
+    "innerHTML": "STRING-144", 
+    "placeholder": false,
+    "title": false
+  },
+  "#create-text-18": {
+    "innerHTML": "STRING-145",
+    "placeholder": false,
+    "title": false
+  },
+  "#index-text-1": {
+    "innerHTML": "STRING-146", 
+    "placeholder": false,
+    "title": false
+  },
+  "#index-text-2": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-147"
+  },
+  "#index-text-2-1": {
+    "innerHTML": "STRING-148",
+    "placeholder": false,
+    "title": false
+  },
+  "#index-text-3": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-149"
+  },
+  "#index-text-4": {
+    "innerHTML": "STRING-150",
+    "placeholder": false,
+    "title": false
+  },
+  "#index-text-5": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-151"
+  },
+  "#index-text-6": {
+    "innerHTML": "STRING-152",
+    "placeholder": false,
+    "title": false
+  },
+  "#index-text-7": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-153"
+  },
+  "#index-text-8": {
+    "innerHTML": "STRING-154",
+    "placeholder": false,
+    "title": false
+  },
+  "#index-text-9": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-155"
+  },
+  "#index-text-10": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-156"
+  },
+  "#index-text-11": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-157"
+  },
+  "#index-text-12": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-158"
+  },
+  "#overview-create-text-1": {
+    "innerHTML": "STRING-159",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-create-text-2": {
+    "innerHTML": "STRING-160",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-create-text-3": {
+    "innerHTML": false,
+    "placeholder": "STRING-161",
+    "title": false
+  },
+  "#overview-create-text-4": {
+    "innerHTML": "STRING-162",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-create-text-5": {
+    "innerHTML": false,
+    "placeholder": "STRING-163",
+    "title": false
+  },
+  "#overview-create-text-6": {
+    "innerHTML": "STRING-164",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-create-text-7": {
+    "innerHTML": "STRING-165",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-1": {
+    "innerHTML": "STRING-166",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-2": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-167"
+  },
+  "#overview-text-3": {
+    "innerHTML": "STRING-168",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-4": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-169"
+  },
+  "#overview-text-5": {
+    "innerHTML": "STRING-170", 
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-6": {
+    "innerHTML": "STRING-171",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-7": {
+    "innerHTML": "STRING-172",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-8": {
+    "innerHTML": "STRING-173",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-text-9": {
+    "innerHTML": "STRING-174",
+    "placeholder": false,
+    "title": "STRING-175"
+  },
+  "#overview-text-10": {
+    "innerHTML": "STRING-176",
+    "placeholder": false,
+    "title": "STRING-177"
+  },
+  "#overview-import-text-1": {
+    "innerHTML": "STRING-178",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-import-text-2": {
+    "innerHTML": "STRING-179",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-import-text-3": {
+    "innerHTML": false,
+    "placeholder": "STRING-180",
+    "title": false
+  },
+  "#overview-import-text-4": {
+    "innerHTML": "STRING-181",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-import-text-5": {
+    "innerHTML": false,
+    "title": "STRING-182",
+    "placeholder": "STRING-183"
+  },
+  "#overview-import-text-6": {
+    "innerHTML": "STRING-184",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-import-text-7": {
+    "innerHTML": false,
+    "placeholder": "STRING-185",
+    "title": false
+  },
+  "#overview-import-text-8": {
+    "innerHTML": "STRING-186",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-import-text-9": {
+    "innerHTML": "STRING-187",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-load-text-1": {
+    "innerHTML": "STRING-188",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-load-text-2": {
+    "innerHTML": "STRING-189",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-load-text-3": {
+    "innerHTML": false,
+    "placeholder": "STRING-190",
+    "title": false
+  },
+  "#overview-load-text-4": {
+    "innerHTML": "STRING-191",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-load-text-5": {
+    "innerHTML": "STRING-192",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-1": {
+    "innerHTML": "STRING-193",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-2": {
+    "innerHTML": "STRING-194",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-3": {
+    "innerHTML": "STRING-195",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-4": {
+    "innerHTML": false,
+    "placeholder": "STRING-196",
+    "title": false
+  },
+  "#overview-show-text-5": {
+    "innerHTML": "STRING-197",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-6": {
+    "innerHTML": false,
+    "placeholder": "STRING-198",
+    "title": false
+  },
+  "#overview-show-text-7": {
+    "innerHTML": "STRING-199",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-8": {
+    "innerHTML": "STRING-200",
+    "placeholder": false,
+    "title": false
+  },
+  "#overview-show-text-9": {
+    "innerHTML": "STRING-201",
+    "placeholder": false,
+    "title": false
+  },
+  "#send-text-1": {
+    "innerHTML": "STRING-202",
+    "placeholder": false,
+    "title": false
+  },
+  "#send-text-2": {
+    "innerHTML": "STRING-203",
+    "placeholder": false,
+    "title": false
+  },
+  "#send-text-3": {
+    "innerHTML": false,
+    "placeholder": false,
+    "placeholder": "STRING-204",
+    "title": false
+  },
+  "#send-text-4": {
+    "innerHTML": "STRING-205", 
+    "placeholder": false,
+    "title": false
+  },
+  "#send-text-5": {
+    "innerHTML": false,
+    "placeholder": false,
+    "title": "STRING-206"
+  },
+  "#send-text-6": {
+    "innerHTML": "STRING-207",
+    "placeholder": false,
+    "title": false
+  },
+  "#send-text-7": {
+    "innerHTML": "STRING-208",
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-1": { 
+    "innerHTML": "STRING-209", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-2": { 
+    "innerHTML": "STRING-210", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-3": { 
+    "innerHTML": "STRING-211", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-4": { 
+    "innerHTML": "STRING-212", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-5": { 
+    "innerHTML": "STRING-213", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-6": { 
+    "innerHTML": "STRING-214", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-7": { 
+    "innerHTML": "STRING-215", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-8": { 
+    "innerHTML": "STRING-216", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-9": { 
+    "innerHTML": "STRING-217", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-10": { 
+    "innerHTML": "STRING-218",
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-11": { 
+    "innerHTML": "STRING-219", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-12": { 
+    "innerHTML": "STRING-220", 
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-13": { 
+    "innerHTML": "STRING-221",
+    "placeholder": false,
+    "title": false
+  },
+  "#shortcuts-text-14": { 
+    "innerHTML": "STRING-222",
+    "placeholder": false,
+    "title": false
+  }
+}
