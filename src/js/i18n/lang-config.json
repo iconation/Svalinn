@@ -1,4 +1,5 @@
 {
+  "order": ["English", "Espa\u00F1ol"],
   "eng": {
     "name": "English", 
     "file": "src/js/i18n/lang/english.json"

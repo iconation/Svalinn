@@ -1,4 +1,4 @@
-const { app, Tray, Menu, MenuItem, ipcMain, BrowserWindow } = require('electron'); //FidelVe: added MenuItem, ipcMain and BrowserWindow
+const { app, Tray, Menu, MenuItem, ipcMain, BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
@@ -24,7 +24,8 @@ const DEFAULT_SIZE = { width: 840, height: 640 }; //Original height 840
 const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
 
 //Created by FidelVe locale list
-const LOCALE_LIST = ['en-US', 'es-VE'];
+const LOCALE_LIST = require("./src/js/i18n/lang-config.json").order;
+console.log(LOCALE_LIST);
 
 app.prompExit = true;
 app.prompShown = false;

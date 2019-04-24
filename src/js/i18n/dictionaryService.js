@@ -1,9 +1,9 @@
 const fs = require("fs");
-const langInfo = require("./lang-list");
+const langConfig = require("./lang-config.json");
 const stringRel = require("./string-rel.json");
 const englishJSON = require("./lang/english.json");
 const spanishJSON = require("./lang/spanish.json");
-const langOrder = ["English", "Espa\u00F1ol"];
+const langOrder = langConfig["order"];
 
 // const filePath = "./lang/";
 
@@ -81,5 +81,6 @@ function createLangDict(base, langData) {
 // this code will only run if the file is called directly from a terminal with node
 if (typeof require != 'undefined' && require.main == module) {
   console.log("file executed from console");
+  console.log(langConfig.order);
 }
 
