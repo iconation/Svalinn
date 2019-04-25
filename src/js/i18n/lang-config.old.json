@@ -1,0 +1,11 @@
+{
+  "order": ["English", "Espa\u00F1ol"],
+  "eng": {
+    "name": "English", 
+    "file": "src/js/i18n/lang/english.json"
+  },
+  "esp": {
+    "name": "Espa\u00F1ol",
+    "file": "src/js/i18n/lang/spanish.json"
+  }
+}

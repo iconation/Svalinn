@@ -34,7 +34,7 @@ if (!_DICT_EXIST) {
   fs.writeFile("dictionary.json", i18nDict, (err) => {
     if (err) {console.log(err)};
     console.log("dictionary saved to file");
-  let langOrder = ["English", "Espa\u00F1ol"];
+  //let langOrder = ["English", "Espa\u00F1ol"];
   });
 }
 

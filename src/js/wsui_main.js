@@ -34,8 +34,12 @@ let refreshWalletWorker;
 
 let WALLET_OPEN_IN_PROGRESS = false;
 
-//FidelVe: import dictionary
-const _DICT_ = require('./extras/dictionary').dictionary;
+//// i18n related files import
+// importing dictionary
+const DICT = require("./i18n/dictionary.json");
+// importing language configuration file
+const LANG_CONFIG = require("./i18n/lang-config.json");
+////
 
 /*  dom elements vars; */
 // main section link
@@ -125,31 +129,59 @@ let dmswitch;
 let kswitch;
 let iswitch;
 
-//added by FidelVe delete from here
+// language button initialization
 let _LANG_;
 
+// 'change-lang' event listener. this event gets called when
+// the user selects a language for the app.
+// TODO: translateApp should be able to detect if the language
+// selected by the user is already the language being displayed
+// in that case, do not execute (the language selected by the
+// user is already the language displayed).
 ipcRenderer.on('change-lang', (event, langSelected) => {
   translateApp(langSelected);
 });
+
+function _getI18nElements() {
+  let element = document.querySelectorAll("[data-i18n]");
+  let elementList = [];
+  for (let i of element) {
+    elementList.push(i.dataset.i18n);
+  }
+  return elementList;
+}
 
 function showLangSelection() {
   // Popup with the language options
   ipcRenderer.send('select-lang');
 }
 
-function translateApp(selectedLanguage) {
+function translateApp(lang) {
   //this functions takes all the text elements on the app and translate them depending on the language selected by the user
 
   //taking the text elements from the DOM
-  let textElements = [ 
-    ['.welcome-intro-title'], ['.welcome-intro'], ['#button-welcome-openwallet'], ['#button-welcome-createwallet'], ['#button-welcome-import-key']
-  ];
+  let textElements = LANG_CONFIG.keys;
+
   for (let each of textElements) {
-    //Getting the text DOM elements
-    let element = document.querySelector(each[0]);
-    //Changing the innerHTML content of each text element based on theselected language
-    element.innerHTML = _DICT_[selectedLanguage][each[0]];
-   };
+    //Getting each element with text to be translated
+    let searchQuery = "[data-i18n=" + each + "]";
+    let element = document.querySelector(searchQuery);
+    console.log(searchQuery);
+    console.log(element);
+
+    if (typeof DICT[lang][each].innerHTML !== "undefined") {
+      // if the html element has innerHTML text to translate
+      element.innerHTML = DICT[lang][each].innerHTML;
+    }
+    if (typeof DICT[lang][each].title !== "undefined") {
+      // if the html element has a 'title' attribute to translate
+      element.title = DICT[lang][each].title;
+    }
+    if (typeof DICT[lang][each].placeholder !== "undefined") {
+      // if the html element has a 'placeholder' attribute to translate
+      element.placeholder = DICT[lang][each].placeholder;
+    }
+   }
 }
 //added by FidelVe delete to here
 
