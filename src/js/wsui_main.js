@@ -142,14 +142,6 @@ ipcRenderer.on('change-lang', (event, langSelected) => {
   translateApp(langSelected);
 });
 
-function _getI18nElements() {
-  let element = document.querySelectorAll("[data-i18n]");
-  let elementList = [];
-  for (let i of element) {
-    elementList.push(i.dataset.i18n);
-  }
-  return elementList;
-}
 
 function showLangSelection() {
   // Popup with the language options
@@ -166,8 +158,6 @@ function translateApp(lang) {
     //Getting each element with text to be translated
     let searchQuery = "[data-i18n=" + each + "]";
     let element = document.querySelector(searchQuery);
-    console.log(searchQuery);
-    console.log(element);
 
     if (typeof DICT[lang][each].innerHTML !== "undefined") {
       // if the html element has innerHTML text to translate
@@ -183,7 +173,6 @@ function translateApp(lang) {
     }
    }
 }
-//added by FidelVe delete to here
 
 function populateElementVars()
 {
@@ -193,9 +182,9 @@ function populateElementVars()
     kswitch = document.getElementById('kswitch');
     iswitch = document.getElementById('button-section-about');
     firstTab = document.querySelector('.navbar-button');
-    //added by FidelVe delete from here
+
+    // language button
     _LANG_ = document.getElementById('button-lang');
-    //added by FidelVe delete to here
 
 
     // Generics
@@ -545,6 +534,10 @@ function updateAddressBookSelector(selected) {
     addressBookSelector.options.length = 0;
     let abopts = document.createElement('option');
     abopts.value = 'default';
+  // TODO: string literal use should be avoided. Refactor this 
+  // with a variable.
+    abopts.dataset.i18n = "address-book-text-5";
+  // TODO: this string literal should also be refactored
     abopts.text = 'Default/Built-in Address Book';
     abopts.setAttribute('selected', 'selected');
     addressBookSelector.add(abopts, null);

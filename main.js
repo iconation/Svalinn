@@ -20,12 +20,11 @@ const DEFAULT_SETTINGS = {
     tray_close: false,
     darkmode: false,
 };
-const DEFAULT_SIZE = { width: 840, height: 640 }; //Original height 840
+const DEFAULT_SIZE = { width: 840, height: 840 }; 
 const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
 
-//Created by FidelVe locale list
+// language list in order
 const LOCALE_LIST = require("./src/js/i18n/lang-config.json").order;
-console.log(LOCALE_LIST);
 
 app.prompExit = true;
 app.prompShown = false;
@@ -200,7 +199,6 @@ function createWindow()
 
     win.setMenu(null);
   
-    //Added by FidelVe testing language support
     //i18n menu
     i18nMenu(LOCALE_LIST);
 
@@ -284,10 +282,8 @@ app.on('ready', () => {
     }
 });
 
-//Added by FidelVe delete from here
-//contextual menu for when clicking on the language button
-
 function i18nMenu(locales) {
+  //contextual menu for when clicking on the language button
   const _langContext = new Menu();
   for (let each of locales) {
     _langContext.append(new MenuItem({label: each, click: changeAppLanguage}));
@@ -304,4 +300,3 @@ function changeAppLanguage(selectedLang) {
   let lang = selectedLang.label;
   win.webContents.send('change-lang', lang);
 }
-//To here

@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////
+// This file is for the creation of the language dictionary.//
+// Once a new language file is added to the 'lang' folder   //
+// this file should be modified to add said language and    //
+// create the new language dictionary for the app.          //
+//////////////////////////////////////////////////////////////
 const fs = require("fs");
 const langConfig = require("./lang-config.json");
 const stringRel = require("./string-rel.json");
