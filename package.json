@@ -2,7 +2,7 @@
   "name": "svalinn",
   "productName": "Svalinn",
   "description": "ICONation ICX Wallet",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "homepage": "https://github.com/ICONation/svalinn",
   "repository": "https://github.com/ICONation/svalinn",
   "main": "main.js",
@@ -10,6 +10,7 @@
     "start": "electron .",
     "debug": "electron . debug",
     "dev": "electron . dev",
+    "install": "node src/js/i18n/dictionaryService.js",
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build"
@@ -19,27 +20,30 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^4.0.5",
-    "electron-builder": "^20.38.5",
+    "electron": "^5.0.1",
+    "electron-builder": "^20.41.0",
     "electron-packager": "^13.1.1",
     "electron-winstaller": "^3.0.4",
-    "jshint": "^2.10.1"
+    "jshint": "^2.10.2"
   },
   "dependencies": {
     "@trodi/electron-splashscreen": "^0.3.4",
-    "ag-grid-community": "^19.1.4",
+    "ag-grid-community": "^20.2.0",
     "async": "^2.6.2",
-    "csv-writer": "^1.2.0",
-    "electron-log": "^2.2.17",
-    "electron-store": "^2.0.0",
+    "clean": "^4.0.2",
+    "csv-writer": "^1.3.0",
+    "electron-log": "^3.0.5",
+    "electron-store": "^3.2.0",
     "fnv-plus": "^1.2.12",
-    "icon-sdk-js": "0.0.10",
+    "icon-sdk-js": "0.0.16",
     "node-crypto-gcm": "^1.0.3",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
+    "secp256k1": "^3.7.0",
+    "sessionstorage": "^0.1.0",
     "shell": "^0.5.0",
-    "superagent": "^4.1.0"
+    "superagent": "^5.0.5"
   },
   "build": {
     "appId": "org.iconation.svalinn",

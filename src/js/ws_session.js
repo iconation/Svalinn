@@ -1,4 +1,5 @@
 const SESSION_KEY = 'svalinSessionKey';
+var sessionStorage = require('sessionstorage');
 
 var SvalinnSession = function (opts) {
     if (!(this instanceof SvalinnSession)) return new SvalinnSession(opts);

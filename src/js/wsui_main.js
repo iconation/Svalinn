@@ -619,7 +619,7 @@ function handleAddressBook() {
                 pagination: false,
                 paginationPageSize: 20,
                 cacheQuickFilter: true,
-                enableSorting: true,
+                defaultColDef: {sortable : true},
                 suppressRowClickSelection: true,
                 rowClass: 'ab-item',
                 rowSelection: 'multiple',
@@ -906,7 +906,7 @@ function handleAddressBook() {
         };
         abook.data[entryHash] = newAddress;
 
-        // update but address+payid is new
+        // update but address is new
         let oldHash = addressBookInputName.dataset.oldhash || '';
         let isNew = (oldHash.length && oldHash !== entryHash);
 
@@ -926,7 +926,6 @@ function handleAddressBook() {
         addressBookInputName.value = '';
         addressBookInputName.dataset.oldhash = '';
         addressBookInputWallet.value = '';
-        // addressBookInputPaymentId.value = '';
         addressBookInputUpdate.value = 0;
         formMessageReset();
 
@@ -945,12 +944,10 @@ function handleAddressBook() {
         } else {
             const nameField = document.getElementById('input-addressbook-name');
             const walletField = document.getElementById('input-addressbook-wallet');
-            const payidField = document.getElementById('input-addressbook-paymentid');
             const updateField = document.getElementById('input-addressbook-update');
             nameField.value = entry.name;
             nameField.dataset.oldhash = origHash;
             walletField.value = entry.address;
-            payidField.value = entry.paymentId;
             updateField.value = 1;
         }
         changeSection('section-addressbook-add');

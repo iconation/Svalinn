@@ -9,6 +9,7 @@ const langConfig = require("./lang-config.json");
 const stringRel = require("./string-rel.json");
 const englishJSON = require("./lang/english.json");
 const spanishJSON = require("./lang/spanish.json");
+const frenchJSON = require("./lang/french.json");
 const langOrder = langConfig["order"];
 
 // const filePath = "./lang/";
@@ -16,33 +17,32 @@ const langOrder = langConfig["order"];
 let _DICT_EXIST = false;
 
 // Check if dictionary is already created
-if (fs.existsSync("./dictionary.json")) {
+if (fs.existsSync("./src/js/i18n/dictionary.json")) {
   _DICT_EXIST = true;
 }
 
-// if the dictionary doesnt exists already
-if (!_DICT_EXIST) {
-  let englishExpanded = expandLangJSON(englishJSON);
-  let spanishExpanded = expandLangJSON(spanishJSON);
-  let englishDict = createLangDict(stringRel, englishExpanded);
-  let spanishDict = createLangDict(stringRel, spanishExpanded);
+let englishExpanded = expandLangJSON(englishJSON);
+let spanishExpanded = expandLangJSON(spanishJSON);
+let frenchExpanded = expandLangJSON(frenchJSON);
+let englishDict = createLangDict(stringRel, englishExpanded);
+let spanishDict = createLangDict(stringRel, spanishExpanded);
+let frenchDict = createLangDict(stringRel, frenchExpanded);
 
-  // List with all the individual language dictionaries
-  // Modify this to add more languages to the dictionary
-  // the languages needs to be added in the order that appears
-  // in langOrder
-  let languageList = [englishDict, spanishDict];
+// List with all the individual language dictionaries
+// Modify this to add more languages to the dictionary
+// the languages needs to be added in the order that appears
+// in langOrder
+let languageList = [englishDict, spanishDict, frenchDict];
 
-  // create language dictionary
-  let i18nDict = createDictionary(languageList);
+// create language dictionary
+let i18nDict = createDictionary(languageList);
 
-  // saving dictionary as a json file
-  fs.writeFile("dictionary.json", i18nDict, (err) => {
-    if (err) {console.log(err)};
-    console.log("dictionary saved to file");
-  //let langOrder = ["English", "Espa\u00F1ol"];
-  });
-}
+// saving dictionary as a json file
+fs.writeFile("./src/js/i18n/dictionary.json", i18nDict, (err) => {
+  if (err) {console.log(err)};
+  console.log("dictionary saved to file");
+//let langOrder = ["English", "Espa\u00F1ol"];
+});
 
 ///////////////////////////////////////////////////////
 // Function declarations

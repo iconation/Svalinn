@@ -10,3 +10,6 @@ Svalinn-win32-x64
 Svalinn-win32-x64.*
 yarn.lock
 TODO
+
+src/js/i18n/dictionary.json
+package-lock.json
