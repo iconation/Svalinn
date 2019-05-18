@@ -1,4 +1,4 @@
-const { app, Tray, Menu } = require('electron');
+const { app, Tray, Menu, MenuItem, ipcMain, BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
@@ -20,8 +20,11 @@ const DEFAULT_SETTINGS = {
     tray_close: false,
     darkmode: false,
 };
-const DEFAULT_SIZE = { width: 840, height: 840 };
+const DEFAULT_SIZE = { width: 840, height: 840 }; 
 const WIN_TITLE = `${config.appName} ${SVALINN_VERSION} - ${config.appDescription}`;
+
+// language list in order
+const LOCALE_LIST = require("./src/js/i18n/lang-config.json").order;
 
 app.prompExit = true;
 app.prompShown = false;
@@ -195,6 +198,9 @@ function createWindow()
     });
 
     win.setMenu(null);
+  
+    //i18n menu
+    i18nMenu(LOCALE_LIST);
 
     // misc handler
     win.webContents.on('crashed', () => {
@@ -275,3 +281,22 @@ app.on('ready', () => {
         try { win.setPosition(parseInt(tx, 10), parseInt(ty, 10)); } catch (_e) { }
     }
 });
+
+function i18nMenu(locales) {
+  //contextual menu for when clicking on the language button
+  const _langContext = new Menu();
+  for (let each of locales) {
+    _langContext.append(new MenuItem({label: each, click: changeAppLanguage}));
+  };
+
+  ipcMain.on('select-lang', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    _langContext.popup(win);
+  });
+}
+
+function changeAppLanguage(selectedLang) {
+  //Sends a message from the main process to the renderer process with the language that the user selected
+  let lang = selectedLang.label;
+  win.webContents.send('change-lang', lang);
+}

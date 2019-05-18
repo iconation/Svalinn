@@ -34,6 +34,13 @@ let refreshWalletWorker;
 
 let WALLET_OPEN_IN_PROGRESS = false;
 
+//// i18n related files import
+// importing dictionary
+const DICT = require("./i18n/dictionary.json");
+// importing language configuration file
+const LANG_CONFIG = require("./i18n/lang-config.json");
+////
+
 /*  dom elements vars; */
 // main section link
 let sectionButtons;
@@ -122,6 +129,51 @@ let dmswitch;
 let kswitch;
 let iswitch;
 
+// language button initialization
+let _LANG_;
+
+// 'change-lang' event listener. this event gets called when
+// the user selects a language for the app.
+// TODO: translateApp should be able to detect if the language
+// selected by the user is already the language being displayed
+// in that case, do not execute (the language selected by the
+// user is already the language displayed).
+ipcRenderer.on('change-lang', (event, langSelected) => {
+  translateApp(langSelected);
+});
+
+
+function showLangSelection() {
+  // Popup with the language options
+  ipcRenderer.send('select-lang');
+}
+
+function translateApp(lang) {
+  //this functions takes all the text elements on the app and translate them depending on the language selected by the user
+
+  //taking the text elements from the DOM
+  let textElements = LANG_CONFIG.keys;
+
+  for (let each of textElements) {
+    //Getting each element with text to be translated
+    let searchQuery = "[data-i18n=" + each + "]";
+    let element = document.querySelector(searchQuery);
+
+    if (typeof DICT[lang][each].innerHTML !== "undefined") {
+      // if the html element has innerHTML text to translate
+      element.innerHTML = DICT[lang][each].innerHTML;
+    }
+    if (typeof DICT[lang][each].title !== "undefined") {
+      // if the html element has a 'title' attribute to translate
+      element.title = DICT[lang][each].title;
+    }
+    if (typeof DICT[lang][each].placeholder !== "undefined") {
+      // if the html element has a 'placeholder' attribute to translate
+      element.placeholder = DICT[lang][each].placeholder;
+    }
+   }
+}
+
 function populateElementVars()
 {
     // Misc
@@ -130,6 +182,10 @@ function populateElementVars()
     kswitch = document.getElementById('kswitch');
     iswitch = document.getElementById('button-section-about');
     firstTab = document.querySelector('.navbar-button');
+
+    // language button
+    _LANG_ = document.getElementById('button-lang');
+
 
     // Generics
     genericBrowseButton = document.querySelectorAll('.path-input-button:not(.d-opened');
@@ -478,6 +534,10 @@ function updateAddressBookSelector(selected) {
     addressBookSelector.options.length = 0;
     let abopts = document.createElement('option');
     abopts.value = 'default';
+  // TODO: string literal use should be avoided. Refactor this 
+  // with a variable.
+    abopts.dataset.i18n = "address-book-text-5";
+  // TODO: this string literal should also be refactored
     abopts.text = 'Default/Built-in Address Book';
     abopts.setAttribute('selected', 'selected');
     addressBookSelector.add(abopts, null);
@@ -1627,6 +1687,9 @@ function initHandlers()
     });
     kswitch.addEventListener('click', showKeyBindings);
     iswitch.addEventListener('click', showAbout);
+    //added by FidelVe delete from here
+    _LANG_.addEventListener('click', showLangSelection);
+    //delete to here
 
     function handleBrowseButton(args) {
         if (!args) return;

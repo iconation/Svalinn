@@ -3,17 +3,17 @@
             <div class="section-contents darkened">
     
                 <div class="div-title">
-                    <h2 class="title">Send ICX transaction</h2>
+                    <h2 class="title" data-i18n="send-text-1">Send ICX transaction</h2>
                 </div>
 
                 <div class="div-input">
                     
                     <div class="input-wrap">
-                        <h4 class="text-spaced input-required">Select the transaction file</h4>
+                        <h4 class="text-spaced input-required" data-i18n="send-text-2">Select the transaction file</h4>
                         <input type="text" required="required" data-selection="openFile" data-extension="tx" data-object="Transactions" 
                             data-targetinput="send-transaction-txfile"
                             readonly="readonly" class="text-block path-input-button"
-                            id="send-transaction-txfile" tabindex="0" 
+                            id="send-transaction-txfile" data-i18n="send-text-3" tabindex="0" 
                             placeholder="Full path to the transaction file to be opened..."
                             />
                         <button data-selection="openFile" data-extension="tx" data-object="Transactions" 
@@ -28,14 +28,14 @@
                     </div>
 
                     <div class="input-wrap hideme" id="send-transaction-hidden-txhash">
-                        <h4 class="text-spaced">Transaction Hash:</h4>
+                        <h4 class="text-spaced" data-i18n="send-text-4">Transaction Hash:</h4>
                         <span title="Click to see the transaction on the tracker" data-cplabel="Transaction Hash"
-                            id="send-transaction-txhash" readonly="readonly" tabindex="0" class="text-block"></span>
+                            id="send-transaction-txhash" data-i18n="send-text-5" readonly="readonly" tabindex="0" class="text-block"></span>
                     </div>
                 </div>
                 <div class="action-buttons">
-                        <button type="button" class="form-bt button-green" id="button-send-transaction-send">Send</button>
-                        <button type="button" class="form-bt button-red" data-section="section-overview" id="button-create-transaction-backtx">Back</button>
+                        <button type="button" class="form-bt button-green" id="button-send-transaction-send" data-i18n="send-text-6">Send</button>
+                        <button type="button" class="form-bt button-red" data-section="section-overview" id="button-create-transaction-backtx" data-i18n="send-text-7">Back</button>
                 </div>
             </div>
         </section>

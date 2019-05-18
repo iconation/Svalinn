@@ -31,23 +31,23 @@
         <!-- Top navbar -->
         <div class="navbar xgrid">
             <div class="idle" id="navbar-div-sync">
-                <span tabindex="-1" id="navbar-text-sync">Svalinn - ICONation ICX Wallet</span>
+                <span tabindex="-1" id="navbar-text-sync" data-i18n="index-text-1">Svalinn - ICONation ICX Wallet</span>
             </div>
 
-            <button tabindex="-1" title="Wallet Overview" class="form-bt navbar-button navbar-need-connected" data-section="section-overview" id="button-section-overview">
-                <i class="fas fa-wallet"></i> <span class="navbar-label">Wallet</span>
+            <button tabindex="-1" title="Wallet Overview" class="form-bt navbar-button navbar-need-connected" data-section="section-overview" id="button-section-overview" data-i18n="index-text-2">
+                <i class="fas fa-wallet"></i> <span class="navbar-label" data-i18n="index-text-2-1">Wallet</span>
             </button>
 
-            <button tabindex="-1" title="Address Book" type="button" class="form-bt navbar-button" data-section="section-addressbook" id="button-section-addressbook">
-                <i class="fas fa-address-book"></i> <span class="navbar-label">Address Book</span>
+            <button tabindex="-1" title="Address Book" type="button" class="form-bt navbar-button" data-section="section-addressbook" id="button-section-addressbook" data-i18n="index-text-3">
+                <i class="fas fa-address-book"></i> <span class="navbar-label" data-i18n="index-text-4">Address Book</span>
             </button>
 
-            <button tabindex="-1" title="Create transaction" class="form-bt navbar-button navbar-need-connected" data-section="section-create-transaction" id="button-section-create-transaction">
-                <i class="fas fa-exchange-alt"></i> <span class="navbar-label">Create transaction</span>
+            <button tabindex="-1" title="Create transaction" class="form-bt navbar-button navbar-need-connected" data-section="section-create-transaction" id="button-section-create-transaction" data-i18n="index-text-5">
+                <i class="fas fa-exchange-alt"></i> <span class="navbar-label" data-i18n="index-text-6">Create transaction</span>
             </button>
 
-            <button tabindex="-1" title="Send transaction" class="form-bt navbar-button" data-section="section-send-transaction" id="button-section-send-transaction">
-                <i class="fas fa-paper-plane"></i> <span class="navbar-label">Send transaction</span>
+            <button tabindex="-1" title="Send transaction" class="form-bt navbar-button" data-section="section-send-transaction" id="button-section-send-transaction" data-i18n="index-text-7">
+                <i class="fas fa-paper-plane"></i> <span class="navbar-label" data-i18n="index-text-8">Send transaction</span>
             </button>
         </div>
     
@@ -57,9 +57,10 @@
         <dialog id="ab-dialog" class="default-dialog address-book-dialog"></dialog>
         <dialog id="tf-dialog" class="tx-dialog"></dialog>
         <div class="side-buttons">
-        <button tabindex="-1" class="side-button" title="About" id="button-section-about"><i class="fas fa-info-circle"></i></button>
-        <button tabindex="-1" class="side-button" title="Show keyboard shortcut" id="kswitch"><i class="fas fa-keyboard"></i></button>
-        <button  tabindex="-1" class="side-button" title="Switch to dark mode" id="tswitch"><i class="fas fa-moon"></i></button>
+          <button tabindex="-1" class="side-button" title="Language" id="button-lang" data-i18n="index-text-9"><i class="fas fa-globe-americas"></i></button>
+        <button tabindex="-1" class="side-button" title="About" id="button-section-about" data-i18n="index-text-10"><i class="fas fa-info-circle"></i></button>
+        <button tabindex="-1" class="side-button" title="Show keyboard shortcut" id="kswitch" data-i18n="index-text-11"><i class="fas fa-keyboard"></i></button>
+        <button  tabindex="-1" class="side-button" title="Switch to dark mode" id="tswitch" data-i18n="index-text-12"><i class="fas fa-moon"></i></button>
         </div>
         <div id="belekok" class="borokokok off"></div>
         <script>require('../js/wsui_main.js')</script>

@@ -2,14 +2,14 @@
     <section class="section" id="section-overview-import-key">
         <div class="section-contents darkened">
             <div class="div-title">
-                <h2 class="title">Import Private Key</h2>
+                <h2 class="title" data-i18n="overview-import-text-1">Import Private Key</h2>
             </div>
             <div class="div-input">
                 <div class="input-wrap">
-                    <h4 class="text-spaced input-required">Select where the wallet file will be stored</h4>
+                    <h4 class="text-spaced input-required" data-i18n="overview-import-text-2">Select where the wallet file will be stored</h4>
                     <input required="required" data-fileobj="wallet file" data-extension="icx" data-object="Wallet" 
                         data-selection="saveFile" data-targetinput="input-import-path" 
-                        class="text-block path-input-button" id="input-import-path" readonly="readonly" 
+                        class="text-block path-input-button" id="input-import-path" data-i18n="overview-import-text-3" readonly="readonly" 
                         placeholder="Required, full path to store this wallet..."
                         />
                     <button data-fileobj="wallet file" data-extension="icx" data-object="Wallet" data-selection="saveFile" data-targetinput="input-import-path" type="button" class="button-green path-input-button notabindex" id="button-import-browse"><i class="fas fa-folder-open"></i></button>
@@ -17,9 +17,9 @@
 
                 <div class="input-wrap">
                     <div class="inline-block-div half-width" style="width:64%;">
-                        <h4 class="text-spaced input-required">Set password to open this wallet</h4>
+                        <h4 class="text-spaced input-required" data-i18n="overview-import-text-4">Set password to open this wallet</h4>
                         <input title="Required" required="required" type="password" 
-                        class="text-block" id="input-import-password" 
+                        class="text-block" id="input-import-password" data-i18n="overview-import-text-5" 
                         placeholder="Required, set a password to open this wallet..."
                         />
                         <button tabindex="-1" class="togpass notabindex" data-pf="input-import-password"><i class="fas fa-eye"></i></button>
@@ -27,8 +27,8 @@
                 </div>
 
                 <div class="input-wrap">
-                    <h4 class="text-spaced input-required">Private key to be imported</h4>
-                    <input required="required" class="text-block" id="key-import-view" 
+                    <h4 class="text-spaced input-required" data-i18n="overview-import-text-6">Private key to be imported</h4>
+                    <input required="required" class="text-block" id="key-import-view" data-i18n="overview-import-text-7" 
                         placeholder="Required, your private view key to be imported..."
                     />
                 </div>
@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div class="action-buttons">
-                    <button type="button" class="form-bt button-green" id="button-import-import">Import</button>
-                    <button type="button" class="form-bt button-red" data-section="section-welcome" id="button-import-back">Cancel</button>
+                    <button type="button" class="form-bt button-green" id="button-import-import" data-i18n="overview-import-text-8">Import</button>
+                    <button type="button" class="form-bt button-red" data-section="section-welcome" id="button-import-back" data-i18n="overview-import-text-9">Cancel</button>
             </div>
         </div>
     </section>

@@ -3,8 +3,8 @@
         <div class="section-contents">
             <div class="div-overview-address">
                 <div class="input-wrap" style="margin-top:0">
-                    <h2 class="title">Address:</h2>
-                    <textarea title="click to copy" data-cplabel="Wallet Address" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" id="wallet-address" readonly="readonly" rows="2"></textarea>
+                    <h2 class="title" data-i18n="overview-text-1">Address:</h2>
+                    <textarea title="click to copy" data-cplabel="Wallet Address" tabindex="-1" data-noclear="1" class="ctcl overview-input default-textarea" id="wallet-address" data-i18n="overview-text-2" readonly="readonly" rows="2"></textarea>
                     <span id="form-help-wallet-address" class="form-help"></span>
                 </div>
             </div>
@@ -12,19 +12,19 @@
             <div class="main-balance-overview">
                 
                 <div class="div-overview-balance">
-                    <h2 class="title">Balance:</h2>
-                    <h4 class="text-block" id="balance-available" title="Available Balance">
+                    <h2 class="title" data-i18n="overview-text-3">Balance:</h2>
+                    <h4 class="text-block" id="balance-available" data-i18n="overview-text-4" title="Available Balance">
                         <i class="fas fa-unlock-alt"></i> ICX
                         <span data-cplabel="Balance" style="float: right;" class="tctcl">...</span>
                     </h4>
                 </div>
                             
                 <div class="div-overview-balance half-width half-width-end">
-                    <h2 class="title">Select network</h4>
+                    <h2 class="title" data-i18n="overview-text-5">Select network</h4>
                     <select required="required" tabindex="0" name="node-address" id="overview-network-id" class="text-block">
-                        <option value="1">Mainnet</option>
-                        <option value="2">Testnet for Exchanges (Euljiro)</option>
-                        <option value="3">Testnet for DApps (Yeouido)</option>
+                        <option value="1" data-i18n="overview-text-6">Mainnet</option>
+                        <option value="2" data-i18n="overview-text-7">Testnet for Exchanges (Euljiro)</option>
+                        <option value="3" data-i18n="overview-text-8">Testnet for DApps (Yeouido)</option>
                     </select>
                 </div>
 
@@ -39,10 +39,10 @@
                 <button tabindex="0" type="button" class="form-bt button-green" 
                     data-section="section-overview-show" 
                     title="Backup your private keys (ctrl+e)" 
-                    id="button-overview-showkeys">Backup Keys</button>
+                    id="button-overview-showkeys" data-i18n="overview-text-9">Backup Keys</button>
                 <button tabindex="0" type="button" class="form-bt  button-green" 
                     title="Close current wallet, so you can open another wallet (ctrl+x)"
-                    id="button-overview-closewallet">Close</button>
+                    id="button-overview-closewallet" data-i18n="overview-text-10">Close</button>
             </div>
         </div>
     </section>
